@@ -3,7 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}body{margin:0}
+/* Slide-out contents drawer: hidden by default so the reading column gets the full width */
+header.top{padding-top:76px}
+.wrap{display:block;max-width:1060px;padding-block:28px 80px}
+nav.idx{position:fixed;top:0;left:0;bottom:0;width:min(310px,86vw);z-index:60;background:var(--surface);border-right:1px solid var(--line);overflow-y:auto;transform:translateX(-102%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s;padding:calc(66px + env(safe-area-inset-top,0px)) 18px 28px max(18px,env(safe-area-inset-left,0px));margin:0;display:block;font-size:15px;flex:none;gap:0}
+html.toc-open nav.idx{transform:none;visibility:visible;transition-delay:0s}
+nav.idx h2{display:block}
+nav.idx a{display:block;white-space:normal;border:0;border-left:2px solid var(--line);padding:8px 0 8px 12px;min-height:40px}
+nav.idx a:hover{border-left-color:var(--accent);color:var(--accent)}
+.tocbtn{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:70;min-height:44px;display:flex;gap:10px;align-items:center;padding:0 16px 0 13px;background:var(--band);color:var(--band-ink);border:1px solid var(--muted);font:600 14px var(--body);letter-spacing:.04em;cursor:pointer}
+.tocbtn:hover{border-color:var(--band-accent)}
+.tocbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s linear .25s}
+html.toc-open .scrim{opacity:1;visibility:visible;transition-delay:0s}
+@media (prefers-reduced-motion:reduce){nav.idx,.scrim{transition:none}}
+@media (max-width:600px){.wrap{padding-block:16px 56px}header.top{padding-top:70px}}
+</style>
 <title>ASVAB Math Study Guide</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;1,500&display=swap">
 <style>
@@ -131,13 +147,15 @@ details.ans .body{gap:6px 16px}
 </head>
 <body>
 
+<button class="tocbtn" id="tocbtn" type="button" aria-controls="toc" aria-expanded="false"><svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path d="M0 1h20M0 7h20M0 13h20" stroke="currentColor" stroke-width="2" fill="none"/></svg><span id="toctxt">Contents</span></button>
+<div class="scrim" id="scrim"></div>
 <header class="top pad"><div class="in">
 <div class="eyebrow">Arithmetic Reasoning · Mathematics Knowledge</div>
 <h1>ASVAB Math Study Guide</h1>
 <p>Skill-by-skill notes, worked examples, practice problems and an answer key for both math sections. No calculator on either one, so the mental-math practice counts too.</p>
 </div></header>
 <div class="wrap pad">
-<nav class="idx" aria-label="Sections">
+<nav class="idx" id="toc" aria-label="Sections">
 <h2>Start</h2>
 <a href="#overview">Overview and plan</a>
 <a href="#mental">Mental math</a>
@@ -878,5 +896,14 @@ details.ans .body{gap:6px 16px}
 </main>
 </div>
 
+<script>
+(function(){var h=document.documentElement,b=document.getElementById('tocbtn'),t=document.getElementById('toctxt'),s=document.getElementById('scrim'),n=document.getElementById('toc');
+function set(o){h.classList.toggle('toc-open',o);b.setAttribute('aria-expanded',o?'true':'false');t.textContent=o?'Close':'Contents';}
+b.addEventListener('click',function(){set(!h.classList.contains('toc-open'));});
+s.addEventListener('click',function(){set(false);});
+n.addEventListener('click',function(e){if(e.target.closest('a'))set(false);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);}});
+})();
+</script>
 </body>
 </html>
