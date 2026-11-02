@@ -1,0 +1,839 @@
+<title>ASVAB Math Study Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;1,500&display=swap">
+<style>
+/* Layout: sticky section index at left, one readable column of skill sheets at right. Navy + amber, built like a printed field manual. */
+:root{--bg:#f3f4f5;--surface:#ffffff;--ink:#26282b;--muted:#55595f;--line:#d6d8db;--accent:#9a5b00;--accent-bg:#fff0d2;--link:#1b4fc4;--hl:#e9ebed;--band:#26282b;--band-ink:#ffffff;--band-accent:#f2b04a;--good:#17653a;
+--display:'Barlow Condensed','Arial Narrow',sans-serif;--body:'IBM Plex Sans',system-ui,sans-serif;--serif:'IBM Plex Serif',Georgia,serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1c1f;--surface:#26282c;--ink:#ececee;--muted:#b0b3b9;--line:#3c3f44;--accent:#f2b04a;--accent-bg:#3a2d12;--link:#8db4ff;--hl:#303337;--band:#131416;--good:#6fd09a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1c1f;--surface:#26282c;--ink:#ececee;--muted:#b0b3b9;--line:#3c3f44;--accent:#f2b04a;--accent-bg:#3a2d12;--link:#8db4ff;--hl:#303337;--band:#131416;--good:#6fd09a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+a{color:var(--link)}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--band);color:var(--band-ink);padding-block:48px 40px}
+header.top .in{max-width:1180px;margin:0 auto}
+.eyebrow{font-weight:600;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--band-accent)}
+header.top h1{font-family:var(--display);font-weight:700;font-size:clamp(44px,9vw,92px);line-height:.95;margin:10px 0 14px;letter-spacing:.01em;text-wrap:balance}
+header.top p{margin:0;max-width:60ch;color:#d4d6da;font-size:18px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;padding-block:36px 80px}
+nav.idx{position:sticky;top:20px;align-self:start;font-size:14.5px}
+nav.idx h2{font-family:var(--display);font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+nav.idx h2:first-child{margin-top:0}
+nav.idx a{display:block;padding:3px 0 3px 10px;border-left:2px solid var(--line);color:var(--ink);text-decoration:none}
+nav.idx a:hover{border-left-color:var(--accent);color:var(--accent)}
+main{min-width:0;display:flex;flex-direction:column;gap:28px}
+h2.part{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,50px);line-height:1;margin:44px 0 0;text-transform:uppercase;letter-spacing:.02em;padding-top:14px;border-top:4px solid var(--ink)}
+h2.part small{display:block;font-family:var(--body);font-size:16px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);margin-top:8px;line-height:1.5;max-width:62ch}
+section.skill{background:var(--surface);border:1px solid var(--line);padding:26px clamp(16px,3vw,32px) 30px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px}
+section.skill>h3{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,38px);line-height:1.05;margin:0;text-transform:uppercase;letter-spacing:.03em;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.tag{font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.14em;background:var(--accent-bg);color:var(--accent);padding:3px 9px;text-transform:uppercase}
+h4{font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:8px 0 -4px;display:flex;align-items:center;gap:10px}
+h4::after{content:"";flex:1;height:1px;background:var(--line)}
+p{margin:0}
+ul.kp,ol.pr{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:7px}
+ul.kp li::marker{color:var(--accent)}
+ol.pr{padding-left:1.7em}
+ol.pr li{padding-left:4px}
+.ex{background:var(--hl);padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.ex b.lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.steps{display:flex;flex-direction:column;gap:2px;padding-left:2px}
+.steps div{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}
+.steps div::before{content:"";width:6px;height:6px;background:var(--accent);flex:none;margin-right:2px}
+.m{font-family:var(--serif);font-size:1.12em;white-space:nowrap}
+.mb{font-family:var(--serif);font-size:1.5em;padding:10px 16px;background:var(--hl);display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+.mb .l{font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);width:100%}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .14em;text-align:center;line-height:1.18;font-size:1.02em}
+.fr>span:first-child{border-bottom:.07em solid currentColor;padding:0 .24em .05em}
+.fr>span:last-child{padding-top:.05em}
+.rt{border-top:.07em solid currentColor;padding:0 .08em;margin-left:.02em}
+.vids{font-size:15px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.vids b{font-weight:600;color:var(--ink)}
+.vids a{white-space:normal}
+details.ans{border:1px dashed var(--line);padding:0}
+details.ans summary{cursor:pointer;padding:9px 14px;font-weight:600;font-size:14.5px;color:var(--good);list-style:none}
+details.ans summary::before{content:"+ ";}
+details.ans[open] summary::before{content:"\2212 ";}
+details.ans .body{padding:2px 16px 14px;display:flex;flex-wrap:wrap;gap:6px 22px;font-size:16px}
+.tw{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--hl)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{border:1px solid var(--line);padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.card h5{margin:0;font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.fig{display:flex;flex-direction:column;gap:6px;align-items:flex-start;max-width:100%}
+.fig svg{max-width:100%;height:auto;display:block}
+.fig figcaption,figcaption{font-size:13.5px;color:var(--muted)}
+figure{margin:0}
+svg text{font-family:var(--body);fill:var(--ink)}
+.st{stroke:var(--ink);fill:none;stroke-width:2}
+.fa{fill:var(--hl);stroke:var(--ink);stroke-width:2}
+.fx{fill:var(--accent-bg);stroke:var(--accent);stroke-width:2}
+.bar{display:flex;height:36px;max-width:520px;border:2px solid var(--ink)}
+.bar span{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;border-right:1px solid var(--ink)}
+.bar span:last-child{border-right:0}
+.on{background:var(--accent-bg);color:var(--ink)}
+.off{background:var(--hl);color:var(--ink)}
+.grid2{display:grid;gap:2px;max-width:420px;background:var(--ink);border:2px solid var(--ink)}
+.grid2 div{background:var(--surface);padding:10px 8px;text-align:center;font-family:var(--serif);font-size:1.05em}
+.grid2 .h{background:var(--hl);font-family:var(--body);font-weight:600;font-size:14px}
+.cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:900px){
+.wrap{grid-template-columns:minmax(0,1fr);gap:20px}
+nav.idx{position:static;display:flex;flex-wrap:nowrap;overflow-x:auto;gap:6px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+nav.idx h2{display:none}
+nav.idx a{white-space:nowrap;border:1px solid var(--line);padding:6px 12px}
+.cols,.cmp{grid-template-columns:minmax(0,1fr)}
+body{font-size:16.5px}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+<header class="top pad"><div class="in">
+<div class="eyebrow">Arithmetic Reasoning · Mathematics Knowledge</div>
+<h1>ASVAB Math Study Guide</h1>
+<p>Skill-by-skill notes, worked examples, practice problems and an answer key for both math sections. No calculator on either one, so the mental-math practice counts too.</p>
+</div></header>
+<div class="wrap pad">
+<nav class="idx" aria-label="Sections">
+<h2>Start</h2>
+<a href="#overview">Overview and plan</a>
+<a href="#mental">Mental math</a>
+<h2>Arithmetic Reasoning</h2>
+<a href="#fractions">Fractions</a><a href="#percent">Percentages</a><a href="#ratios">Ratios</a><a href="#rates">Rate, time, distance</a><a href="#interest">Simple interest</a><a href="#averages">Averages</a><a href="#prob">Probability</a><a href="#units">Unit conversions</a>
+<h2>Mathematics Knowledge</h2>
+<a href="#pemdas">Order of operations</a><a href="#numprop">Number properties</a><a href="#equations">Solving equations</a><a href="#exponents">Exponent rules</a><a href="#radicals">Radicals</a><a href="#factoring">Factoring and FOIL</a><a href="#quad">Quadratics</a><a href="#area">Area, perimeter, volume</a><a href="#angles">Angles</a><a href="#right">Right triangles</a><a href="#tri">Triangle types</a><a href="#coord">Coordinate geometry</a>
+<h2>Finish</h2>
+<a href="#practice">Practice problems</a><a href="#key">Answer key</a><a href="#strategy">Test-day strategy</a><a href="#cheat">Formula sheet</a>
+</nav>
+<main>
+
+<h2 class="part" id="overview">Overview and study plan<small>Two ASVAB sections test math, and both count toward your AFQT score, which decides whether you qualify to enlist. No calculator is allowed on either one.</small></h2>
+
+<section class="skill">
+<div class="tw"><table>
+<tr><th>Section</th><th>What it tests</th><th>Typical format*</th></tr>
+<tr><td>Arithmetic Reasoning (AR)</td><td>Word problems: percentages, rates, ratios, interest, averages, probability</td><td>Computer: 15 questions, 55 min. Paper: 30 questions, 36 min.</td></tr>
+<tr><td>Mathematics Knowledge (MK)</td><td>Algebra, exponents, radicals, geometry, number properties</td><td>Computer: 15 questions, 31 min. Paper: 25 questions, 24 min.</td></tr>
+</table></div>
+<p style="font-size:14px;color:var(--muted)">*Computer figures are the scored questions on the official ASVAB site; the computer test can add unscored tryout questions, which lengthens the time limit. Paper figures are the commonly published ones. Confirm your version with your recruiter.</p>
+<p>Your AFQT is built from AR + MK + 2 × Verbal Expression, so math is half of the score that matters most.</p>
+
+<h4>Computer or paper? Prepare for both</h4>
+<p>You usually learn which version you will take only after you talk with your recruiter, so this guide prepares you for either one. The math topics are the same on both; the number of questions, the time, and the rules for moving through the test are what change.</p>
+<div class="tw"><table>
+<tr><th></th><th>Computer (CAT-ASVAB)</th><th>Paper-and-pencil</th></tr>
+<tr><td>Arithmetic Reasoning</td><td>15 questions, 55 min</td><td>30 questions, 36 min</td></tr>
+<tr><td>Mathematics Knowledge</td><td>15 questions, 31 min</td><td>25 questions, 24 min</td></tr>
+<tr><td>Time per question (AR)</td><td>about 3.7 min</td><td>about 1.2 min</td></tr>
+<tr><td>Time per question (MK)</td><td>about 2 min</td><td>about 1 min</td></tr>
+<tr><td>Difficulty</td><td>Adapts to you: a correct answer leads to a harder question, a miss to an easier one</td><td>Same questions for everyone, from easy to hard</td></tr>
+<tr><td>Skipping and going back</td><td>Not allowed; one question at a time, in order</td><td>Allowed within a section while time lasts</td></tr>
+</table></div>
+<div class="cmp">
+<div class="card"><h5>Computer version</h5><ul class="kp">
+<li>You cannot go back, so work each problem carefully and check it before you submit.</li>
+<li>Time is generous. Use it to read slowly, set up the equation, and double-check arithmetic.</li>
+<li>If you are stuck, eliminate what you can, make your best guess, and move on.</li>
+<li>Finish before time runs out: unfinished questions are scored as if guessed at random.</li></ul></div>
+<div class="card"><h5>Paper version</h5><ul class="kp">
+<li>Pace yourself: about a minute per question, a little more on word problems.</li>
+<li>Skip a hard question, mark it, and come back after the easy ones.</li>
+<li>Answer every question before time is called, since a blank cannot earn a point.</li>
+<li>Do your work in the space provided and recopy answers carefully onto the answer sheet.</li></ul></div>
+</div>
+<p><b>Either way:</b> no calculator is allowed, so the mental-math practice in this guide applies to both versions.</p>
+
+<h4>Suggested 4-week plan (30 to 45 min a day)</h4>
+<div class="tw"><table>
+<tr><th>Week</th><th>Focus</th></tr>
+<tr><td class="n">Week 1</td><td>Mental math, fractions, decimals, percentages, ratios, and rates (AR core).</td></tr>
+<tr><td class="n">Week 2</td><td>Interest, averages, probability, unit conversions, then algebra basics.</td></tr>
+<tr><td class="n">Week 3</td><td>Exponents, radicals, equations, inequalities, then geometry formulas.</td></tr>
+<tr><td class="n">Week 4</td><td>Timed mixed practice, once answering strictly in order (computer) and once skipping and returning (paper). Redo every missed problem and write down why you missed it.</td></tr>
+</table></div>
+</section>
+
+<h2 class="part" id="mental">Mental math and no-calculator skills<small>Neither math section allows a calculator, so quick, accurate arithmetic saves time on every problem. Warm up with this section, then move on to Arithmetic Reasoning.</small></h2>
+
+<section class="skill" id="mm1">
+<h3>Mental math strategies</h3>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li><b>Break apart:</b> split a number into friendly pieces. 7 × 48 = 7 × 50 − 7 × 2 = 350 − 14 = 336.</li>
+<li><b>Round and adjust:</b> 198 + 47 = 200 + 47 − 2 = 245.</li>
+<li><b>Halve and double:</b> 16 × 25 = 8 × 50 = 400. Think of 25 as a quarter of 100: 36 × 25 = 36 ÷ 4 × 100 = 900.</li>
+<li><b>Multiply by 5:</b> halve it, then multiply by 10. 46 × 5 = 23 × 10 = 230.</li>
+<li><b>Multiply by 9:</b> multiply by 10, then subtract the number. 9 × 37 = 370 − 37 = 333.</li>
+<li><b>Multiply a two-digit number by 11:</b> when the digits add to 9 or less, put their sum in the middle. 11 × 34 = 3 (3 + 4) 4 = 374.</li>
+<li><b>Square a number ending in 5:</b> multiply the tens digit by one more than itself, then write 25. 35² = (3 × 4) then 25 = 1,225.</li>
+<li><b>Shift the decimal:</b> multiplying or dividing by 10, 100, or 1,000 just moves the decimal point. 0.45 × 1,000 = 450.</li>
+<li><b>Estimate first:</b> round the numbers to find the neighborhood of the answer and throw out choices that are far off.</li>
+</ul>
+<h4>Fractions, decimals, and percentages to memorize</h4>
+<div class="tw"><table>
+<tr><th>Fraction</th><th>Decimal</th><th>Percent</th><th>Fraction</th><th>Decimal</th><th>Percent</th></tr>
+<tr><td><span class="fr"><span>1</span><span>2</span></span></td><td>0.5</td><td>50%</td><td><span class="fr"><span>1</span><span>8</span></span></td><td>0.125</td><td>12.5%</td></tr>
+<tr><td><span class="fr"><span>1</span><span>3</span></span></td><td>0.333…</td><td>33.3%</td><td><span class="fr"><span>3</span><span>8</span></span></td><td>0.375</td><td>37.5%</td></tr>
+<tr><td><span class="fr"><span>2</span><span>3</span></span></td><td>0.666…</td><td>66.7%</td><td><span class="fr"><span>5</span><span>8</span></span></td><td>0.625</td><td>62.5%</td></tr>
+<tr><td><span class="fr"><span>1</span><span>4</span></span></td><td>0.25</td><td>25%</td><td><span class="fr"><span>7</span><span>8</span></span></td><td>0.875</td><td>87.5%</td></tr>
+<tr><td><span class="fr"><span>3</span><span>4</span></span></td><td>0.75</td><td>75%</td><td><span class="fr"><span>1</span><span>10</span></span></td><td>0.1</td><td>10%</td></tr>
+<tr><td><span class="fr"><span>1</span><span>5</span></span></td><td>0.2</td><td>20%</td><td><span class="fr"><span>1</span><span>6</span></span></td><td>0.166…</td><td>16.7%</td></tr>
+</table></div>
+<h4>Percent shortcuts</h4>
+<ul class="kp">
+<li><b>10%:</b> move the decimal one place left. 10% of 80 = 8.</li>
+<li><b>5%:</b> half of 10%. 5% of 80 = 4.</li>
+<li><b>15%:</b> 10% plus 5%. 15% of 80 = 8 + 4 = 12.</li>
+<li><b>1%:</b> move the decimal two places left. 1% of 80 = 0.8.</li>
+<li><b>25%:</b> divide by 4. 25% of 80 = 20.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">7 × 48</b><div>Split 48 as 50 − 2. 7 × 50 = 350 and 7 × 2 = 14, so 350 − 14 = <b>336</b>.</div></div>
+<div class="ex"><b class="lab">480 ÷ 15</b><div>Double both numbers to make it easier. 960 ÷ 30 = <b>32</b>.</div></div>
+<div class="ex"><b class="lab">304 − 197</b><div>Add 3 to both numbers. 307 − 200 = <b>107</b>.</div></div>
+<h4>Try it</h4>
+<ol class="pr"><li>6 × 59</li><li>198 + 47</li><li>46 × 5</li><li>25 × 36</li><li>15% of 120</li><li>9 × 37</li><li>35²</li><li>630 ÷ 15</li><li>0.45 × 1,000</li><li>500 − 288</li><li>11 × 52</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 354</span><span>2) 245</span><span>3) 230</span><span>4) 900</span><span>5) 18</span><span>6) 333</span><span>7) 1,225</span><span>8) 42</span><span>9) 450</span><span>10) 212</span><span>11) 572</span></div></details>
+</section>
+
+<section class="skill" id="mm2">
+<h3>Long multiplication and division</h3>
+<figure class="fig"><div class="grid2" style="grid-template-columns:60px 1fr 1fr" role="img" aria-label="Area model for 47 times 36">
+<div class="h">×</div><div class="h">40</div><div class="h">7</div>
+<div class="h">30</div><div>1,200</div><div>210</div>
+<div class="h">6</div><div>240</div><div>42</div></div>
+<figcaption>Area model, 47 × 36: 1,200 + 210 + 240 + 42 = 1,692</figcaption></figure>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li>Multiply with partial products: multiply by the ones digit, then by the tens digit (put a zero in the ones place first), then add the rows.</li>
+<li>Check by estimating: 47 × 36 is close to 45 × 40 = 1,800, so 1,692 is reasonable.</li>
+<li>Long division is a loop: divide, multiply, subtract, bring down the next digit, and repeat.</li>
+<li>Check division by multiplying back: quotient × divisor + remainder = the number you started with.</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=fQ1zZYWjvwc">Multiplying using area models and the standard algorithm</a> · <a href="https://www.youtube.com/watch?v=bELurwZ4MLg">Multiplying 3-digit by 2-digit numbers</a> · <a href="https://www.youtube.com/watch?v=lH6ptl4_LCE">Example multiplying multi-digit numbers</a> · <a href="https://www.youtube.com/watch?v=NcADzGz3bSI">Long division with remainders</a></p>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">47 × 36</b><div class="steps"><div>Multiply by the 6: 47 × 6 = 282</div><div>Multiply by the 30: 47 × 30 = 1,410</div><div>Add: 282 + 1,410 = <b>1,692</b></div></div></div>
+<div class="ex"><b class="lab">1,512 ÷ 12</b><div class="steps"><div>12 into 15 goes 1 time (remainder 3)</div><div>Bring down the 1 to make 31: 12 goes into 31 two times (remainder 7)</div><div>Bring down the 2 to make 72: 12 goes into 72 six times</div><div>The answer is <b>126</b></div></div></div>
+<div class="ex"><b class="lab">2,292 ÷ 4</b><div class="steps"><div>4 into 22 goes 5 times (remainder 2)</div><div>Bring down the 9 to make 29: 4 goes into 29 seven times (remainder 1)</div><div>Bring down the 2 to make 12: 4 goes into 12 three times</div><div>The answer is <b>573</b></div></div></div>
+<h4>Try it</h4>
+<ol class="pr"><li>63 × 28</li><li>352 × 14</li><li>1,404 ÷ 12</li><li>3,096 ÷ 8</li><li>925 ÷ 6 (give the remainder)</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 1,764</span><span>2) 4,928</span><span>3) 117</span><span>4) 387</span><span>5) 154 remainder 1</span></div></details>
+</section>
+
+<h2 class="part">Arithmetic Reasoning<small>Most AR questions are one or two steps once you translate the words into an equation. Underline what is asked, write the numbers, then choose the operation.</small></h2>
+
+<section class="skill" id="fractions">
+<h3>Fractions <span class="tag">AR</span></h3>
+<figure class="fig"><svg viewBox="0 0 760 284" width="760" role="img" aria-label="Fractions add only when the pieces are the same size"><text x="24" y="32" font-size="15" font-weight="600">Fractions add only when the pieces are the same size</text><rect x="210" y="60" width="78" height="40" fill="var(--muted)" fill-opacity="0.5" stroke="var(--muted)" stroke-width="1.25"/><rect x="288" y="60" width="78" height="40" fill="var(--muted)" fill-opacity="0.5" stroke="var(--muted)" stroke-width="1.25"/><rect x="366" y="60" width="78" height="40" fill="var(--muted)" fill-opacity="0.5" stroke="var(--muted)" stroke-width="1.25"/><rect x="444" y="60" width="78" height="40" fill="none" fill-opacity="1" stroke="var(--muted)" stroke-width="1.25"/><rect x="522" y="60" width="78" height="40" fill="none" fill-opacity="1" stroke="var(--muted)" stroke-width="1.25"/><rect x="600" y="60" width="78" height="40" fill="none" fill-opacity="1" stroke="var(--muted)" stroke-width="1.25"/><text x="72" y="88" text-anchor="middle" font-size="24">=</text><line x1="22" x2="50" y1="80" y2="80" stroke="var(--ink)" stroke-width="2"/><text x="36" y="71" text-anchor="middle" font-size="24">1</text><text x="36" y="105" text-anchor="middle" font-size="24">2</text><line x1="94" x2="122" y1="80" y2="80" stroke="var(--ink)" stroke-width="2"/><text x="108" y="71" text-anchor="middle" font-size="24">3</text><text x="108" y="105" text-anchor="middle" font-size="24">6</text><rect x="210" y="124" width="78" height="40" fill="var(--muted)" fill-opacity="0.5" stroke="var(--muted)" stroke-width="1.25"/><rect x="288" y="124" width="78" height="40" fill="var(--muted)" fill-opacity="0.5" stroke="var(--muted)" stroke-width="1.25"/><rect x="366" y="124" width="78" height="40" fill="none" fill-opacity="1" stroke="var(--muted)" stroke-width="1.25"/><rect x="444" y="124" width="78" height="40" fill="none" fill-opacity="1" stroke="var(--muted)" stroke-width="1.25"/><rect x="522" y="124" width="78" height="40" fill="none" fill-opacity="1" stroke="var(--muted)" stroke-width="1.25"/><rect x="600" y="124" width="78" height="40" fill="none" fill-opacity="1" stroke="var(--muted)" stroke-width="1.25"/><text x="72" y="152" text-anchor="middle" font-size="24">=</text><line x1="22" x2="50" y1="144" y2="144" stroke="var(--ink)" stroke-width="2"/><text x="36" y="135" text-anchor="middle" font-size="24">1</text><text x="36" y="169" text-anchor="middle" font-size="24">3</text><line x1="94" x2="122" y1="144" y2="144" stroke="var(--ink)" stroke-width="2"/><text x="108" y="135" text-anchor="middle" font-size="24">2</text><text x="108" y="169" text-anchor="middle" font-size="24">6</text><rect x="210" y="188" width="78" height="40" fill="var(--accent)" fill-opacity="0.35" stroke="var(--muted)" stroke-width="1.25"/><rect x="288" y="188" width="78" height="40" fill="var(--accent)" fill-opacity="0.35" stroke="var(--muted)" stroke-width="1.25"/><rect x="366" y="188" width="78" height="40" fill="var(--accent)" fill-opacity="0.35" stroke="var(--muted)" stroke-width="1.25"/><rect x="444" y="188" width="78" height="40" fill="var(--accent)" fill-opacity="0.35" stroke="var(--muted)" stroke-width="1.25"/><rect x="522" y="188" width="78" height="40" fill="var(--accent)" fill-opacity="0.35" stroke="var(--muted)" stroke-width="1.25"/><rect x="600" y="188" width="78" height="40" fill="none" fill-opacity="1" stroke="var(--muted)" stroke-width="1.25"/><text x="24" y="216" font-size="18" font-weight="600">Sum =</text><line x1="104" x2="132" y1="208" y2="208" stroke="var(--ink)" stroke-width="2"/><text x="118" y="199" text-anchor="middle" font-size="24" font-weight="600">5</text><text x="118" y="233" text-anchor="middle" font-size="24" font-weight="600">6</text><text x="24" y="264" font-size="11.5" fill="var(--muted)" style="fill:var(--muted)">Rewrite both with the same denominator (sixths), then add the tops: 3 + 2 = 5 sixths.</text></svg></figure>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li><b>Add or subtract:</b> find a common denominator, then add or subtract the tops. <span class="m"><span class="fr"><span>1</span><span>3</span></span> + <span class="fr"><span>1</span><span>4</span></span> = <span class="fr"><span>4</span><span>12</span></span> + <span class="fr"><span>3</span><span>12</span></span> = <span class="fr"><span>7</span><span>12</span></span></span></li>
+<li><b>Multiply:</b> top times top, bottom times bottom. Cancel common factors first to keep the numbers small. <span class="m"><span class="fr"><span>2</span><span>3</span></span> × <span class="fr"><span>3</span><span>8</span></span> = <span class="fr"><span>6</span><span>24</span></span> = <span class="fr"><span>1</span><span>4</span></span></span></li>
+<li><b>Divide:</b> flip the second fraction, then multiply. <span class="m"><span class="fr"><span>3</span><span>4</span></span> ÷ <span class="fr"><span>3</span><span>8</span></span> = <span class="fr"><span>3</span><span>4</span></span> × <span class="fr"><span>8</span><span>3</span></span> = <span class="fr"><span>24</span><span>12</span></span> = 2</span></li>
+<li><b>Simplify:</b> divide the top and bottom by the same number. <span class="m"><span class="fr"><span>18</span><span>24</span></span> = <span class="fr"><span>3</span><span>4</span></span></span> (divide by 6)</li>
+<li><b>Mixed number to improper fraction:</b> multiply the whole number by the bottom, then add the top. <span class="m">3<span class="fr"><span>2</span><span>5</span></span> = <span class="fr"><span>17</span><span>5</span></span></span></li>
+<li><b>Fraction of a number:</b> of means multiply. <span class="m"><span class="fr"><span>3</span><span>5</span></span> of 40 = <span class="fr"><span>3</span><span>5</span></span> × 40 = 24</span></li>
+<li><b>Compare fractions:</b> cross-multiply. The side with the larger product is the larger fraction. <span class="m"><span class="fr"><span>3</span><span>4</span></span> vs <span class="fr"><span>5</span><span>7</span></span>: 3 × 7 = 21 and 5 × 4 = 20, so <span class="fr"><span>3</span><span>4</span></span> is larger</span></li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=52ZlXsFJULI">Adding and subtracting fractions</a> · <a href="https://www.youtube.com/watch?v=2DPivVFCdqA">Subtracting fractions with unlike denominators</a></p>
+<p class="vids"><b>More videos:</b> <a href="https://www.youtube.com/watch?v=x6xtezhuCZ4">Multiplying fractions</a> · <a href="https://www.youtube.com/watch?v=f3ySpxX9oeM">Dividing fractions</a></p>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">Example 1</b><p>A board is 7<span class="fr"><span>1</span><span>2</span></span> feet long, and a piece 2<span class="fr"><span>3</span><span>4</span></span> feet long is cut off. How much is left? Borrow to subtract.</p>
+<div class="steps"><div>Make the denominators match: 7<span class="fr"><span>1</span><span>2</span></span> = 7<span class="fr"><span>2</span><span>4</span></span></div><div>Borrow 1 from the 7: 7<span class="fr"><span>2</span><span>4</span></span> = 6<span class="fr"><span>6</span><span>4</span></span></div><div>Subtract the wholes: 6 − 2 = 4</div><div>Subtract the fractions: <span class="fr"><span>6</span><span>4</span></span> − <span class="fr"><span>3</span><span>4</span></span> = <span class="fr"><span>3</span><span>4</span></span></div><div>Answer: <b>4<span class="fr"><span>3</span><span>4</span></span> feet</b></div></div></div>
+<div class="ex"><b class="lab">Example 2</b><p>A recipe uses <span class="fr"><span>2</span><span>3</span></span> of a cup of flour. How much flour for half the recipe?</p>
+<div class="steps"><div>Half of means multiply: <span class="fr"><span>1</span><span>2</span></span> × <span class="fr"><span>2</span><span>3</span></span></div><div>Multiply the tops and the bottoms: <span class="fr"><span>2</span><span>6</span></span></div><div>Simplify: <b><span class="fr"><span>1</span><span>3</span></span> cup</b></div></div></div>
+<h4>Try it</h4>
+<ol class="pr"><li class="m"><span class="fr"><span>5</span><span>6</span></span> − <span class="fr"><span>1</span><span>4</span></span></li><li class="m"><span class="fr"><span>3</span><span>4</span></span> × <span class="fr"><span>8</span><span>9</span></span></li><li class="m"><span class="fr"><span>5</span><span>8</span></span> ÷ <span class="fr"><span>5</span><span>16</span></span></li><li>A 60-gallon tank is <span class="fr"><span>3</span><span>5</span></span> full. How many gallons are in it?</li><li>Which is larger? <span class="m"><span class="fr"><span>5</span><span>9</span></span> or <span class="fr"><span>4</span><span>7</span></span></span></li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span class="m">1) <span class="fr"><span>7</span><span>12</span></span></span><span class="m">2) <span class="fr"><span>2</span><span>3</span></span></span><span class="m">3) 2</span><span>4) 36 gallons</span><span class="m">5) <span class="fr"><span>4</span><span>7</span></span></span></div></details>
+</section>
+
+<section class="skill" id="percent">
+<h3>Percentages <span class="tag">AR</span></h3>
+<figure class="fig"><div class="bar" style="width:100%" role="img" aria-label="Price bar, 25 percent off 80 dollars"><span class="off" style="flex:25">25% off: $20</span><span class="on" style="flex:75">You pay 75%: $60</span></div><figcaption>25% off $80: 80 × 0.75 = $60</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="mb"><span class="l">Percent formula</span><span>part = percent × whole</span></div>
+<ul class="kp">
+<li>Convert by moving the decimal two places: 35% = 0.35.</li>
+<li>Percent change = (new − old) ÷ old × 100. A price rising from 40 to 50 is 10 ÷ 40 = 25%.</li>
+<li>Discount: pay (100 − discount)% of the price. A 20% discount on 60 costs 0.80 × 60 = 48.</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=N4kDzoQOngY">Percent word problem example 4</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>"Is over of" setup: part ÷ whole = percent ÷ 100, so 18 is 30% of 60 because 18 ÷ 60 = 30 ÷ 100.</li>
+<li>Percent change = (new − old) ÷ old × 100. Always divide by the old value.</li>
+<li>Shortcuts: 10% is one decimal place left, 5% is half of that, and 15% is 10% + 5%.</li>
+<li>Successive percent changes multiply, they don't add. 20% off and then 10% off leaves 0.80 × 0.90 = 0.72 of the price, which is 28% off, not 30%.</li>
+<li>Sales tax and tips: multiply by (1 + rate). A price with 8% tax is price × 1.08.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>A $80 jacket is marked down 25%, then 10% off the sale price. Final price: 80 × 0.75 = 60, then 60 × 0.90 = <b>$54</b>.</p></div>
+<div class="ex"><p>18 is 30% of what number? 18 ÷ 0.30 = <b>60</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>What is 15% of 240?</li><li>A population grows from 400 to 460. What is the percent increase?</li><li>A $50 item has 8% sales tax. What is the total?</li><li>45 is what percent of 60?</li><li>After a 20% discount, a coat costs $48. What was the original price?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 36</span><span>2) 15%</span><span>3) $54</span><span>4) 75%</span><span>5) $60 (48 ÷ 0.80)</span></div></details>
+</section>
+
+<section class="skill" id="ratios">
+<h3>Ratios and proportions <span class="tag">AR</span></h3>
+<figure class="fig"><div class="bar" style="width:100%" role="img" aria-label="Ratio bar, 2 to 3 in 15 gallons"><span class="on" style="flex:2">Blue 2 parts = 6 gal</span><span class="off" style="flex:3">White 3 parts = 9 gal</span></div><figcaption>A 2:3 mix in 15 gallons: 5 parts, 3 gallons each</figcaption></figure>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li>A ratio of 3:5 means parts of 3 and 5, so 8 parts in all.</li>
+<li>Solve proportions by cross-multiplying: <span class="m"><span class="fr"><span>a</span><span>b</span></span> = <span class="fr"><span>c</span><span>d</span></span> gives a × d = b × c</span>. For example <span class="m"><span class="fr"><span>x</span><span>6</span></span> = <span class="fr"><span>10</span><span>15</span></span></span> gives 15x = 60, so x = 4.</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=96ZEmUbnuU8">Setting up proportions to solve word problems</a> · <a href="https://www.youtube.com/watch?v=WoZ7-wOy-0w">Ratio word problem examples</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Part-to-part ratios (boys to girls, 3:4) add up to the whole (7 parts). Part-to-whole ratios compare one group to the total.</li>
+<li>Unit rate: divide to find the cost or amount of one item, then multiply. 5 pens for $3.75 is $0.75 per pen.</li>
+<li>Keep units matching on both sides of a proportion (miles over hours = miles over hours).</li>
+<li>Scale drawings and maps are proportions: multiply the inches by 25 miles per inch.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>Paint is mixed 2 parts blue to 3 parts white. How much blue is in 15 gallons? There are 5 parts, so each part is 3 gallons, and blue is 2 × 3 = <b>6 gallons</b>.</p></div>
+<div class="ex"><p>A car uses 6 gallons for 150 miles. How many gallons for 400 miles? 150 ÷ 6 = 25 miles per gallon, and 400 ÷ 25 = <b>16 gallons</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>Simplify 18:24.</li><li>5 pens cost $3.75. What do 12 pens cost?</li><li>The ratio of cats to dogs is 2:5. There are 35 animals in all. How many are dogs?</li><li>Solve <span class="m"><span class="fr"><span>x</span><span>9</span></span> = <span class="fr"><span>8</span><span>12</span></span></span></li><li>A map scale is 1 inch = 40 miles. Two towns are 2<span class="fr"><span>3</span><span>4</span></span> inches apart. How many miles apart are they?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 3:4</span><span>2) $9.00</span><span>3) 25 dogs</span><span>4) x = 6</span><span>5) 110 miles</span></div></details>
+</section>
+
+<section class="skill" id="rates">
+<h3>Rate, time, and distance <span class="tag">AR</span></h3>
+<figure class="fig"><svg viewBox="0 0 220 170" width="220" role="img" aria-label="Distance, rate, time triangle"><polygon class="fa" points="110,8 212,162 8,162"/><line class="st" x1="58" y1="92" x2="162" y2="92"/><line class="st" x1="110" y1="92" x2="110" y2="162"/><text x="110" y="76" text-anchor="middle" font-size="22" font-weight="600">d</text><text x="68" y="136" text-anchor="middle" font-size="22" font-weight="600">r</text><text x="152" y="136" text-anchor="middle" font-size="22" font-weight="600">t</text></svg><figcaption>Cover the one you want: d = r × t, r = d ÷ t, t = d ÷ r</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="mb"><span class="l">Distance</span><span>d = r × t</span></div>
+<ul class="kp">
+<li>A car at 55 mph for 3 hours travels 165 miles.</li>
+<li>Two travelers moving toward each other: add their speeds. Moving the same direction: subtract.</li>
+<li>Work problems: add rates. If A finishes a job in 4 hours and B in 12, add their hourly rates: <span class="m"><span class="fr"><span>1</span><span>4</span></span> + <span class="fr"><span>1</span><span>12</span></span> = <span class="fr"><span>3</span><span>12</span></span> + <span class="fr"><span>1</span><span>12</span></span> = <span class="fr"><span>4</span><span>12</span></span> = <span class="fr"><span>1</span><span>3</span></span></span> of the job per hour, so together they take 3 hours.</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=d8vvVjfTbYY">Rate problem using fractions</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Average speed is total distance ÷ total time, not the average of the two speeds.</li>
+<li>Catch-up problems: the closing speed is the difference of the speeds, and the gap is the head start.</li>
+<li>Work problems: add rates. Combined time = (a × b) ÷ (a + b) for two workers who take a and b hours alone.</li>
+<li>Boats and planes: downstream or with the wind, add the current; upstream or against it, subtract.</li>
+<li>Convert minutes to hours before using mph: 45 minutes = 0.75 hour.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>A driver goes 60 miles at 30 mph and 60 miles back at 60 mph. Average speed? Time is 2 + 1 = 3 hours for 120 miles, so 120 ÷ 3 = <b>40 mph</b> (not 45).</p></div>
+<div class="ex"><p>A truck leaves at 60 mph. A car leaves the same place 1 hour later at 75 mph. How long until the car catches up? The truck has a 60-mile head start and the car closes 15 miles per hour, so 60 ÷ 15 = <b>4 hours</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>A train goes 210 miles in 3.5 hours. What is its speed?</li><li>Two cyclists start 90 miles apart and ride toward each other at 12 mph and 18 mph. When do they meet?</li><li>A runner goes 6 mph for 45 minutes. How far does she run?</li><li>Machine A packs a batch in 10 hours and machine B in 15 hours. How long together?</li><li>A boat goes 24 miles downstream in 2 hours and returns in 3 hours. What is the speed of the current?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 60 mph</span><span>2) 3 hours</span><span>3) 4.5 miles</span><span>4) 6 hours</span><span>5) 2 mph (downstream 12, upstream 8, current = (12 − 8) ÷ 2)</span></div></details>
+</section>
+
+<section class="skill" id="interest">
+<h3>Simple interest <span class="tag">AR</span></h3>
+<figure class="fig"><div class="bar" style="width:100%" role="img" aria-label="Principal plus interest, 1000 dollars at 8 percent for 2 years"><span class="off" style="flex:1000">Principal $1,000</span><span class="on" style="flex:160">+ $160</span></div><figcaption>$1,000 at 8% for 2 years: 1,000 × 0.08 × 2 = $160 interest, $1,160 total</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="mb"><span class="l">Simple interest</span><span>I = P × r × t</span></div>
+<ul class="kp"><li>P is the starting amount, r is the yearly rate as a decimal, t is years. 500 at 6% for 3 years earns 500 × 0.06 × 3 = 90.</li></ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=GtaoP0skPWc">Introduction to interest</a> (covers simple vs. compound)</p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Time must be in years: 18 months = 1.5 years, 9 months = 0.75 year, 90 days is about 0.25 year.</li>
+<li>Total owed or earned = principal + interest.</li>
+<li>Rearrange I = P × r × t to find any missing piece: r = I ÷ (P × t), t = I ÷ (P × r), P = I ÷ (r × t).</li>
+<li>Compound interest earns interest on interest: A = P(1 + r)<sup>t</sup>. The ASVAB mostly tests simple interest, but know the difference.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>$1,500 at 5% simple interest for 18 months. I = 1,500 × 0.05 × 1.5 = <b>$112.50</b>.</p></div>
+<div class="ex"><p>How long does it take $800 to earn $96 at 4%? t = 96 ÷ (800 × 0.04) = 96 ÷ 32 = <b>3 years</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>Interest on $2,400 at 3% for 2 years.</li><li>Interest on $500 at 6% for 9 months.</li><li>What rate does $600 need to earn $90 in 3 years?</li><li>Total owed on a $1,000 loan at 8% simple interest for 2 years.</li><li>What principal earns $120 in 2 years at 4%?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) $144</span><span>2) $22.50</span><span>3) 5%</span><span>4) $1,160</span><span>5) $1,500</span></div></details>
+</section>
+
+<section class="skill" id="averages">
+<h3>Averages <span class="tag">AR</span></h3>
+<figure class="fig"><div class="tw" style="max-width:100%"><table style="max-width:520px"><tr><th>Data set</th><th>Mean</th><th>Median</th><th>Mode</th><th>Range</th></tr><tr><td class="n">3, 5, 5, 7, 10</td><td>6</td><td>5</td><td>5</td><td>7</td></tr></table></div><figcaption>One data set, four measures</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="mb"><span class="l">Mean</span><span>mean = <span class="fr"><span>sum</span><span>number of values</span></span></span></div>
+<ul class="kp">
+<li><b>Median:</b> the middle value after sorting (average the two middle values if the count is even).</li>
+<li><b>Mode:</b> the most frequent value.</li>
+<li><b>Missing value:</b> needed total = target average × count. To average 80 over 5 tests with scores of 72, 85, 90, 78, you need 400 − 325 = 75 on the last one.</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=k3aKKasOmIw">Finding mean, median, and mode</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Range = highest − lowest. It measures spread, not center.</li>
+<li>Weighted average: multiply each average by its group size, add, then divide by the total count.</li>
+<li>Adding a value above the mean raises the mean; adding one below lowers it.</li>
+<li>A data set can have no mode, one mode, or several.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>Scores are 82, 90, 76, and 88. What score on the fifth test gives an average of 85? Needed total = 5 × 85 = 425. Current total = 336. Fifth score = <b>89</b>.</p></div>
+<div class="ex"><p>Class A has 20 students averaging 80 and class B has 30 averaging 90. Combined average = (20 × 80 + 30 × 90) ÷ 50 = 4,300 ÷ 50 = <b>86</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>Mean of 4, 8, 9, 15.</li><li>Median of 12, 3, 9, 7, 20, 15.</li><li>The mean of five numbers is 12. Four of them are 10, 11, 13, and 14. What is the fifth?</li><li>Range of 14, 3, 22, 9.</li><li>Mode of 5, 7, 7, 9, 5, 7.</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 9</span><span>2) 10.5 (sorted: 3, 7, 9, 12, 15, 20)</span><span>3) 12</span><span>4) 19</span><span>5) 7</span></div></details>
+</section>
+
+<section class="skill" id="prob">
+<h3>Probability <span class="tag">AR</span></h3>
+<figure class="fig"><svg viewBox="0 0 560 70" width="560" role="img" aria-label="Probability scale from 0 to 1"><line class="st" x1="30" y1="30" x2="530" y2="30"/><g class="st"><line x1="30" y1="22" x2="30" y2="38"/><line x1="155" y1="24" x2="155" y2="36"/><line x1="280" y1="22" x2="280" y2="38"/><line x1="405" y1="24" x2="405" y2="36"/><line x1="530" y1="22" x2="530" y2="38"/></g><text x="30" y="58" text-anchor="middle" font-size="14">0</text><text x="280" y="58" text-anchor="middle" font-size="14">0.5</text><text x="530" y="58" text-anchor="middle" font-size="14">1</text><text x="30" y="14" text-anchor="middle" font-size="12">impossible</text><text x="280" y="14" text-anchor="middle" font-size="12">even chance</text><text x="530" y="14" text-anchor="middle" font-size="12">certain</text></svg><figcaption>Every probability falls between 0 and 1</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="mb"><span class="l">Probability</span><span>P = <span class="fr"><span>favorable outcomes</span><span>total outcomes</span></span></span></div>
+<ul class="kp">
+<li>Independent events: multiply the probabilities.</li>
+<li>Without replacement: reduce the total after each draw.</li>
+</ul>
+<div class="ex"><b class="lab">Examples</b><div class="steps"><div>A bag has 3 red and 5 blue marbles. P(red) = <span class="m"><span class="fr"><span>3</span><span>8</span></span></span></div><div>Two heads in a row on a fair coin: <span class="m"><span class="fr"><span>1</span><span>2</span></span> × <span class="fr"><span>1</span><span>2</span></span> = <span class="fr"><span>1</span><span>4</span></span></span></div><div>Two red marbles without replacement: <span class="m"><span class="fr"><span>3</span><span>8</span></span> × <span class="fr"><span>2</span><span>7</span></span> = <span class="fr"><span>6</span><span>56</span></span> = <span class="fr"><span>3</span><span>28</span></span></span></div></div></div>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=uzkc-qNVoOk">Probability explained</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Probability is always between 0 (impossible) and 1 (certain).</li>
+<li>Complement rule: P(not A) = 1 − P(A). If P(rain) = 0.3, P(no rain) = 0.7.</li>
+<li>"Or" for events that can't both happen: add. "And" for independent events: multiply.</li>
+<li>Counting principle: multiply the choices at each step. 5 shirts × 4 pants × 2 hats = 40 outfits.</li>
+<li>Arrangements of n different items in a line = n! (n factorial). 4! = 4 × 3 × 2 × 1 = 24.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>A die is rolled. P(even) = <span class="m"><span class="fr"><span>3</span><span>6</span></span> = <span class="fr"><span>1</span><span>2</span></span></span>.</p></div>
+<div class="ex"><p>A bag has 4 red and 6 green marbles. Draw one: P(green) = <span class="m"><span class="fr"><span>6</span><span>10</span></span> = <span class="fr"><span>3</span><span>5</span></span></span>. Draw two without replacement: P(both green) = <span class="m"><span class="fr"><span>6</span><span>10</span></span> × <span class="fr"><span>5</span><span>9</span></span> = <span class="fr"><span>30</span><span>90</span></span> = <span class="fr"><span>1</span><span>3</span></span></span>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>A fair die is rolled. What is the probability of a number greater than 4?</li><li>P(rain) is 0.3. What is P(no rain)?</li><li>A fair coin is flipped 3 times. What is the probability of all heads?</li><li>How many outfits from 5 shirts, 4 pants, and 2 hats?</li><li>In how many ways can 4 people stand in a line?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span class="m">1) <span class="fr"><span>1</span><span>3</span></span></span><span>2) 0.7</span><span class="m">3) <span class="fr"><span>1</span><span>8</span></span></span><span>4) 40</span><span>5) 24</span></div></details>
+</section>
+
+<section class="skill" id="units">
+<h3>Unit conversions <span class="tag">AR</span></h3>
+<figure class="fig"><div class="tw" style="max-width:100%"><table><tr><th>Metric length</th><th>km</th><th>hm</th><th>dam</th><th>m</th><th>dm</th><th>cm</th><th>mm</th></tr><tr><td>Each step left or right</td><td colspan="7">multiplies or divides by 10 (moving the decimal one place)</td></tr></table></div><figcaption>Metric ladder: moving one unit shifts the decimal one place</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="tw"><table>
+<tr><th>Measure</th><th>Equivalents</th></tr>
+<tr><td>Length</td><td>12 in = 1 ft; 3 ft = 1 yd; 5,280 ft = 1 mi</td></tr>
+<tr><td>Volume</td><td>3 tsp = 1 tbsp; 16 tbsp = 1 cup; 2 cups = 1 pt; 2 pt = 1 qt; 4 qt = 1 gal</td></tr>
+<tr><td>Weight</td><td>16 oz = 1 lb; 2,000 lb = 1 ton</td></tr>
+<tr><td>Time</td><td>60 s = 1 min; 60 min = 1 hr; 24 hr = 1 day; 7 days = 1 week</td></tr>
+</table></div>
+<p>To convert, multiply by a fraction equal to 1 that cancels the unit you start with: <span class="m">5 ft × <span class="fr"><span>12 in</span><span>1 ft</span></span> = 60 in</span>.</p>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=w0nqd_HXHPQ">Unit conversion within the metric system</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Metric prefixes shift the decimal point (see the table below).</li>
+<li>Area conversions use the square of the length conversion: 1 yd² = 3 × 3 = 9 ft².</li>
+<li>Rates convert one unit at a time: miles per hour to feet per second means converting miles to feet and hours to seconds.</li>
+<li>Write the conversion factor so the unit you want to remove cancels.</li>
+</ul>
+<div class="tw"><table><tr><th>Prefix</th><th>kilo (k)</th><th>hecto (h)</th><th>deka (da)</th><th>base</th><th>deci (d)</th><th>centi (c)</th><th>milli (m)</th></tr><tr><td>Value</td><td>1,000</td><td>100</td><td>10</td><td>1</td><td>0.1</td><td>0.01</td><td>0.001</td></tr></table></div>
+<h4>Worked examples</h4>
+<div class="ex"><p>Convert 45 mph to feet per second: 45 × 5,280 ÷ 3,600 = 237,600 ÷ 3,600 = <b>66 ft/s</b>.</p></div>
+<div class="ex"><p>A room is 12 ft by 15 ft. How many square yards of carpet? 180 ft² ÷ 9 = <b>20 yd²</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>3.5 hours to minutes.</li><li>2,500 mL to liters.</li><li>48 ounces to pounds.</li><li>90 km/h to meters per second.</li><li>How many cups are in 3 quarts?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 210 minutes</span><span>2) 2.5 L</span><span>3) 3 lb</span><span>4) 25 m/s (90 × 1,000 ÷ 3,600)</span><span>5) 12 cups</span></div></details>
+</section>
+
+<h2 class="part">Mathematics Knowledge<small>MK questions are short and direct: algebra, exponents, radicals, and geometry. Memorize the rules and formulas below, then practice for speed.</small></h2>
+
+<section class="skill" id="pemdas">
+<h3>Order of operations (PEMDAS) <span class="tag">MK</span></h3>
+<figure class="fig"><div class="tw" style="max-width:100%"><table style="max-width:640px"><tr><th>Step</th><th>Do this</th><th>Example: 3 + 4 × 2²</th></tr><tr><td class="n">1</td><td>Parentheses</td><td>none</td></tr><tr><td class="n">2</td><td>Exponents</td><td>3 + 4 × 4</td></tr><tr><td class="n">3</td><td>Multiply and divide, left to right</td><td>3 + 16</td></tr><tr><td class="n">4</td><td>Add and subtract, left to right</td><td>19</td></tr></table></div></figure>
+<h4>Key ideas</h4>
+<ul class="kp"><li>Parentheses, Exponents, Multiplication and Division (left to right), Addition and Subtraction (left to right). 3 + 4 × 2² = 3 + 4 × 4 = 19.</li></ul>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Multiplication and division share a rank, as do addition and subtraction. Work each pair left to right.</li>
+<li>Exponents bind tighter than a minus sign: −4² = −16, but (−4)² = 16.</li>
+<li>A fraction bar groups like parentheses: simplify the top and the bottom separately, then divide.</li>
+<li>Work inside the innermost parentheses first.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">6 + 2(5 − 3)² ÷ 4</b><div class="steps"><div>6 + 2 × 4 ÷ 4</div><div>6 + 8 ÷ 4</div><div>6 + 2 = <b>8</b></div></div></div>
+<div class="ex"><b class="lab">(12 − 4) ÷ 2 × 3 − 5</b><div class="steps"><div>8 ÷ 2 × 3 − 5</div><div>4 × 3 − 5</div><div>12 − 5 = <b>7</b></div></div></div>
+<h4>Try it</h4>
+<ol class="pr"><li>18 − 3 × 4 + 2</li><li>2³ + 4 × 5</li><li>−4² and (−4)²</li><li>5 + 3(2 + 4)</li><li>(20 − 8) ÷ (2 + 4)</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 8</span><span>2) 28</span><span>3) −16 and 16</span><span>4) 23</span><span>5) 2</span></div></details>
+</section>
+
+<section class="skill" id="numprop">
+<h3>Number properties <span class="tag">MK</span></h3>
+<figure class="fig"><div class="tw" style="max-width:100%"><table><tr><th>Divisible by</th><th>Test</th></tr><tr><td class="n">2</td><td>Last digit is even</td></tr><tr><td class="n">3</td><td>Digits add to a multiple of 3</td></tr><tr><td class="n">5</td><td>Ends in 0 or 5</td></tr><tr><td class="n">9</td><td>Digits add to a multiple of 9</td></tr><tr><td class="n">10</td><td>Ends in 0</td></tr></table></div><figcaption>Primes under 25: 2, 3, 5, 7, 11, 13, 17, 19, 23</figcaption></figure>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li>Prime numbers have exactly two factors: 2, 3, 5, 7, 11, 13, 17, 19, 23.</li>
+<li>GCF is the largest number dividing both (12 and 18: 6). LCM is the smallest shared multiple (12 and 18: 36).</li>
+<li>Scientific notation: 4,500 = 4.5 × 10³ and 0.003 = 3 × 10⁻³.</li>
+</ul>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Divisibility: by 2 if the last digit is even; by 3 if the digits add to a multiple of 3; by 5 if it ends in 0 or 5; by 9 if the digits add to a multiple of 9; by 10 if it ends in 0.</li>
+<li>Prime factorization breaks a number into primes: 60 = 2 × 2 × 3 × 5. Use it to find the GCF (shared primes, lowest powers) and the LCM (all primes, highest powers).</li>
+<li>Even + even = even, odd + odd = even, even + odd = odd. Even × anything = even.</li>
+<li>Consecutive integers go up by 1 (n, n + 1, n + 2). Consecutive even or odd integers go up by 2.</li>
+<li>Absolute value is distance from zero: |−7| = 7.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>Find the GCF and LCM of 24 and 36. 24 = 2³ × 3 and 36 = 2² × 3². GCF = 2² × 3 = <b>12</b>. LCM = 2³ × 3² = <b>72</b>.</p></div>
+<div class="ex"><p>Is 4,572 divisible by 9? The digits add to 4 + 5 + 7 + 2 = 18, which is a multiple of 9, so <b>yes</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>Prime factorization of 60.</li><li>LCM of 6 and 8.</li><li>Which is divisible by 3: 2,451 or 2,452?</li><li>Three consecutive integers add to 48. What is the smallest?</li><li>Write 0.00072 in scientific notation.</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 2² × 3 × 5</span><span>2) 24</span><span>3) 2,451 (digits add to 12)</span><span>4) 15 (15 + 16 + 17)</span><span>5) 7.2 × 10⁻⁴</span></div></details>
+</section>
+
+<section class="skill" id="equations">
+<h3>Solving equations <span class="tag">MK</span></h3>
+<figure class="fig"><div class="tw" style="max-width:100%"><table style="max-width:560px"><tr><th>Solve 3x + 2 = 14</th><th>Do to both sides</th></tr><tr><td>3x + 2 = 14</td><td>subtract 2</td></tr><tr><td>3x = 12</td><td>divide by 3</td></tr><tr><td><b>x = 4</b></td><td>keep the scale balanced</td></tr></table></div></figure>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li>Do the same thing to both sides until the variable is alone. 3x − 7 = 14 gives 3x = 21, so x = 7.</li>
+<li>Multiplying or dividing an inequality by a negative number flips the sign: −2x &lt; 8 gives x &gt; −4.</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=_y_Q3_B2Vh8">Solving two-step equations</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Variables on both sides: collect the variable terms on one side first, then isolate it.</li>
+<li>Distribute before solving: 4(x − 2) = 4x − 8.</li>
+<li>Fractions: multiply every term by the common denominator to clear them.</li>
+<li>Inequalities flip the sign when you multiply or divide by a negative number.</li>
+<li>Translating words: "3 more than twice a number" is 2n + 3. "5 less than a number" is n − 5.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">4x + 9 = 2x + 21</b><div class="steps"><div>Subtract 2x: 2x + 9 = 21</div><div>Subtract 9: 2x = 12</div><div>Divide by 2: <b>x = 6</b></div></div></div>
+<div class="ex"><b class="lab"><span class="fr"><span>x</span><span>3</span></span> + 4 = 10</b><div class="steps"><div>Subtract 4: <span class="fr"><span>x</span><span>3</span></span> = 6</div><div>Multiply by 3: <b>x = 18</b></div></div></div>
+<div class="ex"><b class="lab">−2x &lt; 8</b><div class="steps"><div>Divide by −2 and flip the sign</div><div><b>x &gt; −4</b></div></div></div>
+<h4>Try it</h4>
+<ol class="pr"><li class="m">7x − 5 = 30</li><li class="m">3(2x + 1) = 21</li><li class="m">5x + 2 = 3x + 12</li><li class="m"><span class="fr"><span>x</span><span>4</span></span> − 3 = 2</li><li class="m">3x − 4 ≤ 11</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) x = 5</span><span>2) x = 3</span><span>3) x = 5</span><span>4) x = 20</span><span>5) x ≤ 5</span></div></details>
+</section>
+
+<section class="skill" id="exponents">
+<h3>Exponent rules <span class="tag">MK</span></h3>
+<div class="cols">
+<div class="mb" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="l">Three rules</span><span>x<sup>a</sup> × x<sup>b</sup> = x<sup>a+b</sup></span><span>x<sup>a</sup> ÷ x<sup>b</sup> = x<sup>a−b</sup></span><span>(x<sup>a</sup>)<sup>b</sup> = x<sup>ab</sup></span></div>
+<div class="mb" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="l">Two special cases</span><span>x<sup>0</sup> = 1 (x ≠ 0)</span><span>x<sup>−n</sup> = <span class="fr"><span>1</span><span>x<sup>n</sup></span></span></span></div>
+</div>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li>Same base, multiply: add the exponents.</li>
+<li>Same base, divide: subtract the exponents.</li>
+<li>Power of a power: multiply the exponents.</li>
+<li>Zero power: anything (except 0) to the zero power is 1.</li>
+<li>Negative exponent: one over the same power, so 4<sup>−2</sup> is <span class="m"><span class="fr"><span>1</span><span>16</span></span></span>.</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=kITJ6qH7jS0">Exponent rules part 1</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Only add exponents when you multiply the same base. x³ + x² cannot be combined.</li>
+<li>Distribute an outside exponent to everything inside: (3x²)³ = 3³ × x⁶ = 27x⁶.</li>
+<li>A negative exponent means flip to the other side of the fraction bar: <span class="m">2<sup>−3</sup> = <span class="fr"><span>1</span><span>2<sup>3</sup></span></span> = <span class="fr"><span>1</span><span>8</span></span></span> and <span class="m"><span class="fr"><span>1</span><span>x<sup>−2</sup></span></span> = x<sup>2</sup></span>.</li>
+<li>Powers to know: 2¹ to 2¹⁰ are 2, 4, 8, 16, 32, 64, 128, 256, 512, 1,024. Also 3² = 9, 3³ = 27, 3⁴ = 81, 5² = 25, 5³ = 125.</li>
+<li>Powers of 10 shift the decimal point: 4.5 × 10³ = 4,500.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">2⁴ × 2³</b><div>Same base, add the exponents: 2⁷ = <b>128</b></div></div>
+<div class="ex"><b class="lab">x⁹ ÷ x⁶</b><div>Subtract: <b>x³</b></div></div>
+<div class="ex"><b class="lab">(2x³)²</b><div>Square each factor: 2² × x⁶ = <b>4x⁶</b></div></div>
+<h4>Try it</h4>
+<ol class="pr"><li>3² × 3³</li><li>(4²)³</li><li>10⁷ ÷ 10⁴</li><li>2⁻³</li><li>(3x²)³</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 3⁵ = 243</span><span>2) 4⁶ = 4,096</span><span>3) 10³ = 1,000</span><span class="m">4) <span class="fr"><span>1</span><span>8</span></span></span><span>5) 27x⁶</span></div></details>
+</section>
+
+<section class="skill" id="radicals">
+<h3>Radicals <span class="tag">MK</span></h3>
+<figure class="fig"><div class="mb"><span class="l">Simplifying √72 in 2 steps</span><span>√72 = √(36 × 2) = 6√2</span></div></figure>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li>Simplify by pulling out perfect squares: √72 = √(36 × 2) = 6√2.</li>
+<li>Memorize squares to 15² and common roots: √144 = 12, √169 = 13, √225 = 15.</li>
+<li>√a × √b = √(ab), and √a ÷ √b = √(a ÷ b).</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=cw3mp8oNASk">Simplifying square roots</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Add or subtract radicals only when the number under the root matches: 3√5 + 4√5 = 7√5. Simplify first, since √48 + √12 = 4√3 + 2√3 = 6√3.</li>
+<li>Estimate a root by bracketing it between perfect squares: √50 is between √49 = 7 and √64 = 8, so about 7.1.</li>
+<li>A cube root asks what number multiplied by itself three times gives the value: ∛27 = 3 and ∛8 = 2.</li>
+<li>Perfect squares worth knowing: 1, 4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">Simplify √48 + √12</b><div class="steps"><div>√48 = √(16 × 3) = 4√3</div><div>√12 = √(4 × 3) = 2√3</div><div>The sum is <b>6√3</b></div></div></div>
+<div class="ex"><p>√7 × √28 = √196 = <b>14</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>Simplify √98.</li><li>3√5 + 4√5</li><li>√3 × √12</li><li>∛27</li><li>Between which two whole numbers is √75?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 7√2</span><span>2) 7√5</span><span>3) 6</span><span>4) 3</span><span>5) 8 and 9 (64 &lt; 75 &lt; 81)</span></div></details>
+</section>
+
+<section class="skill" id="factoring">
+<h3>Factoring and FOIL <span class="tag">MK</span></h3>
+<figure class="fig"><div class="grid2" style="grid-template-columns:60px 1fr 1fr" role="img" aria-label="Area model for (x + 3)(x + 2)">
+<div class="h">×</div><div class="h">x</div><div class="h">3</div>
+<div class="h">x</div><div>x²</div><div>3x</div>
+<div class="h">2</div><div>2x</div><div>6</div></div>
+<figcaption>(x + 3)(x + 2) = x² + 3x + 2x + 6 = x² + 5x + 6</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="cols">
+<div class="mb" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="l">FOIL</span><span style="font-size:.85em">(x + a)(x + b) = x² + (a + b)x + ab</span></div>
+<div class="mb" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="l">Difference of squares</span><span>a² − b² = (a + b)(a − b)</span></div>
+</div>
+<ul class="kp"><li>To factor x² + 5x + 6, find two numbers that multiply to 6 and add to 5: 2 and 3, so (x + 2)(x + 3).</li></ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=D3a8NnpQ2vU">Factoring quadratics as (x+a)(x+b)</a> · <a href="https://www.youtube.com/watch?v=N30tN9158Kc">Solving a quadratic by factoring</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Always pull out a common factor first: 6x² + 9x = 3x(2x + 3).</li>
+<li>FOIL multiplies First, Outer, Inner, Last: (2x + 3)(x − 4) = 2x² − 8x + 3x − 12 = 2x² − 5x − 12.</li>
+<li>Difference of squares: x² − 49 = (x + 7)(x − 7).</li>
+<li>Perfect square trinomial: x² + 6x + 9 = (x + 3)², and x² − 12x + 36 = (x − 6)².</li>
+<li>To factor x² + bx + c, find two numbers that multiply to c and add to b. Check by multiplying back out.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>Factor x² − 7x + 12. Two numbers that multiply to 12 and add to −7 are −3 and −4, so <b>(x − 3)(x − 4)</b>.</p></div>
+<div class="ex"><p>Factor 4x² − 25. This is (2x)² − 5², so <b>(2x + 5)(2x − 5)</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>(x + 5)(x + 2)</li><li>Factor x² + 9x + 20.</li><li>Factor x² − 49.</li><li>Factor 5x² + 10x.</li><li>Expand (x − 6)².</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) x² + 7x + 10</span><span>2) (x + 4)(x + 5)</span><span>3) (x + 7)(x − 7)</span><span>4) 5x(x + 2)</span><span>5) x² − 12x + 36</span></div></details>
+</section>
+
+<section class="skill" id="quad">
+<h3>Quadratics <span class="tag">MK</span></h3>
+<figure class="fig"><svg viewBox="0 0 360 230" width="360" role="img" aria-label="Parabola y equals x squared minus 5x plus 6 crossing the x-axis at 2 and 3"><line x1="20" y1="170" x2="340" y2="170" stroke="var(--muted)" stroke-width="1.5"/><line x1="60" y1="10" x2="60" y2="220" stroke="var(--muted)" stroke-width="1.5"/><path class="st" d="M 40 14 Q 150 360 280 14" /><circle cx="140" cy="170" r="5" fill="var(--accent)"/><circle cx="200" cy="170" r="5" fill="var(--accent)"/><text x="140" y="192" text-anchor="middle" font-size="13">2</text><text x="200" y="192" text-anchor="middle" font-size="13">3</text><text x="290" y="40" font-size="13">y = x² − 5x + 6</text></svg><figcaption>Where the curve crosses the x-axis, y = 0. Those x-values are the solutions: 2 and 3.</figcaption></figure>
+<h4>Key ideas</h4>
+<p>Set the equation to 0, then factor or use the quadratic formula:</p>
+<div class="mb"><span class="l">Quadratic formula</span><span>x = <span class="fr"><span>−b ± √<span class="rt">b² − 4ac</span></span><span>2a</span></span></span></div>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Zero-product rule: if (x − 2)(x − 3) = 0, then x − 2 = 0 or x − 3 = 0, so x = 2 or x = 3.</li>
+<li>Get everything on one side so the equation equals 0 before factoring.</li>
+<li>The part under the square root in the quadratic formula, b² − 4ac, tells you the number of real solutions: positive means two, zero means one, negative means none.</li>
+<li>When the equation has no x term, take square roots: x² = 9 gives x = ±3.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">x² − 5x + 6 = 0</b><div class="steps"><div>Factor: (x − 2)(x − 3) = 0</div><div>Zero-product rule: x − 2 = 0 or x − 3 = 0</div><div><b>x = 2 or x = 3</b></div></div></div>
+<div class="ex"><b class="lab">2x² + 3x − 2 = 0 (a = 2, b = 3, c = −2)</b><div class="steps"><div>b² − 4ac = 9 + 16 = 25</div><div>x = <span class="fr"><span>−3 ± 5</span><span>4</span></span></div><div><b>x = <span class="fr"><span>1</span><span>2</span></span> or x = −2</b></div></div></div>
+<h4>Try it</h4>
+<ol class="pr"><li class="m">x² − 9 = 0</li><li class="m">x² + x − 12 = 0</li><li class="m">x² − 4x = 0</li><li class="m">x² + 6x + 9 = 0</li><li class="m">x² − 2x − 3 = 0</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) x = 3 or −3</span><span>2) x = 3 or −4</span><span>3) x = 0 or 4</span><span>4) x = −3 (one solution)</span><span>5) x = 3 or −1</span></div></details>
+</section>
+
+<section class="skill" id="area">
+<h3>Area, perimeter, and volume <span class="tag">MK</span></h3>
+<figure class="fig"><svg viewBox="0 0 640 150" width="640" role="img" aria-label="Rectangle, triangle, parallelogram and trapezoid"><rect class="fa" x="10" y="30" width="120" height="80"/><text x="70" y="75" text-anchor="middle" font-size="14">l × w</text><polygon class="fa" points="170,110 290,110 230,30"/><line x1="230" y1="30" x2="230" y2="110" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"/><text x="230" y="130" text-anchor="middle" font-size="13">b</text><text x="238" y="76" font-size="13">h</text><polygon class="fa" points="330,110 430,110 470,30 370,30"/><text x="400" y="75" text-anchor="middle" font-size="14">b × h</text><polygon class="fa" points="510,110 630,110 600,30 540,30"/><text x="570" y="75" text-anchor="middle" font-size="14">avg(b₁, b₂) × h</text></svg><figcaption>Rectangle, triangle, parallelogram, trapezoid</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="tw"><table>
+<tr><th>Shape</th><th>Area or volume</th><th>Perimeter or surface</th></tr>
+<tr><td>Rectangle</td><td class="m">A = lw</td><td class="m">P = 2l + 2w</td></tr>
+<tr><td>Square</td><td class="m">A = s²</td><td class="m">P = 4s</td></tr>
+<tr><td>Triangle</td><td class="m">A = <span class="fr"><span>1</span><span>2</span></span>bh</td><td>add the three sides</td></tr>
+<tr><td>Parallelogram</td><td class="m">A = bh</td><td>add the four sides</td></tr>
+<tr><td>Trapezoid</td><td class="m">A = <span class="fr"><span>1</span><span>2</span></span>(b₁ + b₂)h</td><td>add the four sides</td></tr>
+<tr><td>Circle</td><td class="m">A = πr²</td><td class="m">C = 2πr</td></tr>
+<tr><td>Box</td><td class="m">V = lwh</td><td class="m">SA = 2(lw + lh + wh)</td></tr>
+<tr><td>Cylinder</td><td class="m">V = πr²h</td><td>2πr² + 2πrh</td></tr>
+</table></div>
+<ul class="kp"><li>Use π ≈ 3.14 unless the answer choices are written in terms of π.</li></ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=LoaBd-sPzkU">Perimeter and area: the basics</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Area is in square units and volume is in cubic units. Perimeter and circumference are plain lengths.</li>
+<li>Radius is half the diameter. Use r in the circle formulas.</li>
+<li>Composite shapes: split them into rectangles, triangles, and circles, find each area, then add (or subtract a hole).</li>
+<li>Doubling every side of a shape multiplies its area by 4 and a solid's volume by 8.</li>
+<li>Surface area is the total area of all faces of a solid.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>A circle has diameter 10. The radius is 5, so the area is π × 5² = 25π ≈ <b>78.5</b> and the circumference is 2π × 5 = 10π ≈ <b>31.4</b>.</p></div>
+<div class="ex"><p>A box is 4 by 5 by 6. Volume = 4 × 5 × 6 = <b>120</b>. Surface area = 2(4×5 + 4×6 + 5×6) = 2(20 + 24 + 30) = <b>148</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>A rectangle has perimeter 36 and length 11. What is its width?</li><li>A triangle has base 10 and height 7. What is its area?</li><li>A trapezoid has bases 6 and 10 and height 4. What is its area?</li><li>A cylinder has radius 3 and height 5. What is its volume?</li><li>A circle has circumference 18π. What is its radius?</li><li>A 12 ft by 10 ft room gets flooring that costs $2 per square foot. What is the cost?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 7</span><span>2) 35</span><span>3) 32</span><span>4) 45π ≈ 141.3</span><span>5) 9</span><span>6) $240</span></div></details>
+</section>
+
+<section class="skill" id="angles">
+<h3>Angles <span class="tag">MK</span></h3>
+<figure class="fig"><div class="tw" style="max-width:100%"><table style="max-width:620px"><tr><th>Pair</th><th>Rule</th></tr><tr><td>Complementary</td><td>add to 90°</td></tr><tr><td>Supplementary</td><td>add to 180° (a straight line)</td></tr><tr><td>Vertical</td><td>opposite angles where two lines cross are equal</td></tr></table></div></figure>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li>Complementary angles sum to 90°. Supplementary angles sum to 180°.</li>
+<li>Angles in a triangle sum to 180°; in a quadrilateral, 360°.</li>
+<li>Vertical angles (opposite each other where two lines cross) are equal.</li>
+<li>When a line crosses two parallel lines, corresponding angles are equal and co-interior angles sum to 180°.</li>
+</ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://youtu.be/BTnAlNSgNsY">Complementary and supplementary angles</a> · <a href="https://www.youtube.com/watch?v=vAlazPPFlyY">Vertical, adjacent and linearly paired angles</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>When a line crosses two parallel lines, corresponding angles are equal and alternate interior angles are equal.</li>
+<li>An exterior angle of a triangle equals the sum of the two opposite interior angles.</li>
+<li>The interior angles of an n-sided polygon add up to (n − 2) × 180°. A regular polygon splits that total evenly.</li>
+<li>Angles around a point add to 360°, and angles on a straight line add to 180°.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>The angles of a triangle are 2x, 3x, and 4x. Then 9x = 180, so x = 20 and the angles are <b>40°, 60°, and 80°</b>.</p></div>
+<div class="ex"><p>Each angle of a regular pentagon: (5 − 2) × 180 = 540, and 540 ÷ 5 = <b>108°</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>What is the complement of 35°?</li><li>What is the supplement of 110°?</li><li>Two vertical angles measure 3x + 10 and 5x − 20. What is each angle?</li><li>What is the sum of the interior angles of a hexagon?</li><li>Two angles of a triangle are 45° and 85°. What is the third?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 55°</span><span>2) 70°</span><span>3) x = 15, so each is 55°</span><span>4) 720°</span><span>5) 50°</span></div></details>
+</section>
+
+<section class="skill" id="right">
+<h3>Right triangles <span class="tag">MK</span></h3>
+<figure class="fig"><svg viewBox="0 0 300 190" width="300" role="img" aria-label="3-4-5 right triangle"><polygon class="fa" points="30,160 250,160 30,28"/><polyline class="st" points="30,140 50,140 50,160"/><text x="14" y="100" text-anchor="middle" font-size="16" font-weight="600">3</text><text x="140" y="182" text-anchor="middle" font-size="16" font-weight="600">4</text><text x="158" y="86" font-size="16" font-weight="600">5</text></svg><figcaption>3² + 4² = 9 + 16 = 25 = 5²</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="mb"><span class="l">Pythagorean theorem</span><span>a² + b² = c²</span></div>
+<ul class="kp"><li>c is the hypotenuse, the side opposite the right angle. Memorize the triples 3-4-5, 5-12-13, 8-15-17, and their multiples (6-8-10, 9-12-15). For special triangles: in a 45-45-90, the hypotenuse is the leg × √2; in a 30-60-90, the sides are x, x√3, and 2x.</li></ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=s9t7rNhaBp8">Introduction to the Pythagorean theorem</a></p>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>To find a leg instead of the hypotenuse, rearrange: a² = c² − b².</li>
+<li>The diagonal of a rectangle is the hypotenuse of a right triangle made by its length and width.</li>
+<li>45-45-90 triangle: legs equal, hypotenuse = leg × √2.</li>
+<li>30-60-90 triangle: the sides are x, x√3, and 2x, with the short leg opposite the 30° angle.</li>
+<li>If a² + b² = c², the triangle is a right triangle.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>A 10-foot ladder leans on a wall with its base 6 feet from the wall. How high does it reach? Height = √(10² − 6²) = √64 = <b>8 feet</b>.</p></div>
+<div class="ex"><p>The diagonal of a 9 by 12 rectangle: √(81 + 144) = √225 = <b>15</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>The legs of a right triangle are 8 and 15. Find the hypotenuse.</li><li>The hypotenuse is 20 and one leg is 12. Find the other leg.</li><li>A square has side 6. What is its diagonal?</li><li>In a 30-60-90 triangle the short side is 5. Find the other two sides.</li><li>Is a triangle with sides 7, 24, and 25 a right triangle?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 17</span><span>2) 16</span><span>3) 6√2</span><span>4) hypotenuse 10, long leg 5√3</span><span>5) Yes, since 49 + 576 = 625</span></div></details>
+</section>
+
+<section class="skill" id="tri">
+<h3>Triangle types <span class="tag">MK</span></h3>
+<figure class="fig"><div class="tw" style="max-width:100%"><table style="max-width:680px"><tr><th>By sides</th><th>Description</th><th>By angles</th><th>Description</th></tr><tr><td>Equilateral</td><td>3 equal sides, three 60° angles</td><td>Acute</td><td>all angles under 90°</td></tr><tr><td>Isosceles</td><td>2 equal sides, 2 equal angles</td><td>Right</td><td>one 90° angle</td></tr><tr><td>Scalene</td><td>no equal sides</td><td>Obtuse</td><td>one angle over 90°</td></tr></table></div></figure>
+<h4>Key ideas</h4>
+<ul class="kp">
+<li>Equilateral: three equal sides, three 60° angles.</li>
+<li>Isosceles: two equal sides and two equal angles.</li>
+<li>Similar triangles have equal angles and proportional sides, so set up a proportion to find a missing side.</li>
+</ul>
+<h4>Extra tips</h4>
+<ul class="kp">
+<li>Classify by sides (equilateral, isosceles, scalene) and by angles (acute, right, obtuse).</li>
+<li>Triangle inequality: any two sides must add to more than the third. So sides a and b allow a third side between |a − b| and a + b.</li>
+<li>Similar triangles have equal angles and proportional sides. Find the scale factor and multiply.</li>
+<li>The longest side is opposite the largest angle.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><p>A 3-4-5 triangle is similar to a triangle with sides 9, ?, 15. The scale factor is 3, so the missing side is 4 × 3 = <b>12</b>.</p></div>
+<div class="ex"><p>Can sides 3, 4, and 8 make a triangle? 3 + 4 = 7, which is less than 8, so <b>no</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>An isosceles triangle has a 40° vertex angle. What are the base angles?</li><li>An equilateral triangle has perimeter 27. What is each side?</li><li>Two sides of a triangle are 5 and 7. What values can the third side take?</li><li>A small triangle has sides 2 and 3. A similar larger triangle has a shorter side of 8. What is its longer side?</li><li>A triangle has angles 30°, 60°, and 90°. Classify it.</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) 70° each</span><span>2) 9</span><span>3) between 2 and 12</span><span>4) 12 (scale factor 4)</span><span>5) Right triangle</span></div></details>
+</section>
+
+<section class="skill" id="coord">
+<h3>Coordinate geometry <span class="tag">MK</span></h3>
+<figure class="fig"><svg viewBox="0 0 320 250" width="320" role="img" aria-label="Line through (1,1) and (4,7) with slope 2"><g stroke="var(--line)" stroke-width="1"><line x1="30" y1="220" x2="300" y2="220"/><line x1="30" y1="10" x2="30" y2="220"/></g><line class="st" x1="30" y1="195" x2="195" y2="15" stroke="var(--ink)"/><line x1="60" y1="190" x2="150" y2="190" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"/><line x1="150" y1="190" x2="150" y2="70" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"/><circle cx="60" cy="162" r="5" fill="var(--ink)"/><circle cx="150" cy="62" r="5" fill="var(--ink)"/><text x="68" y="158" font-size="13">(1, 1)</text><text x="158" y="58" font-size="13">(4, 7)</text><text x="105" y="208" text-anchor="middle" font-size="13">run 3</text><text x="196" y="132" font-size="13">rise 6</text></svg><figcaption>Slope = rise ÷ run = 6 ÷ 3 = 2</figcaption></figure>
+<h4>Key ideas</h4>
+<div class="cols">
+<div class="mb" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="l">Slope</span><span>m = <span class="fr"><span>y₂ − y₁</span><span>x₂ − x₁</span></span></span></div>
+<div class="mb" style="flex-direction:column;align-items:flex-start;gap:4px"><span class="l">Line equation</span><span>y = mx + b</span></div>
+</div>
+<ul class="kp"><li>m is the slope and b is where the line crosses the y-axis. Parallel lines share a slope; perpendicular lines have slopes that are negative reciprocals: a line with slope 2 is perpendicular to a line with slope −<span class="fr"><span>1</span><span>2</span></span>.</li></ul>
+<p class="vids"><b>Watch (Khan Academy):</b> <a href="https://www.youtube.com/watch?v=MeU-KzdCBps">Introduction to slope</a></p>
+<h4>Extra tips</h4>
+<p>The midpoint of a segment is the average of the coordinates:</p>
+<div class="mb"><span class="l">Midpoint</span><span>(<span class="fr"><span>x₁ + x₂</span><span>2</span></span>, <span class="fr"><span>y₁ + y₂</span><span>2</span></span>)</span></div>
+<p>The distance between two points comes from the Pythagorean theorem:</p>
+<div class="mb"><span class="l">Distance</span><span>d = √<span class="rt">(x₂ − x₁)² + (y₂ − y₁)²</span></span></div>
+<ul class="kp">
+<li>Parallel lines have the same slope. Perpendicular lines have slopes that multiply to −1.</li>
+<li>A horizontal line has slope 0. A vertical line has an undefined slope.</li>
+<li>To read slope and intercept from an equation, solve for y: 3x + y = 7 becomes y = −3x + 7, so the slope is −3 and the y-intercept is 7.</li>
+</ul>
+<h4>Worked examples</h4>
+<div class="ex"><b class="lab">Find the line through (2, 3) and (6, 11)</b><div class="steps"><div>Slope = (11 − 3) ÷ (6 − 2) = 2</div><div>Then y − 3 = 2(x − 2)</div><div><b>y = 2x − 1</b></div></div></div>
+<div class="ex"><p>Midpoint of (−2, 4) and (6, 10): ((−2 + 6) ÷ 2, (4 + 10) ÷ 2) = <b>(2, 7)</b>.</p></div>
+<div class="ex"><p>Distance from (1, 2) to (4, 6): √(3² + 4²) = √25 = <b>5</b>.</p></div>
+<h4>Try it</h4>
+<ol class="pr"><li>Slope through (1, 5) and (4, −1).</li><li>The y-intercept of 3x + y = 7.</li><li>Midpoint of (0, 0) and (8, −6).</li><li>A line parallel to y = 3x + 2 passes through (0, 5). What is its equation?</li><li>Distance between (0, 0) and (5, 12).</li><li>What slope is perpendicular to a line with slope <span class="fr"><span>2</span><span>3</span></span>?</li></ol>
+<details class="ans"><summary>Show answers</summary><div class="body"><span>1) −2</span><span>2) 7</span><span>3) (4, −3)</span><span>4) y = 3x + 5</span><span>5) 13</span><span class="m">6) −<span class="fr"><span>3</span><span>2</span></span></span></div></details>
+</section>
+
+<h2 class="part" id="practice">Practice problems<small>Try all 16 without a calculator, about 90 seconds each, then check the answer key below.</small></h2>
+
+<section class="skill">
+<h3>Arithmetic Reasoning problems</h3>
+<ol class="pr">
+<li>A shirt costs $45 and is on sale for 20% off. What is the sale price?</li>
+<li>A train travels 270 miles in 4.5 hours. What is its average speed in miles per hour?</li>
+<li>The ratio of boys to girls in a class is 3:4. If the class has 28 students, how many are girls?</li>
+<li>The average of four numbers is 15. A fifth number, 20, is added. What is the new average?</li>
+<li>How much simple interest does $2,000 earn at 4% per year over 5 years?</li>
+<li>A bag holds 4 red marbles and 6 green marbles. What is the probability of drawing a green marble?</li>
+<li>A recipe uses <span class="m"><span class="fr"><span>3</span><span>4</span></span></span> cup of sugar for 12 cookies. How much sugar is needed for 36 cookies?</li>
+<li>Pipe A fills a tank in 6 hours and pipe B fills it in 3 hours. How long do they take together?</li>
+</ol>
+<h3 style="margin-top:12px">Mathematics Knowledge problems</h3>
+<ol class="pr" start="1">
+<li>Solve for x: 5x + 3 = 2x + 18.</li>
+<li>Simplify √50.</li>
+<li>A rectangle has an area of 48 and a width of 6. What is its perimeter?</li>
+<li>A right triangle has legs of 9 and 12. What is the hypotenuse?</li>
+<li>What is the area of a circle with radius 5, in terms of π?</li>
+<li>Expand (x + 3)(x − 5).</li>
+<li>Evaluate 2⁴ × 2³ ÷ 2².</li>
+<li>Two angles are supplementary and one is 3 times the other. What is the larger angle?</li>
+</ol>
+</section>
+
+<section class="skill" id="key">
+<h3>Answer key</h3>
+<div class="tw"><table>
+<tr><th>#</th><th>Answer</th><th>How</th></tr>
+<tr><td class="n"><b>AR 1</b></td><td>$36</td><td>Pay 80%: 0.80 × 45 = 36</td></tr>
+<tr><td class="n"><b>AR 2</b></td><td>60 mph</td><td>270 ÷ 4.5 = 60</td></tr>
+<tr><td class="n"><b>AR 3</b></td><td>16 girls</td><td>3 + 4 = 7 parts; 28 ÷ 7 = 4 per part; 4 × 4 = 16</td></tr>
+<tr><td class="n"><b>AR 4</b></td><td>16</td><td>Sum = 4 × 15 = 60; (60 + 20) ÷ 5 = 16</td></tr>
+<tr><td class="n"><b>AR 5</b></td><td>$400</td><td>2,000 × 0.04 × 5 = 400</td></tr>
+<tr><td class="n"><b>AR 6</b></td><td class="m"><span class="fr"><span>3</span><span>5</span></span></td><td>6 green out of 10 total</td></tr>
+<tr><td class="n"><b>AR 7</b></td><td class="m">2<span class="fr"><span>1</span><span>4</span></span> cups</td><td class="m">36 is 3 times 12, so 3 × <span class="fr"><span>3</span><span>4</span></span> = <span class="fr"><span>9</span><span>4</span></span></td></tr>
+<tr><td class="n"><b>AR 8</b></td><td>2 hours</td><td class="m"><span class="fr"><span>1</span><span>6</span></span> + <span class="fr"><span>1</span><span>3</span></span> = <span class="fr"><span>1</span><span>2</span></span> of the tank per hour</td></tr>
+<tr><td class="n"><b>MK 1</b></td><td>x = 5</td><td>3x = 15</td></tr>
+<tr><td class="n"><b>MK 2</b></td><td>5√2</td><td>√(25 × 2) = 5√2</td></tr>
+<tr><td class="n"><b>MK 3</b></td><td>28</td><td>Length = 48 ÷ 6 = 8; 2(8 + 6) = 28</td></tr>
+<tr><td class="n"><b>MK 4</b></td><td>15</td><td>9-12-15 is a multiple of 3-4-5</td></tr>
+<tr><td class="n"><b>MK 5</b></td><td>25π</td><td>A = πr² = π × 25</td></tr>
+<tr><td class="n"><b>MK 6</b></td><td>x² − 2x − 15</td><td>x² − 5x + 3x − 15</td></tr>
+<tr><td class="n"><b>MK 7</b></td><td>32</td><td>Combine the exponents: 4 + 3 − 2 = 5, so 2⁵</td></tr>
+<tr><td class="n"><b>MK 8</b></td><td>135°</td><td>x + 3x = 180, so x = 45; 3x = 135</td></tr>
+</table></div>
+</section>
+
+<h2 class="part" id="strategy">Test-day strategy and cheat sheet</h2>
+
+<section class="skill">
+<h3>Strategy</h3>
+<ul class="kp">
+<li>On the computer-adaptive test you cannot skip or go back, so answer every question and never leave one blank.</li>
+<li>Estimate first: if the answer must be near 50 and two choices are 5 and 500, they are out.</li>
+<li>Plug answer choices back into the problem when the algebra feels slow.</li>
+<li>Watch units: a problem in minutes with an answer choice in hours is a common trap.</li>
+<li>Read the last sentence of a word problem first so you know what is being asked.</li>
+<li>Sleep well and eat before the test; pacing matters more than speed.</li>
+<li>On the paper test you can skip a hard question and return to it before time runs out. Mark it so you can find it.</li>
+<li>Paper pacing: about 1.2 minutes per Arithmetic Reasoning question and about 1 minute per Mathematics Knowledge question.</li>
+</ul>
+</section>
+
+<section class="skill" id="cheat">
+<h3>Formulas to know cold</h3>
+<div class="tw"><table>
+<tr><th>Topic</th><th>Formula</th></tr>
+<tr><td>Percent</td><td class="m">part = percent × whole</td></tr>
+<tr><td>Distance</td><td class="m">d = r × t</td></tr>
+<tr><td>Simple interest</td><td class="m">I = P × r × t</td></tr>
+<tr><td>Average</td><td class="m"><span class="fr"><span>sum</span><span>count</span></span></td></tr>
+<tr><td>Probability</td><td class="m"><span class="fr"><span>favorable</span><span>total</span></span></td></tr>
+<tr><td>Rectangle</td><td class="m">A = lw; P = 2l + 2w</td></tr>
+<tr><td>Triangle</td><td class="m">A = <span class="fr"><span>b × h</span><span>2</span></span></td></tr>
+<tr><td>Circle</td><td class="m">A = πr²; C = 2πr</td></tr>
+<tr><td>Pythagorean theorem</td><td class="m">a² + b² = c²</td></tr>
+<tr><td>Slope</td><td class="m"><span class="fr"><span>y₂ − y₁</span><span>x₂ − x₁</span></span></td></tr>
+<tr><td>Difference of squares</td><td class="m">a² − b² = (a + b)(a − b)</td></tr>
+<tr><td>Exponents</td><td class="m">x<sup>a</sup> × x<sup>b</sup> = x<sup>a+b</sup>; (x<sup>a</sup>)<sup>b</sup> = x<sup>ab</sup></td></tr>
+</table></div>
+<h4>Where to keep practicing</h4>
+<p>The official ASVAB site and your recruiter or school counselor can point you to free full-length practice tests. Redoing missed problems from this guide until you can explain each one is the fastest way to raise your score.</p>
+</section>
+
+</main>
+</div>
