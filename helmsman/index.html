@@ -3,20 +3,733 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
 <title>Coast Guard Helmsman</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;1,500&display=swap">
 <style>
-:root{--bg:#f3f4f5;--ink:#26282b;--muted:#55595f;--band:#2a2c30;--accent:#f2b04a;--link:#1b4fc4;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#1b1c1f;--ink:#ececee;--muted:#b0b3b9;--band:#131416;--link:#8db4ff;color-scheme:dark}}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,sans-serif}
-header{background:var(--band);color:#fff;padding:56px max(16px,env(safe-area-inset-left,0px)) 44px}
-h1{margin:0 auto;max-width:1100px;font:700 clamp(38px,8vw,72px)/1 "Arial Narrow",Arial,sans-serif;text-transform:uppercase}
-main{max-width:1100px;margin:0 auto;padding:40px max(16px,env(safe-area-inset-left,0px)) 80px}
-.tag{color:var(--accent);font-weight:600;letter-spacing:.16em;text-transform:uppercase;font-size:13px;max-width:1100px;margin:0 auto 10px}
+/* Layout: sticky section index at left, one readable column of skill sheets at right. Navy + amber, built like a printed field manual. */
+:root{--bg:#f3f4f5;--surface:#ffffff;--ink:#26282b;--muted:#55595f;--line:#d6d8db;--accent:#9a5b00;--accent-bg:#fff0d2;--link:#1b4fc4;--hl:#e9ebed;--band:#26282b;--band-ink:#ffffff;--band-accent:#f2b04a;--good:#17653a;
+--display:'Barlow Condensed','Arial Narrow',sans-serif;--body:'IBM Plex Sans',system-ui,sans-serif;--serif:'IBM Plex Serif',Georgia,serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1c1f;--surface:#26282c;--ink:#ececee;--muted:#b0b3b9;--line:#3c3f44;--accent:#f2b04a;--accent-bg:#3a2d12;--link:#8db4ff;--hl:#303337;--band:#131416;--good:#6fd09a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1c1f;--surface:#26282c;--ink:#ececee;--muted:#b0b3b9;--line:#3c3f44;--accent:#f2b04a;--accent-bg:#3a2d12;--link:#8db4ff;--hl:#303337;--band:#131416;--good:#6fd09a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
 a{color:var(--link)}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--band);color:var(--band-ink);padding-block:48px 40px}
+header.top .in{max-width:1180px;margin:0 auto}
+.eyebrow{font-weight:600;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--band-accent)}
+header.top h1{font-family:var(--display);font-weight:700;font-size:clamp(44px,9vw,92px);line-height:.95;margin:10px 0 14px;letter-spacing:.01em;text-wrap:balance}
+header.top p{margin:0;max-width:60ch;color:#d4d6da;font-size:18px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;padding-block:36px 80px}
+nav.idx{position:sticky;top:20px;align-self:start;font-size:14.5px}
+nav.idx h2{font-family:var(--display);font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+nav.idx h2:first-child{margin-top:0}
+nav.idx a{display:block;padding:3px 0 3px 10px;border-left:2px solid var(--line);color:var(--ink);text-decoration:none}
+nav.idx a:hover{border-left-color:var(--accent);color:var(--accent)}
+main{min-width:0;display:flex;flex-direction:column;gap:28px}
+h2.part{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,50px);line-height:1;margin:44px 0 0;text-transform:uppercase;letter-spacing:.02em;padding-top:14px;border-top:4px solid var(--ink)}
+h2.part small{display:block;font-family:var(--body);font-size:16px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);margin-top:8px;line-height:1.5;max-width:62ch}
+section.skill{background:var(--surface);border:1px solid var(--line);padding:26px clamp(16px,3vw,32px) 30px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px}
+section.skill>h3{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,38px);line-height:1.05;margin:0;text-transform:uppercase;letter-spacing:.03em;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.tag{font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.14em;background:var(--accent-bg);color:var(--accent);padding:3px 9px;text-transform:uppercase}
+h4{font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:8px 0 -4px;display:flex;align-items:center;gap:10px}
+h4::after{content:"";flex:1;height:1px;background:var(--line)}
+p{margin:0}
+ul.kp,ol.pr{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:7px}
+ul.kp li::marker{color:var(--accent)}
+ol.pr{padding-left:1.7em}
+ol.pr li{padding-left:4px}
+.ex{background:var(--hl);padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.ex b.lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.steps{display:flex;flex-direction:column;gap:2px;padding-left:2px}
+.steps div{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}
+.steps div::before{content:"";width:6px;height:6px;background:var(--accent);flex:none;margin-right:2px}
+.m{font-family:var(--serif);font-size:1.12em;white-space:nowrap}
+.mb{font-family:var(--serif);font-size:1.5em;padding:10px 16px;background:var(--hl);display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+.mb .l{font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);width:100%}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .14em;text-align:center;line-height:1.18;font-size:1.02em}
+.fr>span:first-child{border-bottom:.07em solid currentColor;padding:0 .24em .05em}
+.fr>span:last-child{padding-top:.05em}
+.rt{border-top:.07em solid currentColor;padding:0 .08em;margin-left:.02em}
+.vids{font-size:15px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.vids b{font-weight:600;color:var(--ink)}
+.vids a{white-space:normal}
+details.ans{border:1px dashed var(--line);padding:0}
+details.ans summary{cursor:pointer;padding:9px 14px;font-weight:600;font-size:14.5px;color:var(--good);list-style:none}
+details.ans summary::before{content:"+ ";}
+details.ans[open] summary::before{content:"\2212 ";}
+details.ans .body{padding:2px 16px 14px;display:flex;flex-wrap:wrap;gap:6px 22px;font-size:16px}
+.tw{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--hl)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{border:1px solid var(--line);padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.card h5{margin:0;font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.fig{display:flex;flex-direction:column;gap:6px;align-items:flex-start;max-width:100%}
+.fig svg{max-width:100%;height:auto;display:block}
+.fig figcaption,figcaption{font-size:13.5px;color:var(--muted)}
+figure{margin:0}
+svg text{font-family:var(--body);fill:var(--ink)}
+.st{stroke:var(--ink);fill:none;stroke-width:2}
+.fa{fill:var(--hl);stroke:var(--ink);stroke-width:2}
+.fx{fill:var(--accent-bg);stroke:var(--accent);stroke-width:2}
+.bar{display:flex;height:36px;max-width:520px;border:2px solid var(--ink)}
+.bar span{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;border-right:1px solid var(--ink)}
+.bar span:last-child{border-right:0}
+.on{background:var(--accent-bg);color:var(--ink)}
+.off{background:var(--hl);color:var(--ink)}
+.grid2{display:grid;gap:2px;max-width:420px;background:var(--ink);border:2px solid var(--ink)}
+.grid2 div{background:var(--surface);padding:10px 8px;text-align:center;font-family:var(--serif);font-size:1.05em}
+.grid2 .h{background:var(--hl);font-family:var(--body);font-weight:600;font-size:14px}
+.cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:900px){
+.wrap{grid-template-columns:minmax(0,1fr);gap:20px}
+.cols,.cmp{grid-template-columns:minmax(0,1fr)}
+body{font-size:16.5px}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+svg{max-width:100%;height:auto}
+.bar{height:auto;min-height:36px}
+.bar span{padding:6px 8px;text-align:center}
+details.ans summary{min-height:44px;display:flex;align-items:center}
+.fig{overflow-x:auto}
+@media (max-width:900px){
+.wrap{padding-block:0 56px}
+main{padding-top:8px}
+}
+@media (max-width:600px){
+body{font-size:16px;line-height:1.55}
+header.top{padding-block:30px 26px}
+header.top p{font-size:16px}
+h2.part{margin-top:28px}
+section.skill{padding:18px 14px 22px;gap:14px;border-left:0;border-right:0}
+.m{white-space:normal}
+.mb{font-size:1.25em;padding:10px 12px}
+table{font-size:14.5px}
+th,td{padding:8px 9px}
+.tw table{min-width:440px}
+.vids{flex-direction:column;gap:6px}
+.vids a{display:inline-block;padding:2px 0}
+.ex{padding:12px 14px}
+.steps div{gap:3px 8px}
+ol.pr{padding-left:1.5em}
+.fig svg[width="760"],.fig svg[width="640"]{max-width:none;min-width:520px}
+.fig svg[width="560"]{max-width:none;min-width:460px}
+details.ans .body{gap:6px 16px}
+}
+
+/* Slide-out contents drawer: hidden by default so the reading column gets the full width */
+header.top{padding-top:76px}
+.wrap{display:block;max-width:1060px;padding-block:28px 80px}
+nav.idx{position:fixed;top:0;left:0;bottom:0;width:min(310px,86vw);z-index:60;background:var(--surface);border-right:1px solid var(--line);overflow-y:auto;transform:translateX(-102%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s;padding:calc(66px + env(safe-area-inset-top,0px)) 18px 28px max(18px,env(safe-area-inset-left,0px));margin:0;display:block;font-size:15px;flex:none;gap:0}
+html.toc-open nav.idx{transform:none;visibility:visible;transition-delay:0s}
+nav.idx h2{display:block}
+nav.idx a{display:block;white-space:normal;border:0;border-left:2px solid var(--line);padding:8px 0 8px 12px;min-height:40px}
+nav.idx a:hover{border-left-color:var(--accent);color:var(--accent)}
+.tocbtn{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:70;min-height:44px;display:flex;gap:10px;align-items:center;padding:0 16px 0 13px;background:var(--band);color:var(--band-ink);border:1px solid var(--muted);font:600 14px var(--body);letter-spacing:.04em;cursor:pointer}
+.tocbtn:hover{border-color:var(--band-accent)}
+.tocbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s linear .25s}
+html.toc-open .scrim{opacity:1;visibility:visible;transition-delay:0s}
+@media (prefers-reduced-motion:reduce){nav.idx,.scrim{transition:none}}
+@media (max-width:600px){.wrap{padding-block:16px 56px}header.top{padding-top:70px}}
+
+/* round 2: drawer scrolls on its own, page fills the screen, calmer button */
+html.toc-open,html.toc-open body{overflow:hidden}
+nav.idx{height:100vh;height:100dvh;overflow-x:hidden;overflow-y:scroll;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.wrap{max-width:none}
+header.top .in{max-width:none}
+header.top{padding-top:calc(80px + env(safe-area-inset-top,0px))}
+.tocbtn{transition:opacity .25s ease}
+html.scrolled:not(.toc-open) .tocbtn{opacity:.3}
+html.scrolled:not(.toc-open) .tocbtn:hover,html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:1}
+@media (max-width:600px){header.top{padding-top:calc(76px + env(safe-area-inset-top,0px))}}
+
+.tocbtn{min-width:44px;padding:0 12px;justify-content:center}
+.tocbtn .b{display:none}
+html.toc-open .tocbtn .a{display:none}
+html.toc-open .tocbtn .b{display:inline}
+html.scrolled:not(.toc-open) .tocbtn:hover,html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:.3}
+@media (hover:hover){html.scrolled:not(.toc-open) .tocbtn:hover{opacity:1}}
+html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:1}
+.pdfbtn{display:inline-flex;align-items:center;gap:10px;margin-top:18px;min-height:46px;padding:0 20px;background:var(--band-accent);color:#1b1c1f;font-weight:600;font-size:15px;text-decoration:none;border:2px solid var(--band-accent)}
+.pdfbtn:hover{background:transparent;color:var(--band-accent)}
+.pdfbtn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.callout{background:var(--accent-bg);border-left:4px solid var(--accent);padding:12px 16px;display:flex;flex-direction:column;gap:4px}
+.callout b.lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hint{font-size:14.5px;color:var(--muted)}
+.ckbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600;color:var(--good)}
+.ckbar button{font:600 13px var(--body);background:transparent;color:var(--muted);border:1px solid var(--line);padding:7px 14px;cursor:pointer;min-height:36px}
+.ckbar button:hover{border-color:var(--accent);color:var(--accent)}
+ul.ck{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+ul.ck label{display:flex;gap:12px;align-items:flex-start;padding:8px 6px;cursor:pointer}
+ul.ck label:hover{background:var(--hl)}
+ul.ck input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:var(--accent);cursor:pointer}
+ul.ck input:checked+span{color:var(--muted);text-decoration:line-through}
+.alpha{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.alpha span{background:var(--hl);padding:8px 12px}
+.alpha b{display:inline-block;width:1.4em;color:var(--accent);font-family:var(--display);font-size:1.3em}
+.stage{border-left:4px solid var(--accent);padding:4px 0 4px 16px;display:flex;flex-direction:column;gap:4px}
+.stage h5{margin:0;font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.addr{background:var(--hl);padding:14px 18px;font-family:var(--serif);line-height:1.5}
+dl.faq{margin:0;display:grid;gap:4px 0}
+dl.faq dt{font-weight:600;margin-top:12px}
+dl.faq dd{margin:0;color:var(--muted)}
+dl.faq.gl dt{margin-top:8px;color:var(--accent)}
+.mt td,.mt th{padding-right:18px}
 </style>
 </head>
 <body>
-<header><div class="tag">Coming soon</div><h1>Coast Guard Helmsman</h1></header>
-<main><p>This manual is not ready yet. Check back soon.</p><p><a href="../">Back to all manuals</a></p></main>
+
+<button class="tocbtn" id="tocbtn" type="button" aria-controls="toc" aria-expanded="false" aria-label="Open contents"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path class="a" d="M1 4h18M1 10h18M1 16h18" stroke="currentColor" stroke-width="2" fill="none"/><path class="b" d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" fill="none"/></svg></button>
+<div class="scrim" id="scrim"></div>
+<header class="top pad"><div class="in">
+<div class="eyebrow">Training Center Cape May · Recruit training</div>
+<h1>Coast Guard Helmsman</h1>
+<p>A study guide built from the official Helmsman booklet. Start with the key points and the checklist, then work through the sections. Know it well: the required knowledge is mandatory and the physical fitness is essential.</p>
+<a class="pdfbtn" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/Helmsmannew.pdf?ver=2017-05-23-160144-093" target="_blank" rel="noopener">
+<svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2h8l4 4v12H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11h6M8 14h6" stroke="currentColor" stroke-width="2"/></svg>
+Open the original Helmsman PDF</a>
+</div></header>
+<div class="wrap pad">
+<nav class="idx" id="toc" aria-label="Sections">
+<a href="../" style="font-weight:600;margin-bottom:10px;border-left-color:var(--accent)">All subjects</a>
+<h2>Start here</h2>
+<a href="#key">Key points</a><a href="#checklist">Before-you-leave checklist</a>
+<h2>Before you arrive</h2>
+<a href="#finance">Financial arrangements</a><a href="#bring">What to bring</a><a href="#fitness">Physical fitness training</a>
+<h2>Your arrival</h2>
+<a href="#arrival">Getting to Cape May</a>
+<h2>Keys to success</h2>
+<a href="#keys">How to succeed at training</a>
+<h2>Required knowledge</h2>
+<a href="#orders">Eleven General Orders</a><a href="#terms">Nautical terminology</a><a href="#phonetic">Phonetic alphabet</a><a href="#bearing">Attention, salutes, addressing</a><a href="#time">Military time</a><a href="#chain">Chain of command</a>
+<h2>Charting your course</h2>
+<a href="#stages">Stages of training</a>
+<h2>Pay and finances</h2>
+<a href="#pay">Pay, BAH, education</a>
+<h2>General information</h2>
+<a href="#support">Counseling, chapel, medical</a><a href="#liberty">Relationships and liberty</a><a href="#uniforms">Uniforms</a>
+<h2>Family information</h2>
+<a href="#family">Family, calls, and mail</a>
+<h2>Reference</h2>
+<a href="#faq">Frequently asked questions</a><a href="#glossary">Glossary of nautical terms</a>
+</nav>
+<main>
+
+<h2 class="part" id="key">Key points<small>The items most likely to cost you time, money or your place in training if you miss them.</small></h2>
+
+<section class="skill">
+<div class="callout"><b class="lab">Check the date</b><p>This page follows the Helmsman booklet published by Training Center Cape May (the PDF is dated May 2017). Fitness standards, packing lists and phone numbers can change, so confirm them with your recruiter before you go.</p></div>
+<div class="cols">
+<div class="card"><h5>Eight weeks</h5><p>Recruit training is eight weeks long. You can be held back longer for disciplinary, medical, academic or physical fitness reasons.</p></div>
+<div class="card"><h5>Bank account and ATM card</h5><p>Your pay is direct deposited, and the only way to reach it is with an ATM card. Try the card at least once before you arrive.</p></div>
+<div class="card"><h5>Bring ID</h5><p>You must bring your Social Security card and at least one form of photo ID. Bring about $50 in small bills.</p></div>
+<div class="card"><h5>Contraband</h5><p>Contraband is thrown away, and some of it gets you removed from training right away. See the list in the packing section.</p></div>
+<div class="card"><h5>No personal phone calls</h5><p>You cannot receive personal calls during recruit training. Call your family from the Philadelphia USO when you arrive.</p></div>
+<div class="card"><h5>You are under the UCMJ</h5><p>Lying, cheating or stealing will not be tolerated. If you make a mistake, own up to it.</p></div>
+</div>
+<h4>Graduation standards to train for</h4>
+<div class="tw"><table>
+<tr><th>Test</th><th>Men</th><th>Women</th></tr>
+<tr><td>Bent-knee sit-ups (1 minute)</td><td class="n">38</td><td class="n">32</td></tr>
+<tr><td>Push-ups (1 minute)</td><td class="n">29</td><td class="n">15</td></tr>
+<tr><td>1.5 mile run</td><td class="n">12:51</td><td class="n">15:26</td></tr>
+<tr><td>Swim</td><td colspan="2">Jump off a six-foot platform, swim 100 meters, tread water for 5 minutes. No swimming on your back.</td></tr>
+</table></div>
+<h4>Milestones during training</h4>
+<div class="tw"><table>
+<tr><th>When</th><th>What happens</th></tr>
+<tr><td class="n">Arrival (forming week)</td><td>Medical screening, administrative processing, uniforms and a haircut. Then you are assigned to a company and meet your Company Commanders.</td></tr>
+<tr><td class="n">Week 1</td><td>Recruits with families normally apply for Basic Allowance for Housing (BAH).</td></tr>
+<tr><td class="n">Week 3</td><td>Choose whether to disenroll from the Montgomery GI Bill.</td></tr>
+<tr><td class="n">End of week 4</td><td>Mid-term exam. After you pass, you complete your Assignment Data Card (ADC).</td></tr>
+<tr><td class="n">End of week 5</td><td>You receive orders to your first assignment.</td></tr>
+<tr><td class="n">Week 7</td><td>Your company may earn eight hours of off-base liberty.</td></tr>
+<tr><td class="n">Graduation</td><td>Usually held Friday at 1100, outdoors (in the gymnasium if the weather is bad).</td></tr>
+</table></div>
+</section>
+
+<h2 class="part" id="checklist">Before-you-leave checklist<small>Everything to do or bring before you ship to Cape May. Tap a box to check it off. Your progress is saved in this browser.</small></h2>
+
+<section class="skill" id="ckbox">
+<div class="ckbar"><span id="ckcount" aria-live="polite">0 of 0 done</span><button type="button" id="ckreset">Clear all</button></div>
+
+<h4>Money and pay</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Ask your creditors to delay payments for two months, or pay in advance to cover the time you are away.</span></label></li>
+<li><label><input type="checkbox"><span>Open a checking or savings account (pay is direct deposited into it).</span></label></li>
+<li><label><input type="checkbox"><span>Get an ATM card and try it at least once before you leave.</span></label></li>
+<li><label><input type="checkbox"><span>Bring about $50 in cash, in small bills, for extra items.</span></label></li>
+</ul>
+
+<h4>Documents</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Social Security card.</span></label></li>
+<li><label><input type="checkbox"><span>At least one form of photo ID.</span></label></li>
+</ul>
+
+<h4>Packing</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>One small suitcase or duffel bag, no larger than an airline carry-on, with your name printed clearly on it. It holds your civilian clothes until graduation.</span></label></li>
+<li><label><input type="checkbox"><span>Comfortable, weather-appropriate travel clothes and sneaker-type shoes. You sleep in them your first night.</span></label></li>
+<li><label><input type="checkbox"><span>3 white v-neck t-shirts.</span></label></li>
+<li><label><input type="checkbox"><span>6 to 10 pairs of white underpants.</span></label></li>
+<li><label><input type="checkbox"><span>Navy blue or white long underwear (October to April).</span></label></li>
+<li><label><input type="checkbox"><span>Watch, wallet and wedding bands (if you have them).</span></label></li>
+<li><label><input type="checkbox"><span>Cartridge-type razor only.</span></label></li>
+<li><label><input type="checkbox"><span>Toothbrush, talcum powder and unscented hand/body lotion.</span></label></li>
+<li><label><input type="checkbox"><span>Address book, stationery, envelopes and stamps.</span></label></li>
+<li><label><input type="checkbox"><span>Pre-paid phone card.</span></label></li>
+<li><label><input type="checkbox"><span>Unframed family photos (frames are not allowed).</span></label></li>
+<li><label><input type="checkbox"><span>If you want one: a Bible or one religious reference book, and a religious medallion on a chain long enough to stay hidden under a v-neck t-shirt.</span></label></li>
+</ul>
+<p class="hint">Anything on this list that you forget can be bought when you arrive.</p>
+
+<h4>Packing, women only</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>6 sports bras (white or skin tone) and 1 regular bra.</span></label></li>
+<li><label><input type="checkbox"><span>Cloth-covered elastic bands, barrettes and bobby pins in gold, silver or your hair color.</span></label></li>
+<li><label><input type="checkbox"><span>One set of ball earrings (gold, silver, pearl or diamond, no larger than a quarter inch), worn in the lowest hole. They may only be worn for graduation, pictures and off-base liberty.</span></label></li>
+<li><label><input type="checkbox"><span>Feminine hygiene items and a minimal amount of makeup.</span></label></li>
+<li><label><input type="checkbox"><span>Birth control pills, if you already use them to maintain your cycle.</span></label></li>
+</ul>
+
+<h4>Leave these at home (contraband)</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Alcohol, narcotics and drug paraphernalia, tobacco products and anything that goes with them.</span></label></li>
+<li><label><input type="checkbox"><span>Weapons and pornographic photos or materials.</span></label></li>
+<li><label><input type="checkbox"><span>Glass containers (plastic is allowed).</span></label></li>
+<li><label><input type="checkbox"><span>Food or drinks of any kind.</span></label></li>
+<li><label><input type="checkbox"><span>Magazines and newspapers.</span></label></li>
+</ul>
+
+<h4>Get in shape</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>See a doctor for a physical exam first if you have never exercised regularly.</span></label></li>
+<li><label><input type="checkbox"><span>Buy good running shoes that fit properly.</span></label></li>
+<li><label><input type="checkbox"><span>Stop using tobacco before you arrive (consider a smoking cessation program).</span></label></li>
+<li><label><input type="checkbox"><span>Train to the graduation standards: sit-ups, push-ups, the 1.5 mile run and the swim test.</span></label></li>
+<li><label><input type="checkbox"><span>Practice swimming: jump in, swim 100 meters and tread water for 5 minutes, without using your back.</span></label></li>
+</ul>
+
+<h4>Learn before you go</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Memorize the Eleven General Orders.</span></label></li>
+<li><label><input type="checkbox"><span>Learn the nautical terms, the phonetic alphabet and military time.</span></label></li>
+<li><label><input type="checkbox"><span>Practice the position of attention and how to address military personnel.</span></label></li>
+<li><label><input type="checkbox"><span>Review the chain of command and the Core Values: Honor, Respect, Devotion to Duty.</span></label></li>
+</ul>
+
+<h4>Travel and family</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Plan to start your trip well rested.</span></label></li>
+<li><label><input type="checkbox"><span>Save the Philadelphia airport plan: report to the USO office on the secure side of Terminal A-East.</span></label></li>
+<li><label><input type="checkbox"><span>Save the Training Center number for travel problems: 1-609-898-6971.</span></label></li>
+<li><label><input type="checkbox"><span>Tell your family you cannot take personal calls in training, and plan to call them from the USO when you arrive.</span></label></li>
+<li><label><input type="checkbox"><span>Give your family the emergency contacts, the mailing address and the Red Cross instructions (see Family information).</span></label></li>
+<li><label><input type="checkbox"><span>If you have dependents, tell them to expect the Dependent ID Card application by mail.</span></label></li>
+</ul>
+</section>
+
+<h2 class="part" id="before">Before you arrive<small>Prepare yourself physically, mentally and financially. Make sure you also have the right clothing and supplies, and most of all the right attitude.</small></h2>
+
+<section class="skill" id="finance">
+<h3>Financial arrangements <span class="tag">Before you go</span></h3>
+<ul class="kp">
+<li>Arrange with your creditors either to delay payments for two months or to pay in advance for the time you are away.</li>
+<li>At Cape May you must have a checking or savings account and an ATM card. Pay is direct deposited, and an ATM card is the only way to get it. Try your card at least once before you arrive.</li>
+<li>More about pay is in the Pay and finances section.</li>
+</ul>
+<div class="callout"><b class="lab">Why it matters</b><p>If you do not have a bank account and ATM card, your pay will be seriously disrupted, and you would have to spend training time sorting it out.</p></div>
+</section>
+
+<section class="skill" id="bring">
+<h3>What to bring <span class="tag">Before you go</span></h3>
+<p>Personal items fall into three categories:</p>
+<div class="cols">
+<div class="card"><h5>Issue</h5><p>Items issued to you when you arrive at the Training Center.</p></div>
+<div class="card"><h5>Permitted</h5><p>Items you are allowed to bring into training.</p></div>
+<div class="card"><h5>Contraband</h5><p>Items strictly forbidden. They are thrown away.</p></div>
+</div>
+<ul class="kp">
+<li>You must bring your Social Security card and at least one form of photo ID. Bring about $50 in small bills.</li>
+<li>You may bring one small suitcase or duffel bag, no larger than an airline carry-on, with your name printed clearly on it. It stores the clothes you arrive in until graduation.</li>
+<li>Arrive in comfortable, weather-appropriate clothes and sneaker-type shoes.</li>
+</ul>
+<h4>Permitted items</h4>
+<ul class="kp">
+<li>White v-neck t-shirts (3)</li><li>White underpants (6 to 10 pairs)</li><li>Navy blue or white long underwear (October to April)</li><li>Watch, wallet, wedding bands</li><li>Cartridge-type razor only</li><li>Bible and/or one religious reference book</li><li>Religious medallion on a chain long enough that it cannot be seen under a v-neck t-shirt</li><li>Address book; stationery, envelopes, stamps</li><li>Hand/body unscented lotion</li><li>Pre-paid phone card</li><li>Toothbrush and talcum powder</li><li>Unframed family photos (frames are not allowed)</li>
+</ul>
+<p class="hint">If you do not bring these, they can be bought on arrival.</p>
+<h4>Additional permitted items, women only</h4>
+<ul class="kp">
+<li>Birth control pills (if already using, to maintain cycle)</li>
+<li>Cloth-covered elastic bands that match hair color</li>
+<li>Gold or silver barrettes and bobby pins, or ones that match hair color</li>
+<li>One set of ball earrings worn in the lowest hole of the ear, no larger than a quarter inch in diameter (gold, silver, pearl or diamond). Earrings may only be worn for graduation, pictures and off-base liberty.</li>
+<li>Feminine hygiene items</li><li>Makeup (minimal amount)</li><li>Sports bras, white or skin tone (6)</li><li>1 regular bra</li>
+</ul>
+<h4>Contraband</h4>
+<div class="callout"><b class="lab">Important</b><p>Contraband is disposed of, and possessing some of it gets you removed from training immediately.</p></div>
+<ul class="kp">
+<li>Alcoholic beverages</li><li>All pornographic photos or materials</li><li>Any glass containers (plastic containers are permitted)</li><li>Consumables (any food or beverage)</li><li>Magazines</li><li>Narcotics and drug paraphernalia</li><li>Newspapers</li><li>Tobacco products and associated items</li><li>Weapons</li>
+</ul>
+<h4>Items issued to you</h4>
+<p>You pay for these through an allotment from your Coast Guard pay. Insect repellent and sunscreen are issued May to September. Men also receive 2 athletic supporters; women receive a small mesh laundry bag for delicates.</p>
+<div class="tw"><table>
+<tr><th>Hygiene and shower</th><th>Laundry and cleaning</th><th>School and gear</th></tr>
+<tr>
+<td>3 bars of soap and 1 soap dish<br>1 antibacterial soap<br>1 deodorant<br>1 shampoo<br>1 shower kit<br>4 towels<br>1 washcloth<br>1 pair shower shoes<br>1 lip balm<br>1 dental floss<br>1 toothpaste<br>1 toothbrush and holder<br>1 pkg. Band-Aids<br>1 nail clipper<br>1 pkg. razors<br>1 shaving cream<br>1 blister kit<br>1 pkg. cotton balls<br>1 pkg. cotton swabs</td>
+<td>1 rucksack<br>2 locks<br>3 laundry pins<br>3 laundry bags<br>1 bottle starch<br>1 laundry marker<br>1 sewing kit<br>1 shoe shine kit<br>2 ditty bags</td>
+<td>1 notebook<br>1 three-ring binder<br>1 ruler<br>12 pens<br>1 highlighter<br>1 one-inch stencil<br>1 half-inch stencil<br>1 black marker<br>1 canteen<br>1 penlight<br>2 rolls masking tape<br>1 pair of running shoes</td>
+</tr></table></div>
+</section>
+
+<section class="skill" id="fitness">
+<h3>Physical fitness training <span class="tag">Before you go</span></h3>
+<p>The recruits who succeed in fitness training all have one thing in common: they started preparing early.</p>
+<h4>Getting in shape</h4>
+<ul class="kp">
+<li><b>Doctor exam:</b> if you have never exercised regularly, get a physical exam first to make sure it is safe.</li>
+<li><b>Clothing:</b> dress for the temperature. In the cold, cover your ears and fingers. In the heat, wear cool cotton clothing.</li>
+<li><b>Footwear:</b> wear a good quality running sneaker.</li>
+</ul>
+<h4>The elements of fitness</h4>
+<ul class="kp">
+<li>Stop using tobacco.</li>
+<li>If you are 21 or older, moderate your alcohol use.</li>
+<li>Follow a low-fat nutrition plan.</li>
+<li>Follow an exercise plan that includes cardiorespiratory endurance, muscular fitness, flexibility and strength.</li>
+</ul>
+<div class="callout"><b class="lab">Tobacco</b><p>Smoking and chewing tobacco are prohibited in recruit training, and the first few weeks are tough enough already. Make every effort to be tobacco free before you arrive. A smoking cessation program is highly recommended if you are a heavy smoker or have smoked for several years.</p></div>
+<h4>Stretching</h4>
+<p>Stretch before strenuous exercise and again as part of your cool-down. Do not bounce. Slowly extend and hold each stretch for 10 to 15 seconds.</p>
+
+<h4>Bent-knee sit-ups</h4>
+<div class="callout"><b class="lab">Minimum to graduate</b><p>Men: 38 in one minute. Women: 32 in one minute.</p></div>
+<p>This measures abdominal muscular endurance. Lie on your back with knees bent, feet flat on the deck and hands cupped behind your ears. Have someone hold your feet if needed. Keep your lower back on the deck and raise your upper body about 90 degrees, touching your elbows to your knees, then lower with control. Once your shoulder blades touch the deck, you can come up again. Do not tuck your chin into your chest, which strains your neck.</p>
+
+<h4>Push-ups</h4>
+<div class="callout"><b class="lab">Minimum to graduate</b><p>Men: 29 in one minute. Women: 15 in one minute.</p></div>
+<p>This measures upper body muscular endurance. Place your hands shoulder-width apart with your feet together and your body in a straight line from shoulders to ankles. Keep it straight the whole time. Lower until your upper arms are at least parallel to the ground, then push back up until your arms are fully straight.</p>
+
+<h4>Running</h4>
+<div class="callout"><b class="lab">Minimum to graduate</b><p>1.5 mile run: men 12:51, women 15:26.</p></div>
+<ul class="kp">
+<li>This measures full-body endurance. Stretch thoroughly first, wear properly fitting running shoes, and pick a good surface (a track, or a level street).</li>
+<li>Relax and breathe properly. Keep your elbows close to your sides to save energy, and lengthen your stride to reduce stress on your joints.</li>
+<li>When you tire, slow to a brisk walk and keep pumping your arms to hold an aerobic heart rate.</li>
+<li>If you have not run for a long time, start with a walk/run program. For example, walk five minutes then run two minutes, repeating three times, for 21 minutes total. Do aerobic exercise three to five times a week.</li>
+</ul>
+
+<h4>Swimming</h4>
+<div class="callout"><b class="lab">Minimum to graduate</b><p>Jump off a six-foot platform into the pool, swim 100 meters, and tread water for five minutes. Swimming on your back is not permitted.</p></div>
+<p>A good swim training program has seven parts: stretching, warm-up, kick/pull or drill sets, a major set, a timed swim, sprints and a warm-down. You can find resources online to design a program for your swim qualification.</p>
+</section>
+
+<h2 class="part" id="arrive">Your arrival</h2>
+<section class="skill" id="arrival">
+<h3>Getting to Cape May <span class="tag">Travel</span></h3>
+<ul class="kp">
+<li>Start your travel well rested. Your first night you sleep in the clothes you arrive in, so travel comfortably.</li>
+<li>At Philadelphia International Airport, all recruits must report immediately to the USO office on the <b>secure side</b> (not the ticket counter side) of Terminal A-East. A USO volunteer will help with the rest of your trip.</li>
+<li>If your flight is late, or you have any other problem, call Training Center Cape May at <b>1-609-898-6971</b>.</li>
+</ul>
+</section>
+
+<h2 class="part" id="keysh">Keys to success</h2>
+<section class="skill" id="keys">
+<h3>How to succeed at training</h3>
+<div class="cols">
+<div class="card"><h5>Act with honor</h5><p>You are now subject to the Uniform Code of Military Justice (UCMJ). Lying, cheating or stealing will not be tolerated. If you do something wrong, do not hide it or lie. Own up to it. Violating our core values can have serious consequences.</p></div>
+<div class="card"><h5>Take things seriously</h5><p>The staff is serious about training you to be an effective member of the armed forces. If you make light of what your Company Commander is teaching, you will face stern discipline. This is not the place for jokes.</p></div>
+<div class="card"><h5>Build up your condition</h5><p>Some recruits find the fitness program easier than their usual routine, and many find it very difficult. Follow the fitness advice above, get in shape, and build up slowly so you do not get hurt.</p></div>
+<div class="card"><h5>Follow orders</h5><p>You will learn to obey all orders quickly, willingly and without question. Get used to it. It helps in training and in your Coast Guard career.</p></div>
+</div>
+<p>Our Core Values are <b>Honor</b> (integrity is our standard), <b>Respect</b> (we treat each other and those we serve with fairness, dignity and compassion) and <b>Devotion to Duty</b> (we seek responsibility, accept accountability and serve with pride).</p>
+</section>
+
+<h2 class="part" id="req">Required knowledge<small>The required knowledge is mandatory. The more you memorize before you arrive, the better off you will be.</small></h2>
+
+<section class="skill" id="orders">
+<h3>Eleven General Orders <span class="tag">Memorize</span></h3>
+<p>The Eleven General Orders are common to all branches of the U.S. Armed Forces.</p>
+<ol class="pr">
+<li>To take charge of this post and all government property in view.</li>
+<li>To walk my post in a military manner, keeping always on the alert, and observing everything that takes place within sight or hearing.</li>
+<li>To report all violations of orders I am instructed to enforce.</li>
+<li>To repeat all calls from posts more distant from the guard house than my own.</li>
+<li>To quit my post only when properly relieved.</li>
+<li>To receive, obey and pass on to the sentry who relieves me all orders from the commanding officer, field officer of the day, officer of the day, and officers and petty officers of the watch.</li>
+<li>To talk to no one except in the line of duty.</li>
+<li>To give the alarm in case of fire or disorder.</li>
+<li>To call the petty officer of the watch in any case not covered by instructions.</li>
+<li>To salute all officers and all colors and standards not cased.</li>
+<li>To be especially watchful at night, and during the time for challenging, to challenge all persons on or near my post, and to allow no one to pass without proper authority.</li>
+</ol>
+</section>
+
+<section class="skill" id="terms">
+<h3>Nautical and military terminology <span class="tag">Memorize</span></h3>
+<div class="tw"><table>
+<tr><th>Civilian word</th><th>Coast Guard word</th></tr>
+<tr><td>Room</td><td><b>Compartment</b></td></tr>
+<tr><td>Bathroom</td><td><b>Head</b></td></tr>
+<tr><td>Floor</td><td><b>Deck</b></td></tr>
+<tr><td>Upstairs</td><td><b>Topside</b></td></tr>
+<tr><td>Stairs</td><td><b>Ladder</b></td></tr>
+<tr><td>Wall</td><td><b>Bulkhead</b></td></tr>
+<tr><td>Mop</td><td><b>Swab</b></td></tr>
+<tr><td>Downstairs</td><td><b>Below</b></td></tr>
+<tr><td>Bed</td><td><b>Rack</b></td></tr>
+<tr><td>Ceiling</td><td><b>Overhead</b></td></tr>
+<tr><td>Flag</td><td><b>Colors</b></td></tr>
+<tr><td>Drinking fountain (or rumor)</td><td><b>Scuttlebutt</b></td></tr>
+<tr><td>Stop</td><td><b>Belay</b> or <b>Avast</b></td></tr>
+<tr><td>I understand your order and will comply</td><td><b>Aye aye, sir/ma'am</b></td></tr>
+<tr><td>An area designated by the Commanding Officer for official and ceremonial functions</td><td><b>Quarterdeck</b></td></tr>
+<tr><td>Recruit progress documentation slip</td><td><b>Performance tracker</b></td></tr>
+</table></div>
+</section>
+
+<section class="skill" id="phonetic">
+<h3>Phonetic alphabet <span class="tag">Memorize</span></h3>
+<div class="alpha">
+<span><b>A</b> Alpha</span><span><b>B</b> Bravo</span><span><b>C</b> Charlie</span><span><b>D</b> Delta</span><span><b>E</b> Echo</span><span><b>F</b> Foxtrot</span><span><b>G</b> Golf</span><span><b>H</b> Hotel</span><span><b>I</b> India</span><span><b>J</b> Juliett</span><span><b>K</b> Kilo</span><span><b>L</b> Lima</span><span><b>M</b> Mike</span><span><b>N</b> November</span><span><b>O</b> Oscar</span><span><b>P</b> Papa</span><span><b>Q</b> Quebec</span><span><b>R</b> Romeo</span><span><b>S</b> Sierra</span><span><b>T</b> Tango</span><span><b>U</b> Uniform</span><span><b>V</b> Victor</span><span><b>W</b> Whiskey</span><span><b>X</b> Xray</span><span><b>Y</b> Yankee</span><span><b>Z</b> Zulu</span>
+</div>
+</section>
+
+<section class="skill" id="bearing">
+<h3>Attention, salutes, and addressing personnel <span class="tag">Memorize</span></h3>
+<h4>The position of attention</h4>
+<p>The purpose is to build military bearing and self-discipline. Stand like this:</p>
+<ul class="kp">
+<li>Smartly bring your left heel against the right.</li>
+<li>Turn your feet out equally to form a 45 degree angle, heels on the same line and touching.</li>
+<li>Keep your legs straight but not stiff at the knees.</li>
+<li>Keep your hips and shoulders level and your chest lifted.</li>
+<li>Let your arms hang naturally, thumbs along the trouser seams, palms facing in, fingers joined in their natural curl.</li>
+<li>Keep your head and body erect and look straight ahead. Keep your mouth closed and your chin pulled in slightly.</li>
+<li>Stand still and do not talk.</li>
+</ul>
+<h4>Salutes</h4>
+<p>A salute is always accompanied by a proper greeting, such as "Sir, Good Morning, Sir" or "Ma'am, Good Afternoon, Ma'am." It is military tradition that recognizes the other person's seniority.</p>
+<h4>Addressing military personnel</h4>
+<ul class="kp">
+<li>Address all personnel with "Sir" or "Ma'am" at the beginning and the end of the sentence or phrase.</li>
+<li>Assume the position of attention when speaking to, or being addressed by, any permanent party member.</li>
+<li>"Carry on" may be granted only by the person in authority, and only if the recruit shows proper military bearing.</li>
+</ul>
+</section>
+
+<section class="skill" id="time">
+<h3>Military time <span class="tag">Memorize</span></h3>
+<p>Military time numbers the hours 00 to 23, so a.m. and p.m. are not needed. Midnight is 00, 1 a.m. is 01, 1 p.m. is 13, and so on. Minutes and seconds are the same as regular time.</p>
+<div class="tw"><table class="mt">
+<tr><th>Regular</th><th>Military</th><th>Regular</th><th>Military</th></tr>
+<tr><td>Midnight</td><td class="n">0000</td><td>Noon</td><td class="n">1200</td></tr>
+<tr><td>1:00 a.m.</td><td class="n">0100</td><td>1:00 p.m.</td><td class="n">1300</td></tr>
+<tr><td>2:00 a.m.</td><td class="n">0200</td><td>2:00 p.m.</td><td class="n">1400</td></tr>
+<tr><td>3:00 a.m.</td><td class="n">0300</td><td>3:00 p.m.</td><td class="n">1500</td></tr>
+<tr><td>4:00 a.m.</td><td class="n">0400</td><td>4:00 p.m.</td><td class="n">1600</td></tr>
+<tr><td>5:00 a.m.</td><td class="n">0500</td><td>5:00 p.m.</td><td class="n">1700</td></tr>
+<tr><td>6:00 a.m.</td><td class="n">0600</td><td>6:00 p.m.</td><td class="n">1800</td></tr>
+<tr><td>7:00 a.m.</td><td class="n">0700</td><td>7:00 p.m.</td><td class="n">1900</td></tr>
+<tr><td>8:00 a.m.</td><td class="n">0800</td><td>8:00 p.m.</td><td class="n">2000</td></tr>
+<tr><td>9:00 a.m.</td><td class="n">0900</td><td>9:00 p.m.</td><td class="n">2100</td></tr>
+<tr><td>10:00 a.m.</td><td class="n">1000</td><td>10:00 p.m.</td><td class="n">2200</td></tr>
+<tr><td>11:00 a.m.</td><td class="n">1100</td><td>11:00 p.m.</td><td class="n">2300</td></tr>
+</table></div>
+</section>
+
+<section class="skill" id="chain">
+<h3>Know your chain of command <span class="tag">Learn</span></h3>
+<p>A chain of command is a structure of authority and responsibility, so everyone knows their place and to whom they report. Your immediate supervisors are your Company Commander (CC) and Lead Company Commander (LCC). Their supervisor is the Section Commander (SC), and it continues up to the President. You are required to know each person's rank and name. Your Company Commander will tell you when to fill them in.</p>
+<ol class="pr">
+<li>Commander-in-Chief (the President of the United States)</li>
+<li>Secretary of Homeland Security</li>
+<li>Coast Guard Commandant</li>
+<li>Force Readiness Command</li>
+<li>Commanding Officer (CO)</li>
+<li>Executive Officer (XO)</li>
+<li>Training Officer (TO)</li>
+<li>Regimental Officer (RO)</li>
+<li>Battalion Officer (BO)</li>
+<li>Battalion Commander (BC)</li>
+<li>Section Commander (SC)</li>
+<li>Lead Company Commander (LCC)</li>
+<li>Company Commander (CC)</li>
+</ol>
+<p>Also good to know, though not in your chain of command: the Command Master Chief (CMC), the Chaplain, and the Equal Opportunity Advisor.</p>
+</section>
+
+<h2 class="part" id="course">Charting your course<small>An eight-week journey. Training is tough because the work is important: the Coast Guard saves lives and enforces the law.</small></h2>
+
+<section class="skill" id="stages">
+<h3>Stages of training</h3>
+<div class="callout"><b class="lab">Stress is on purpose</b><p>It makes sure you have what it takes to defend your country, enforce our laws and save people in difficult circumstances. As you progress, you are expected to perform at higher and higher levels. Basic training is eight weeks, but you can be held back for disciplinary, medical or academic reasons.</p></div>
+<div class="stage"><h5>1. Arrival</h5><p>Forming begins. You go through medical screening and administrative processing, and receive your uniforms and a haircut. During forming week you may not feel like a military member, but you begin to look and act like one.</p></div>
+<div class="stage"><h5>2. Company Formation</h5><p>After forming week you are assigned to a Recruit Training Company and meet your Company Commanders. Your first weekend with the company is challenging: you learn to act as a team member and to obey orders. Many recruits find it the hardest stretch of boot camp. Your goal is to get "squared away" and begin your transformation.</p></div>
+<div class="stage"><h5>3. Learning the Basics</h5><p>An introduction to physical fitness and required knowledge. You start military drill, customs and courtesies, and basic Coast Guard orientation. The more you memorize before you arrive, the better.</p></div>
+<div class="stage"><h5>4. Practical Training</h5><p>More hands-on: fire fighting, marksmanship, line handling and seamanship, plus classroom instruction. At the end of week four you take the mid-term exam. When you pass, you complete your Assignment Data Card (ADC). Recruit assignments are limited to district only. The Coast Guard assigns you to a ship or shore unit based on its needs, and tries to match your preferences. Most recruits find their first duty is operational. You must contact your new unit and talk to a designated sponsor for the information you need.</p></div>
+<div class="stage"><h5>5. Preparation for Your First Unit</h5><p>At the end of week five you receive orders to your first assignment. Training covers first aid and watch standing, and you learn about your military entitlements to prepare for travel and graduation. All details are handled before you leave Cape May.</p></div>
+<div class="stage"><h5>6. Graduation</h5><p>The culmination of recruit training. Ceremonies are usually held Friday morning at 1100, outdoors, or in the Training Center gymnasium in bad weather. Your family is sent a letter with the details, and is always invited and encouraged to attend.</p></div>
+</section>
+
+<h2 class="part" id="payh">Pay and finances</h2>
+<section class="skill" id="pay">
+<h3>Pay, housing and education <span class="tag">Money</span></h3>
+<ul class="kp">
+<li><b>ATM:</b> ATMs are located at Dempsey Hall and in the Exchange.</li>
+<li><b>Pay grade:</b> recruits are paid at the current scale for the pay grade they enlisted in. Most enlist as E-1, though some programs start at E-2 or E-3.</li>
+<li><b>Basic Allowance for Housing (BAH):</b> recruits with families may apply for BAH, normally during week one. The amount depends on your dependents.</li>
+<li><b>Tuition assistance:</b> up to $4,500 is available each fiscal year.</li>
+<li><b>Montgomery GI Bill:</b> you are automatically enrolled at enlistment. During week 3 you can choose to disenroll.</li>
+<li><b>Post 9/11 GI Bill:</b> you earn this benefit by serving honorably for 36 months. The two programs differ in important ways, so learn which one fits your education plans.</li>
+<li><b>Reserve members:</b> the Montgomery GI Bill (Selected Reserve) and the Reserve Education Assistance Program (REAP) are available.</li>
+</ul>
+<p>Learn more at www.va.gov or ask your recruiter.</p>
+</section>
+
+<h2 class="part" id="geninfo">General information</h2>
+<section class="skill" id="support">
+<h3>Counseling, chapel and medical <span class="tag">Support</span></h3>
+<p>Training is very strenuous, and being away from family and friends can create a need for counseling. You are never alone, and someone is always available to help.</p>
+<ul class="kp">
+<li><b>Start with your Company Commander.</b> Your CC has experience with problems like yours.</li>
+<li>If you are uncomfortable talking to your CC, you can see a chaplain or another counseling resource: a staff psychiatrist, the equal opportunity advisor, a social worker or a staff nurse. Appointments are made through your Company Commander.</li>
+<li><b>Chapel:</b> Catholic and Protestant chaplains hold services every Sunday morning. Arrangements can be made for other services available in the community if they do not conflict with training. You may also join the recruit choir. Two recruits per company serve as Company Religious Representatives.</li>
+<li><b>Medical:</b> the Training Center Dispensary has family physicians, physical therapy, a dental clinic, optometry and a psychiatrist for mild to moderate illness, including overnight treatment. Emergency room services are at local hospitals.</li>
+</ul>
+</section>
+
+<section class="skill" id="liberty">
+<h3>Relationships and liberty <span class="tag">Rules</span></h3>
+<div class="callout"><b class="lab">Recruits may not socialize with</b><p>Cape May training staff (non-recruit military and civilian personnel), and recruits in other companies that are not in the same week of training.</p></div>
+<h4>Inappropriate relationships</h4>
+<ul class="kp">
+<li>Repeated or continued association, discussions (including professional ones, because frequency can look inappropriate) and sexual or amorous relations between recruits and Cape May training staff.</li>
+<li>Nonprofessional association with recruits from other companies not in your week of training, unless the training staff directs it.</li>
+<li>Any sexual or amorous associations or discussions between recruits.</li>
+</ul>
+<p><b>You must report any incident of inappropriate relations.</b> Failing to report one is a punishable offense.</p>
+<h4>Liberty</h4>
+<ul class="kp">
+<li>Liberty is time off from training. It can be limited to Training Center grounds, or your company may earn eight hours of off-base liberty in week seven.</li>
+<li>Liberty is earned. If you do not meet all academic and physical fitness requirements, you will not normally get it.</li>
+<li>On liberty you represent the Coast Guard. Drinking alcohol under age 21 is not permitted, and excessive drinking that causes intoxication or an inability to perform duties is punished under current policy.</li>
+</ul>
+</section>
+
+<section class="skill" id="uniforms">
+<h3>Uniforms</h3>
+<p>Uniforms must be worn properly and with respect. Your conduct must reflect your pride in the Coast Guard and in your uniform.</p>
+</section>
+
+<h2 class="part" id="familyh">Family information</h2>
+<section class="skill" id="family">
+<h3>Family, calls and mail <span class="tag">Share with family</span></h3>
+<p>As a new member you become part of the Coast Guard "extended family," and so do your family members. More information is at www.uscg.mil/spouses.</p>
+<div class="callout"><b class="lab">Emergency contact</b><p>In an emergency, your family should contact their local American Red Cross office. For urgent questions or concerns, they can reach the Battalion Officer at <b>(609) 898-6715</b>, or after hours the Officer of the Day at <b>(609) 898-6915</b>.</p></div>
+<h4>Telephone calls</h4>
+<ul class="kp">
+<li>When you arrive, a letter is sent to your family to tell them you got there safely.</li>
+<li>You may <b>not</b> receive personal phone calls during recruit training, so contact your family when you reach the Philadelphia USO.</li>
+<li>Office phones at Cape May are for official business only. Your Company Commander may grant phone use in the later weeks of training.</li>
+</ul>
+<h4>Dependent ID cards</h4>
+<p>If you have dependents, you fill out the Application for Dependent ID Card after you arrive. The application and a letter explaining the steps are mailed to your spouse or dependent, who takes it to the nearest military installation that issues ID cards. If they cannot get there before graduation, a card can be issued at Cape May (by appointment only) or at your first duty station.</p>
+<h4>Mail</h4>
+<ul class="kp">
+<li>Mail is delivered Monday through Friday, and heavy volume can slow it down.</li>
+<li>Company mail orderlies pick up mail at a time set by your Company Commander and bring it to the CC for inspection. Suspicious letters or packages are opened by you in front of your CC. Contraband is seized, so check the contraband list before anyone sends you anything.</li>
+<li>You may receive letters, cards and photos that are not obscene.</li>
+<li>Outgoing mail can go in the drop box at the Training Center Post Office or the mailbox between Munro Hall and the Auditorium. Mail is picked up twice a day.</li>
+</ul>
+<h4>Your mailing address</h4>
+<div class="addr">SR (Last name, First, MI)<br>Recruit Company ______<br>Healy Hall, or James Hall, or Munro Hall<br>USCG Training Center<br>1 Munro Avenue<br>Cape May, NJ 08204-5083</div>
+</section>
+
+<h2 class="part" id="faqh">Frequently asked questions</h2>
+<section class="skill" id="faq">
+<h3>FAQ</h3>
+<dl class="faq">
+<dt>Is there time off during training?</dt><dd>Yes. Time off includes divine hours on Sunday to attend worship services of your choice. In later weeks you may earn liberty for a few hours during the weekend.</dd>
+<dt>What if I did not get a bank account and ATM card?</dt><dd>Your pay will be seriously disrupted. Take care of this before you arrive so you do not spend training time dealing with it.</dd>
+<dt>How long is recruit training?</dt><dd>Eight weeks, unless you are held back for disciplinary, medical, academic or physical fitness reasons.</dd>
+<dt>What can I receive in the mail?</dt><dd>Letters, cards and photos that are not obscene.</dd>
+<dt>Can I get married while I am in the Coast Guard?</dt><dd>Yes.</dd>
+<dt>How does my family reach me in an emergency?</dt><dd>They should contact their local Red Cross office.</dd>
+<dt>Can my family pick me up at the end of recruit training?</dt><dd>Yes. Your family is always invited and encouraged to attend graduation.</dd>
+<dt>Can I become an officer later?</dt><dd>Yes. Ask your unit Educational Services Officer for details.</dd>
+<dt>How much leave do I get each year?</dt><dd>You earn 30 days of paid leave each year.</dd>
+</dl>
+</section>
+
+<h2 class="part" id="glossaryh">Glossary of nautical terms</h2>
+<section class="skill" id="glossary">
+<h3>Glossary</h3>
+<dl class="faq gl">
+<dt>Barracks</dt><dd>A building where military personnel live.</dd>
+<dt>Belay</dt><dd>(1) To make fast or secure a line. (2) To cancel an order. (3) To cease.</dd>
+<dt>Below</dt><dd>Beneath the deck (downstairs).</dd>
+<dt>Bulkhead</dt><dd>A partition or "wall" on a vessel.</dd>
+<dt>Cabin</dt><dd>The Commanding Officer's living quarters.</dd>
+<dt>Compartment</dt><dd>Enclosed spaces or "rooms" on a vessel.</dd>
+<dt>Deck</dt><dd>The "floor" of a vessel.</dd>
+<dt>Eyes in the boat</dt><dd>Look straight ahead at the position of attention.</dd>
+<dt>Forward</dt><dd>Towards the bow (pronounced "forrard").</dd>
+<dt>Galley</dt><dd>The cooking compartment or "kitchen" on a vessel.</dd>
+<dt>Hatch</dt><dd>A square or rectangular opening in a deck.</dd>
+<dt>Head</dt><dd>The compartment with toilet facilities; bathroom.</dd>
+<dt>Heading</dt><dd>The direction a ship points at any given moment.</dd>
+<dt>Inboard</dt><dd>Toward the ship's center line.</dd>
+<dt>Ladder</dt><dd>Steps from one deck to another.</dd>
+<dt>Messdeck</dt><dd>The compartment where enlisted personnel eat.</dd>
+<dt>Muster</dt><dd>Assembly of the crew for accountability.</dd>
+<dt>OOD</dt><dd>Officer of the Day/Deck. An officer in charge of a vessel or station for the day or watch.</dd>
+<dt>Outboard</dt><dd>Out, away from the ship's center line.</dd>
+<dt>Overhead</dt><dd>The ceiling on a vessel or compartment.</dd>
+<dt>Passageway</dt><dd>A compartment designed for traffic, a "hallway."</dd>
+<dt>Port</dt><dd>The left side of a vessel when looking forward.</dd>
+<dt>Rack</dt><dd>A sailor's bed.</dd>
+<dt>Scuttlebutt</dt><dd>(1) A drinking fountain. (2) A rumor.</dd>
+<dt>Secure</dt><dd>Lock up, finish up.</dd>
+<dt>Starboard</dt><dd>The right side of a vessel when looking forward.</dd>
+<dt>Swab</dt><dd>To mop. The mop itself.</dd>
+<dt>Underway</dt><dd>When a vessel is not tied to a pier or at anchor.</dd>
+<dt>Watch</dt><dd>A period of duty, usually four hours.</dd>
+</dl>
+<p class="hint">Source: Training Center Cape May, "Helmsman" recruit booklet (U.S. Coast Guard). <a href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/Helmsmannew.pdf?ver=2017-05-23-160144-093" target="_blank" rel="noopener">Open the original PDF</a>.</p>
+</section>
+
+</main>
+</div>
+<script>
+(function(){var h=document.documentElement,b=document.getElementById('tocbtn'),s=document.getElementById('scrim'),n=document.getElementById('toc');
+function set(o){h.classList.toggle('toc-open',o);b.setAttribute('aria-expanded',o?'true':'false');b.setAttribute('aria-label',o?'Close contents':'Open contents');if(!o)b.blur();}
+b.addEventListener('click',function(){set(!h.classList.contains('toc-open'));});
+s.addEventListener('click',function(){set(false);});
+n.addEventListener('click',function(e){if(e.target.closest('a'))set(false);});
+function sc(e){var y=window.pageYOffset||h.scrollTop||document.body.scrollTop||0;if(e&&e.target&&e.target.scrollTop)y=Math.max(y,e.target.scrollTop);h.classList.toggle('scrolled',y>100);}
+window.addEventListener('scroll',sc,{passive:true,capture:true});document.addEventListener('touchmove',sc,{passive:true});sc();
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);}});
+})();
+</script>
+
+<script>
+(function(){var K='helm-checklist-v1',bx=[].slice.call(document.querySelectorAll('#ckbox input[type=checkbox]')),c=document.getElementById('ckcount'),st={};
+try{st=JSON.parse(localStorage.getItem(K)||'{}')||{};}catch(e){st={};}
+function upd(){var n=bx.filter(function(x){return x.checked}).length;c.textContent=n+' of '+bx.length+' done';}
+bx.forEach(function(x,i){x.checked=!!st[i];x.addEventListener('change',function(){st[i]=x.checked?1:0;try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}upd();});});
+document.getElementById('ckreset').addEventListener('click',function(){bx.forEach(function(x){x.checked=false});st={};try{localStorage.removeItem(K);}catch(e){}upd();});
+upd();})();
+</script>
 </body>
 </html>
