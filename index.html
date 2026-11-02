@@ -18,7 +18,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font
 header.top{background:var(--band);color:var(--band-ink);padding-block:56px 48px}
 .in{max-width:1100px;margin:0 auto}
 .eyebrow{font-weight:600;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--band-accent)}
-h1{font-family:var(--display);font-weight:700;font-size:clamp(52px,11vw,110px);line-height:.95;margin:10px 0 14px;letter-spacing:.01em;text-wrap:balance}
+h1{font-family:var(--display);font-weight:700;font-size:clamp(38px,6.4vw,76px);line-height:1;margin:10px 0 16px;letter-spacing:.01em;text-wrap:balance;max-width:26ch}
+header.top p.greet{font-family:var(--display);font-weight:600;font-size:clamp(22px,3vw,30px);letter-spacing:.06em;text-transform:uppercase;color:var(--band-accent);margin:0 0 12px}
 header.top p{margin:0;max-width:56ch;color:#d4d6da;font-size:18px}
 main{padding-block:44px 80px;display:flex;flex-direction:column;gap:56px}
 h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,38px);text-transform:uppercase;letter-spacing:.03em;margin:0 0 18px;line-height:1.05}
@@ -29,14 +30,17 @@ h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,38px);tex
 .tip p{margin:0;font-size:15.5px;color:var(--muted);line-height:1.5}
 .subjects{display:flex;flex-direction:column;align-items:center;text-align:center}
 .subjects .lead{margin:-6px 0 26px;color:var(--muted);max-width:52ch}
-.grid{display:flex;flex-wrap:wrap;gap:24px;justify-content:center}
+.grid{display:flex;flex-wrap:wrap;gap:36px 40px;justify-content:center;align-items:flex-start}
 a.tile{display:block;width:min(300px,78vw);aspect-ratio:1/1;position:relative;overflow:hidden;background:var(--band);color:var(--band-ink);text-decoration:none;border:3px solid var(--band);transition:transform .18s ease,border-color .18s ease}
 a.tile:hover{transform:translateY(-4px);border-color:var(--band-accent)}
 a.tile:focus-visible{outline:4px solid var(--accent);outline-offset:4px}
 a.tile svg{position:absolute;inset:0;width:100%;height:100%}
-a.tile .lab{position:absolute;left:0;right:0;bottom:0;padding:14px 18px 16px;background:linear-gradient(to top,rgba(0,0,0,.55),rgba(0,0,0,0));display:flex;justify-content:space-between;align-items:baseline}
-a.tile .lab b{font-family:var(--display);font-size:46px;line-height:1;letter-spacing:.04em;text-transform:uppercase}
-a.tile .lab span{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--band-accent);font-weight:600}
+a.tile .lab{position:absolute;left:0;right:0;bottom:0;padding:34px 18px 14px;background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,0));display:flex;flex-direction:column;gap:4px;text-align:left}
+a.tile .lab b{font-family:var(--display);font-size:32px;line-height:1;letter-spacing:.04em;text-transform:uppercase}
+a.tile .lab span{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--band-accent);font-weight:600}
+.item{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(300px,78vw)}
+.item a.tile{width:100%}
+.cap{font-size:14.5px;color:var(--muted);text-align:center;max-width:30ch}
 .soon{margin-top:26px;font-size:14.5px;color:var(--muted)}
 footer{padding-block:0 40px;text-align:center;font-size:13.5px;color:var(--muted)}
 @media (max-width:760px){.tips{grid-template-columns:minmax(0,1fr)}header.top{padding-block:40px 34px}main{padding-block:32px 56px;gap:44px}body{font-size:16px}}
@@ -48,8 +52,9 @@ svg text{font-family:var(--serif)}
 <body>
 <header class="top pad"><div class="in">
 <div class="eyebrow" id="today">ASVAB Study Hub</div>
-<h1 id="greet">Welcome back</h1>
-<p>Pick a subject to start studying. Short, focused sessions beat marathons, so start with one topic today.</p>
+<h1>Welcome to your ASVAB and Coast Guard training manual.</h1>
+<p class="greet" id="greet">Welcome back</p>
+<p>Pick a manual to start studying. Short, focused sessions beat marathons, so start with one topic today.</p>
 </div></header>
 
 <main class="pad"><div class="in" style="width:100%;display:flex;flex-direction:column;gap:56px">
@@ -67,9 +72,10 @@ svg text{font-family:var(--serif)}
 </section>
 
 <section class="subjects" aria-labelledby="subh">
-<h2 id="subh">Choose a subject</h2>
-<p class="lead">More subjects are on the way. Math is ready now.</p>
+<h2 id="subh">Choose a manual</h2>
+<p class="lead">Pick a manual to open.</p>
 <div class="grid">
+<div class="item">
 <a class="tile" href="math/" aria-label="Math study guide">
 <svg viewBox="0 0 300 300" aria-hidden="true">
 <g stroke="rgba(255,255,255,.12)" stroke-width="1"><path d="M0 60h300M0 120h300M0 180h300M0 240h300M60 0v300M120 0v300M180 0v300M240 0v300"/></g>
@@ -83,14 +89,36 @@ svg text{font-family:var(--serif)}
 <text x="212" y="176" font-size="40" fill="#ffffff" font-style="italic">x²</text>
 <text x="226" y="222" font-size="38" fill="#f2b04a">%</text>
 </svg>
-<div class="lab"><b>Math</b><span>Open</span></div>
+<div class="lab"><b>Math</b><span>ASVAB &middot; Open</span></div>
 </a>
+<p class="cap">Arithmetic Reasoning and Mathematics Knowledge</p>
 </div>
-<p class="soon">Arithmetic Reasoning and Mathematics Knowledge</p>
+<div class="item">
+<a class="tile" href="helmsman/" aria-label="Coast Guard Helmsman">
+<svg viewBox="0 0 300 300" aria-hidden="true">
+<g stroke="rgba(255,255,255,.12)" stroke-width="1"><path d="M0 60h300M0 120h300M0 180h300M0 240h300M60 0v300M120 0v300M180 0v300M240 0v300"/></g>
+<circle cx="150" cy="98" r="60" fill="none" stroke="#ffffff" stroke-width="32"/>
+<circle cx="150" cy="98" r="60" fill="none" stroke="#e8602c" stroke-width="32" stroke-dasharray="47.1 47.1"/>
+<circle cx="150" cy="98" r="76" fill="none" stroke="#14151a" stroke-width="3"/>
+<circle cx="150" cy="98" r="44" fill="none" stroke="#14151a" stroke-width="3"/>
+<g transform="translate(150 98) scale(.76) translate(-150 -122)" fill="none" stroke="#ffffff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="150" cy="92" r="6"/>
+<path d="M150 98V152"/>
+<path d="M137 107H163"/>
+<path d="M120 130C122 150 135 154 150 154C165 154 178 150 180 130"/>
+<path d="M112 136L120 128L128 136"/>
+<path d="M172 136L180 128L188 136"/>
+</g>
+</svg>
+<div class="lab"><b>Coast Guard Helmsman</b><span>Coming soon</span></div>
+</a>
+<p class="cap">Training manual for the Coast Guard</p>
+</div>
+</div>
 </section>
 
 </div></main>
-<footer class="pad">Study guides for the ASVAB</footer>
+<footer class="pad">ASVAB and Coast Guard training manual</footer>
 <script>
 (function(){var d=new Date(),h=d.getHours(),g=h<12?'Good morning':(h<18?'Good afternoon':'Good evening');
 document.getElementById('greet').textContent=g;
