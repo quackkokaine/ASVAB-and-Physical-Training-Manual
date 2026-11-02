@@ -30,20 +30,20 @@ h2{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,38px);tex
 .tip p{margin:0;font-size:15.5px;color:var(--muted);line-height:1.5}
 .subjects{display:flex;flex-direction:column;align-items:center;text-align:center}
 .subjects .lead{margin:-6px 0 26px;color:var(--muted);max-width:52ch}
-.grid{display:flex;flex-wrap:wrap;gap:36px 40px;justify-content:center;align-items:flex-start}
+.grid{display:grid;grid-template-columns:repeat(2,300px);gap:44px 44px;justify-content:center;align-items:start}
 a.tile{display:block;width:min(300px,78vw);aspect-ratio:1/1;position:relative;overflow:hidden;background:var(--band);color:var(--band-ink);text-decoration:none;border:3px solid var(--band);transition:transform .18s ease,border-color .18s ease}
 a.tile:hover{transform:translateY(-4px);border-color:var(--band-accent)}
 a.tile:focus-visible{outline:4px solid var(--accent);outline-offset:4px}
 a.tile svg{position:absolute;inset:0;width:100%;height:100%}
 a.tile .lab{position:absolute;left:0;right:0;bottom:0;padding:34px 18px 14px;background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,0));display:flex;flex-direction:column;gap:4px;text-align:left}
-a.tile .lab b{font-family:var(--display);font-size:32px;line-height:1;letter-spacing:.04em;text-transform:uppercase}
+a.tile .lab b{font-family:var(--display);font-size:26px;line-height:1;letter-spacing:.04em;text-transform:uppercase}
 a.tile .lab span{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--band-accent);font-weight:600}
 .item{display:flex;flex-direction:column;align-items:center;gap:14px;width:min(300px,78vw)}
 .item a.tile{width:100%}
 .cap{font-size:14.5px;color:var(--muted);text-align:center;max-width:30ch}
 .soon{margin-top:26px;font-size:14.5px;color:var(--muted)}
 footer{padding-block:0 40px;text-align:center;font-size:13.5px;color:var(--muted)}
-@media (max-width:760px){.tips{grid-template-columns:minmax(0,1fr)}header.top{padding-block:40px 34px}main{padding-block:32px 56px;gap:44px}body{font-size:16px}}
+@media (max-width:700px){.grid{grid-template-columns:min(300px,78vw)}.tips{grid-template-columns:minmax(0,1fr)}header.top{padding-block:40px 34px}main{padding-block:32px 56px;gap:44px}body{font-size:16px}}
 @media (min-width:761px) and (max-width:1000px){.tips{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:reduce){a.tile{transition:none}}
 svg text{font-family:var(--serif)}
@@ -113,6 +113,35 @@ svg text{font-family:var(--serif)}
 <div class="lab"><b>Coast Guard Helmsman</b><span>Coming soon</span></div>
 </a>
 <p class="cap">Training manual for the Coast Guard</p>
+</div>
+<div class="item">
+<a class="tile" href="cape-may/" aria-label="Cape May Training Manual">
+<svg viewBox="0 0 300 300" aria-hidden="true">
+<g stroke="rgba(255,255,255,.12)" stroke-width="1"><path d="M0 60h300M0 120h300M0 180h300M0 240h300M60 0v300M120 0v300M180 0v300M240 0v300"/></g>
+<polygon points="151.3,12.4 172.6,14.5 185.6,32.4 180.4,42.5 178.2,52.0 170.5,60.4 179.1,61.5 181.3,62.6 180.4,78.3 177.0,102.4 163.2,124.2 150.2,136.0 142.5,148.3 139.4,141.6 133.8,133.2 116.6,127.6 114.4,113.6 120.0,98.5 133.0,94.0 148.5,76.1 129.9,49.8 132.5,34.1 144.6,21.2" fill="#3a3d43" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round"/>
+<circle cx="139.9" cy="147.2" r="14" fill="none" stroke="#e5352b" stroke-width="2.5" opacity=".6"/>
+<circle cx="139.9" cy="147.2" r="7.5" fill="#e5352b" stroke="#ffffff" stroke-width="2"/>
+</svg>
+<div class="lab"><b>Cape May Training Manual</b><span>Coming soon</span></div>
+</a>
+<p class="cap">Recruit training at Cape May, New Jersey</p>
+</div>
+<div class="item">
+<a class="tile" href="swim/" aria-label="Swim Training">
+<svg viewBox="0 0 300 300" aria-hidden="true">
+<g stroke="rgba(255,255,255,.12)" stroke-width="1"><path d="M0 60h300M0 120h300M0 180h300M0 240h300M60 0v300M120 0v300M180 0v300M240 0v300"/></g>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<circle cx="214" cy="78" r="15" fill="#ffffff" stroke="none"/>
+<path d="M88 124C122 98 170 104 204 112" stroke="#ffffff" stroke-width="14"/>
+<path d="M84 124L58 116" stroke="#ffffff" stroke-width="12"/>
+<path d="M160 100C158 62 118 54 98 78" stroke="#ffffff" stroke-width="12"/>
+<path d="M24 150q16-14 32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0" stroke="#4aa3df" stroke-width="7"/>
+<path d="M24 172q16-14 32 0t32 0t32 0t32 0t32 0t32 0t32 0t32 0" stroke="#4aa3df" stroke-width="7" opacity=".55"/>
+</g>
+</svg>
+<div class="lab"><b>Swim Training</b><span>Coming soon</span></div>
+</a>
+<p class="cap">Swim test and conditioning</p>
 </div>
 </div>
 </section>
