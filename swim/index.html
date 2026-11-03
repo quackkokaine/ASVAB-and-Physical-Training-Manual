@@ -3,20 +3,665 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
 <title>Swim Training</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;1,500&display=swap">
 <style>
-:root{--bg:#f3f4f5;--ink:#26282b;--muted:#55595f;--band:#2a2c30;--accent:#f2b04a;--link:#1b4fc4;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#1b1c1f;--ink:#ececee;--muted:#b0b3b9;--band:#131416;--link:#8db4ff;color-scheme:dark}}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,sans-serif}
-header{background:var(--band);color:#fff;padding:56px max(16px,env(safe-area-inset-left,0px)) 44px}
-h1{margin:0 auto;max-width:1100px;font:700 clamp(38px,8vw,72px)/1 "Arial Narrow",Arial,sans-serif;text-transform:uppercase}
-main{max-width:1100px;margin:0 auto;padding:40px max(16px,env(safe-area-inset-left,0px)) 80px}
-.tag{color:var(--accent);font-weight:600;letter-spacing:.16em;text-transform:uppercase;font-size:13px;max-width:1100px;margin:0 auto 10px}
+/* Layout: sticky section index at left, one readable column of skill sheets at right. Navy + amber, built like a printed field manual. */
+:root{--bg:#f3f4f5;--surface:#ffffff;--ink:#26282b;--muted:#55595f;--line:#d6d8db;--accent:#9a5b00;--accent-bg:#fff0d2;--link:#1b4fc4;--hl:#e9ebed;--band:#26282b;--band-ink:#ffffff;--band-accent:#f2b04a;--good:#17653a;
+--display:'Barlow Condensed','Arial Narrow',sans-serif;--body:'IBM Plex Sans',system-ui,sans-serif;--serif:'IBM Plex Serif',Georgia,serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1c1f;--surface:#26282c;--ink:#ececee;--muted:#b0b3b9;--line:#3c3f44;--accent:#f2b04a;--accent-bg:#3a2d12;--link:#8db4ff;--hl:#303337;--band:#131416;--good:#6fd09a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1c1f;--surface:#26282c;--ink:#ececee;--muted:#b0b3b9;--line:#3c3f44;--accent:#f2b04a;--accent-bg:#3a2d12;--link:#8db4ff;--hl:#303337;--band:#131416;--good:#6fd09a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
 a{color:var(--link)}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--band);color:var(--band-ink);padding-block:48px 40px}
+header.top .in{max-width:1180px;margin:0 auto}
+.eyebrow{font-weight:600;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--band-accent)}
+header.top h1{font-family:var(--display);font-weight:700;font-size:clamp(44px,9vw,92px);line-height:.95;margin:10px 0 14px;letter-spacing:.01em;text-wrap:balance}
+header.top p{margin:0;max-width:60ch;color:#d4d6da;font-size:18px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;padding-block:36px 80px}
+nav.idx{position:sticky;top:20px;align-self:start;font-size:14.5px}
+nav.idx h2{font-family:var(--display);font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+nav.idx h2:first-child{margin-top:0}
+nav.idx a{display:block;padding:3px 0 3px 10px;border-left:2px solid var(--line);color:var(--ink);text-decoration:none}
+nav.idx a:hover{border-left-color:var(--accent);color:var(--accent)}
+main{min-width:0;display:flex;flex-direction:column;gap:28px}
+h2.part{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,50px);line-height:1;margin:44px 0 0;text-transform:uppercase;letter-spacing:.02em;padding-top:14px;border-top:4px solid var(--ink)}
+h2.part small{display:block;font-family:var(--body);font-size:16px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);margin-top:8px;line-height:1.5;max-width:62ch}
+section.skill{background:var(--surface);border:1px solid var(--line);padding:26px clamp(16px,3vw,32px) 30px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px}
+section.skill>h3{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,38px);line-height:1.05;margin:0;text-transform:uppercase;letter-spacing:.03em;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.tag{font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.14em;background:var(--accent-bg);color:var(--accent);padding:3px 9px;text-transform:uppercase}
+h4{font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:8px 0 -4px;display:flex;align-items:center;gap:10px}
+h4::after{content:"";flex:1;height:1px;background:var(--line)}
+p{margin:0}
+ul.kp,ol.pr{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:7px}
+ul.kp li::marker{color:var(--accent)}
+ol.pr{padding-left:1.7em}
+ol.pr li{padding-left:4px}
+.ex{background:var(--hl);padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.ex b.lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.steps{display:flex;flex-direction:column;gap:2px;padding-left:2px}
+.steps div{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}
+.steps div::before{content:"";width:6px;height:6px;background:var(--accent);flex:none;margin-right:2px}
+.m{font-family:var(--serif);font-size:1.12em;white-space:nowrap}
+.mb{font-family:var(--serif);font-size:1.5em;padding:10px 16px;background:var(--hl);display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+.mb .l{font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);width:100%}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .14em;text-align:center;line-height:1.18;font-size:1.02em}
+.fr>span:first-child{border-bottom:.07em solid currentColor;padding:0 .24em .05em}
+.fr>span:last-child{padding-top:.05em}
+.rt{border-top:.07em solid currentColor;padding:0 .08em;margin-left:.02em}
+.vids{font-size:15px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.vids b{font-weight:600;color:var(--ink)}
+.vids a{white-space:normal}
+details.ans{border:1px dashed var(--line);padding:0}
+details.ans summary{cursor:pointer;padding:9px 14px;font-weight:600;font-size:14.5px;color:var(--good);list-style:none}
+details.ans summary::before{content:"+ ";}
+details.ans[open] summary::before{content:"\2212 ";}
+details.ans .body{padding:2px 16px 14px;display:flex;flex-wrap:wrap;gap:6px 22px;font-size:16px}
+.tw{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--hl)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{border:1px solid var(--line);padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.card h5{margin:0;font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.fig{display:flex;flex-direction:column;gap:6px;align-items:flex-start;max-width:100%}
+.fig svg{max-width:100%;height:auto;display:block}
+.fig figcaption,figcaption{font-size:13.5px;color:var(--muted)}
+figure{margin:0}
+svg text{font-family:var(--body);fill:var(--ink)}
+.st{stroke:var(--ink);fill:none;stroke-width:2}
+.fa{fill:var(--hl);stroke:var(--ink);stroke-width:2}
+.fx{fill:var(--accent-bg);stroke:var(--accent);stroke-width:2}
+.bar{display:flex;height:36px;max-width:520px;border:2px solid var(--ink)}
+.bar span{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;border-right:1px solid var(--ink)}
+.bar span:last-child{border-right:0}
+.on{background:var(--accent-bg);color:var(--ink)}
+.off{background:var(--hl);color:var(--ink)}
+.grid2{display:grid;gap:2px;max-width:420px;background:var(--ink);border:2px solid var(--ink)}
+.grid2 div{background:var(--surface);padding:10px 8px;text-align:center;font-family:var(--serif);font-size:1.05em}
+.grid2 .h{background:var(--hl);font-family:var(--body);font-weight:600;font-size:14px}
+.cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:900px){
+.wrap{grid-template-columns:minmax(0,1fr);gap:20px}
+.cols,.cmp{grid-template-columns:minmax(0,1fr)}
+body{font-size:16.5px}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+svg{max-width:100%;height:auto}
+.bar{height:auto;min-height:36px}
+.bar span{padding:6px 8px;text-align:center}
+details.ans summary{min-height:44px;display:flex;align-items:center}
+.fig{overflow-x:auto}
+@media (max-width:900px){
+.wrap{padding-block:0 56px}
+main{padding-top:8px}
+}
+@media (max-width:600px){
+body{font-size:16px;line-height:1.55}
+header.top{padding-block:30px 26px}
+header.top p{font-size:16px}
+h2.part{margin-top:28px}
+section.skill{padding:18px 14px 22px;gap:14px;border-left:0;border-right:0}
+.m{white-space:normal}
+.mb{font-size:1.25em;padding:10px 12px}
+table{font-size:14.5px}
+th,td{padding:8px 9px}
+.tw table{min-width:440px}
+.vids{flex-direction:column;gap:6px}
+.vids a{display:inline-block;padding:2px 0}
+.ex{padding:12px 14px}
+.steps div{gap:3px 8px}
+ol.pr{padding-left:1.5em}
+.fig svg[width="760"],.fig svg[width="640"]{max-width:none;min-width:520px}
+.fig svg[width="560"]{max-width:none;min-width:460px}
+details.ans .body{gap:6px 16px}
+}
+
+/* Slide-out contents drawer: hidden by default so the reading column gets the full width */
+header.top{padding-top:76px}
+.wrap{display:block;max-width:1060px;padding-block:28px 80px}
+nav.idx{position:fixed;top:0;left:0;bottom:0;width:min(310px,86vw);z-index:60;background:var(--surface);border-right:1px solid var(--line);overflow-y:auto;transform:translateX(-102%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s;padding:calc(66px + env(safe-area-inset-top,0px)) 18px 28px max(18px,env(safe-area-inset-left,0px));margin:0;display:block;font-size:15px;flex:none;gap:0}
+html.toc-open nav.idx{transform:none;visibility:visible;transition-delay:0s}
+nav.idx h2{display:block}
+nav.idx a{display:block;white-space:normal;border:0;border-left:2px solid var(--line);padding:8px 0 8px 12px;min-height:40px}
+nav.idx a:hover{border-left-color:var(--accent);color:var(--accent)}
+.tocbtn{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:70;min-height:44px;display:flex;gap:10px;align-items:center;padding:0 16px 0 13px;background:var(--band);color:var(--band-ink);border:1px solid var(--muted);font:600 14px var(--body);letter-spacing:.04em;cursor:pointer}
+.tocbtn:hover{border-color:var(--band-accent)}
+.tocbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s linear .25s}
+html.toc-open .scrim{opacity:1;visibility:visible;transition-delay:0s}
+@media (prefers-reduced-motion:reduce){nav.idx,.scrim{transition:none}}
+@media (max-width:600px){.wrap{padding-block:16px 56px}header.top{padding-top:70px}}
+
+/* round 2: drawer scrolls on its own, page fills the screen, calmer button */
+html.toc-open,html.toc-open body{overflow:hidden}
+nav.idx{height:100vh;height:100dvh;overflow-x:hidden;overflow-y:scroll;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.wrap{max-width:none}
+header.top .in{max-width:none}
+header.top{padding-top:calc(80px + env(safe-area-inset-top,0px))}
+.tocbtn{transition:opacity .25s ease}
+html.scrolled:not(.toc-open) .tocbtn{opacity:.3}
+html.scrolled:not(.toc-open) .tocbtn:hover,html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:1}
+@media (max-width:600px){header.top{padding-top:calc(76px + env(safe-area-inset-top,0px))}}
+
+.tocbtn{min-width:44px;padding:0 12px;justify-content:center}
+.tocbtn .b{display:none}
+html.toc-open .tocbtn .a{display:none}
+html.toc-open .tocbtn .b{display:inline}
+html.scrolled:not(.toc-open) .tocbtn:hover,html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:.3}
+@media (hover:hover){html.scrolled:not(.toc-open) .tocbtn:hover{opacity:1}}
+html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:1}
+.pdfbtn{display:inline-flex;align-items:center;gap:10px;margin-top:18px;min-height:46px;padding:0 20px;background:var(--band-accent);color:#1b1c1f;font-weight:600;font-size:15px;text-decoration:none;border:2px solid var(--band-accent)}
+.pdfbtn:hover{background:transparent;color:var(--band-accent)}
+.pdfbtn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.callout{background:var(--accent-bg);border-left:4px solid var(--accent);padding:12px 16px;display:flex;flex-direction:column;gap:4px}
+.callout b.lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hint{font-size:14.5px;color:var(--muted)}
+.ckbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600;color:var(--good)}
+.ckbar button{font:600 13px var(--body);background:transparent;color:var(--muted);border:1px solid var(--line);padding:7px 14px;cursor:pointer;min-height:36px}
+.ckbar button:hover{border-color:var(--accent);color:var(--accent)}
+ul.ck{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+ul.ck label{display:flex;gap:12px;align-items:flex-start;padding:8px 6px;cursor:pointer}
+ul.ck label:hover{background:var(--hl)}
+ul.ck input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:var(--accent);cursor:pointer}
+ul.ck input:checked+span{color:var(--muted);text-decoration:line-through}
+.alpha{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.alpha span{background:var(--hl);padding:8px 12px}
+.alpha b{display:inline-block;width:1.4em;color:var(--accent);font-family:var(--display);font-size:1.3em}
+.stage{border-left:4px solid var(--accent);padding:4px 0 4px 16px;display:flex;flex-direction:column;gap:4px}
+.stage h5{margin:0;font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.addr{background:var(--hl);padding:14px 18px;font-family:var(--serif);line-height:1.5}
+dl.faq{margin:0;display:grid;gap:4px 0}
+dl.faq dt{font-weight:600;margin-top:12px}
+dl.faq dd{margin:0;color:var(--muted)}
+dl.faq.gl dt{margin-top:8px;color:var(--accent)}
+.mt td,.mt th{padding-right:18px}
+
+.tocbtn .lbl,.backbtn .lbl{font:600 14px var(--body);letter-spacing:.04em;white-space:nowrap}
+html.scrolled .tocbtn .lbl,html.scrolled .backbtn .lbl{display:none}
+html.scrolled:not(.toc-open) .tocbtn,html.scrolled:not(.toc-open) .backbtn{opacity:.3}
+
+.backbtn{position:fixed;top:calc(62px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:70;min-height:44px;min-width:44px;display:flex;gap:10px;align-items:center;justify-content:center;padding:0 14px 0 12px;background:var(--band);color:var(--band-ink);border:1px solid var(--muted);text-decoration:none;transition:opacity .25s ease}
+.backbtn:hover{border-color:var(--band-accent)}
+.backbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+html.toc-open .backbtn{visibility:hidden}
+@media (hover:hover){html.scrolled:not(.toc-open) .backbtn:hover{opacity:1}}
+html.scrolled:not(.toc-open) .backbtn:focus-visible{opacity:1}
+header.top{padding-top:calc(124px + env(safe-area-inset-top,0px))}
+@media (max-width:600px){header.top{padding-top:calc(120px + env(safe-area-inset-top,0px))}}
+
+.backbtn .lbl{display:none}
+.backbtn{top:calc(10px + env(safe-area-inset-top,0px));padding:0 12px;min-width:44px}
+.tocbtn{left:calc(max(12px,env(safe-area-inset-left,0px)) + 52px)}
+header.top{padding-top:calc(80px + env(safe-area-inset-top,0px))}
+@media (max-width:600px){header.top{padding-top:calc(76px + env(safe-area-inset-top,0px))}}
 </style>
 </head>
 <body>
-<header><div class="tag">Coming soon</div><h1>Swim Training</h1></header>
-<main><p>This manual is not ready yet. Check back soon.</p><p><a href="../">Back to all manuals</a></p></main>
+
+<button class="tocbtn" id="tocbtn" type="button" aria-controls="toc" aria-expanded="false" aria-label="Open contents"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path class="a" d="M1 4h18M1 10h18M1 16h18" stroke="currentColor" stroke-width="2" fill="none"/><path class="b" d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" fill="none"/></svg><span class="lbl">Table of Contents</span></button>
+<a class="backbtn" href="../" aria-label="Back to all subjects"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M12 3L5 10l7 7M5 10h13" stroke="currentColor" stroke-width="2" fill="none"/></svg><span class="lbl">Back</span></a>
+<div class="scrim" id="scrim"></div>
+<header class="top pad"><div class="in">
+<div class="eyebrow">Coast Guard swim standard · Beginner to qualified</div>
+<h1>Swim Training</h1>
+<p>An eight-week plan that takes a beginner to the Coast Guard recruit swim test: jump in, swim 100 meters, tread water for 5 minutes. It covers technique, breathing, drills, pacing and test day, with every session you need to check off.</p>
+<a class="pdfbtn" href="#sources">
+<svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2h8l4 4v12H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11h6M8 14h6" stroke="currentColor" stroke-width="2"/></svg>
+See the sources used</a>
+</div></header>
+<div class="wrap pad">
+<nav class="idx" id="toc" aria-label="Sections">
+<a href="../" style="font-weight:600;margin-bottom:10px;border-left-color:var(--accent)">All subjects</a>
+<h2>Start here</h2>
+<a href="#key">Key points</a><a href="#checklist">Progress tracker</a>
+<h2>The basics</h2>
+<a href="#test">The test you are training for</a><a href="#gear">Gear and pool safety</a><a href="#comfort">Getting comfortable in water</a>
+<h2>Technique</h2>
+<a href="#free">Freestyle</a><a href="#breath">Breathing</a><a href="#breast">Breaststroke</a><a href="#side">Sidestroke</a><a href="#tread">Treading water</a><a href="#jump">The jump</a>
+<h2>The plan</h2>
+<a href="#plan">8-week training plan</a><a href="#drills">Drill library</a><a href="#pace">Pace and lap times</a>
+<h2>Test day</h2>
+<a href="#testday">Test day and if you miss</a>
+<h2>Reference</h2>
+<a href="#mistakes">Common mistakes</a><a href="#sources">Sources</a>
+</nav>
+<main>
+
+<h2 class="part" id="key">Key points<small>What the swim test asks, and the plan that gets you there.</small></h2>
+
+<section class="skill">
+<div class="callout"><b class="lab">Check the standard</b><p>The test below comes from the Training Center Cape May "Helmsman" booklet (2017). Confirm the current standard with your recruiter. If you are not a confident swimmer, start now: eight weeks is enough for most people who train three days a week.</p></div>
+<div class="cols">
+<div class="card"><h5>1. Jump</h5><p>Jump off a six-foot platform into the pool.</p></div>
+<div class="card"><h5>2. Swim 100 meters</h5><p>Swimming on your back is not permitted. Breaststroke, freestyle and sidestroke are the usual choices.</p></div>
+<div class="card"><h5>3. Tread water</h5><p>Stay afloat for 5 minutes.</p></div>
+<div class="card"><h5>Train 3 days a week</h5><p>Three sessions of 30 to 45 minutes, with a rest day between. Rest days are when you improve.</p></div>
+</div>
+<h4>The plan at a glance</h4>
+<div class="tw"><table>
+<tr><th>Weeks</th><th>Focus</th><th>You can do by the end</th></tr>
+<tr><td class="n">1</td><td>Water comfort, floating, bubbles</td><td>Front float and glide; 3 breaths in a row with your face in the water</td></tr>
+<tr><td class="n">2</td><td>Kick and freestyle with a board</td><td>1 length with a kickboard and side breathing</td></tr>
+<tr><td class="n">3</td><td>Freestyle breathing, breaststroke intro</td><td>1 length of freestyle or breaststroke without stopping</td></tr>
+<tr><td class="n">4</td><td>Stroke endurance</td><td>2 lengths in a row; tread 2 minutes</td></tr>
+<tr><td class="n">5</td><td>Building distance</td><td>3 lengths in a row; tread 3 minutes</td></tr>
+<tr><td class="n">6</td><td>First full 100 meters</td><td>4 to 5 lengths in a row; tread 4 minutes</td></tr>
+<tr><td class="n">7</td><td>Test simulation</td><td>100 meters twice, tread 5 minutes</td></tr>
+<tr><td class="n">8</td><td>Sharpen and rehearse</td><td>Full mock test: jump, 100 m, tread 5 min</td></tr>
+</table></div>
+<p class="hint">A 25 meter pool: 100 m is 4 lengths. A 25 yard pool: a length is about 23 meters, so swim 5 lengths to cover at least 100 m.</p>
+</section>
+
+<h2 class="part" id="checklist">Progress tracker<small>Check things off as you go. Your progress is saved in this browser.</small></h2>
+
+<section class="skill" id="ckbox">
+<div class="ckbar"><span id="ckcount" aria-live="polite">0 of 0 done</span><button type="button" id="ckreset">Clear all</button></div>
+
+<h4>Before you start</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Find a pool with a lifeguard and a lane for lap swimming (YMCA, community or college pool). Ask your recruiter whether a nearby military base pool is available.</span></label></li>
+<li><label><input type="checkbox"><span>Get swim gear: suit, goggles that seal without leaking, cap if you have long hair, and a towel.</span></label></li>
+<li><label><input type="checkbox"><span>If you have any medical concern, check with a doctor before you start training.</span></label></li>
+<li><label><input type="checkbox"><span>Arrange a lesson or a friend who can watch your stroke, if you can.</span></label></li>
+</ul>
+
+<h4>Week 1 to 2: comfort and kicking</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Week 1, session A</span></label></li>
+<li><label><input type="checkbox"><span>Week 1, session B</span></label></li>
+<li><label><input type="checkbox"><span>Week 1, session C</span></label></li>
+<li><label><input type="checkbox"><span>Week 2, session A</span></label></li>
+<li><label><input type="checkbox"><span>Week 2, session B</span></label></li>
+<li><label><input type="checkbox"><span>Week 2, session C</span></label></li>
+<li><label><input type="checkbox"><span>Milestone: front float and glide, and blow bubbles for 5 seconds.</span></label></li>
+</ul>
+
+<h4>Week 3 to 4: breathing and strokes</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Week 3, session A</span></label></li>
+<li><label><input type="checkbox"><span>Week 3, session B</span></label></li>
+<li><label><input type="checkbox"><span>Week 3, session C</span></label></li>
+<li><label><input type="checkbox"><span>Week 4, session A</span></label></li>
+<li><label><input type="checkbox"><span>Week 4, session B</span></label></li>
+<li><label><input type="checkbox"><span>Week 4, session C</span></label></li>
+<li><label><input type="checkbox"><span>Milestone: swim 2 lengths without stopping and tread water for 2 minutes.</span></label></li>
+</ul>
+
+<h4>Week 5 to 6: distance</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Week 5, session A</span></label></li>
+<li><label><input type="checkbox"><span>Week 5, session B</span></label></li>
+<li><label><input type="checkbox"><span>Week 5, session C</span></label></li>
+<li><label><input type="checkbox"><span>Week 6, session A</span></label></li>
+<li><label><input type="checkbox"><span>Week 6, session B</span></label></li>
+<li><label><input type="checkbox"><span>Week 6, session C</span></label></li>
+<li><label><input type="checkbox"><span>Milestone: swim 100 meters without stopping.</span></label></li>
+<li><label><input type="checkbox"><span>Milestone: tread water for 4 minutes.</span></label></li>
+</ul>
+
+<h4>Week 7 to 8: test readiness</h4>
+<ul class="ck">
+<li><label><input type="checkbox"><span>Week 7, session A</span></label></li>
+<li><label><input type="checkbox"><span>Week 7, session B</span></label></li>
+<li><label><input type="checkbox"><span>Week 7, session C</span></label></li>
+<li><label><input type="checkbox"><span>Week 8, session A</span></label></li>
+<li><label><input type="checkbox"><span>Week 8, session B</span></label></li>
+<li><label><input type="checkbox"><span>Week 8, session C (the mock test)</span></label></li>
+<li><label><input type="checkbox"><span>Milestone: tread water for 5 minutes without touching the wall.</span></label></li>
+<li><label><input type="checkbox"><span>Milestone: swim 100 meters in under 4 minutes without stopping or swimming on your back.</span></label></li>
+<li><label><input type="checkbox"><span>Milestone: do the jump from the pool deck, or from a diving platform or board if one is available.</span></label></li>
+</ul>
+</section>
+
+<h2 class="part" id="basics">The basics</h2>
+
+<section class="skill" id="test">
+<h3>The test you are training for <span class="tag">Standard</span></h3>
+<div class="tw"><table>
+<tr><th>Part</th><th>What you do</th></tr>
+<tr><td><b>Jump</b></td><td>Jump off a six-foot platform into the pool.</td></tr>
+<tr><td><b>Swim</b></td><td>Swim 100 meters. Swimming on your back is not permitted.</td></tr>
+<tr><td><b>Tread</b></td><td>Tread water for 5 minutes.</td></tr>
+</table></div>
+<ul class="kp">
+<li>The booklet gives no time limit for the 100 meters. One recruit's account says instructors want continuous forward movement and describes the standard as 100 meters in about 5 minutes. Aim for under 4 minutes so you have margin either way.</li>
+<li>Freestyle, breaststroke and sidestroke are all accepted. Choose the stroke you can keep going the longest, not the fastest one.</li>
+<li>Recruits who miss the swim go to remedial swim sessions, which start earlier in the morning. It is far better to arrive already comfortable.</li>
+<li>Speed is not the goal. Being relaxed and comfortable in the water is.</li>
+</ul>
+</section>
+
+<section class="skill" id="gear">
+<h3>Gear and pool safety <span class="tag">Setup</span></h3>
+<ul class="kp">
+<li><b>Suit:</b> a snug training suit. Loose suits create drag.</li>
+<li><b>Goggles:</b> put the eyepieces on first, then pull the strap over your head. They should seal on the soft tissue around your eyes without pressing on bone.</li>
+<li><b>Cap:</b> optional unless your hair is long. Wet your hair first.</li>
+<li><b>Kickboard and pull buoy:</b> useful for isolating kick and arms. Fins and paddles are optional and can wait.</li>
+<li><b>Rinse gear</b> in fresh water after each use.</li>
+</ul>
+<h4>Safety</h4>
+<ul class="kp">
+<li>Swim only where a lifeguard is on duty, and never train alone in open water.</li>
+<li>If you are nervous, use a lane next to the wall and rest at the wall as often as you need.</li>
+<li>Shower before you get in, and enter feet first after checking that the water is clear.</li>
+<li>Learn circle swimming in shared lanes: stay on the right side of the lane and go counterclockwise.</li>
+<li>Stop if you feel dizzy, cramped or very out of breath. Rest, hydrate and try again later.</li>
+</ul>
+</section>
+
+<section class="skill" id="comfort">
+<h3>Getting comfortable in water <span class="tag">Week 1</span></h3>
+<p>Fear and tension waste more energy than any bad stroke. Spend the first week making the water feel normal.</p>
+<ol class="pr">
+<li><b>Bubbles.</b> In shallow water, hold the wall, put your face in and exhale steadily for 3 to 5 seconds. Lift, breathe in, repeat 10 times.</li>
+<li><b>Float your feet.</b> Hold the wall with both hands and lift your feet off the bottom. Repeat the bubbles while floating, with a light kick.</li>
+<li><b>Front float.</b> Take a breath, put your face in, and stretch out like a starfish. Count how long you float. Stand when you need to.</li>
+<li><b>Push and glide.</b> Push off the wall in a streamlined position, arms stretched overhead, face down. Glide as far as you can before you stand.</li>
+<li><b>Recover to standing.</b> Practice pulling your knees to your chest and putting your feet down, so you are never stuck.</li>
+</ol>
+<div class="callout"><b class="lab">Tip</b><p>Relax. Tight muscles sink and tire quickly. A slow, full exhale underwater is the most important habit you will learn.</p></div>
+</section>
+
+<h2 class="part" id="tech">Technique<small>Learn freestyle for speed and breathing control, breaststroke for resting, and a good treading kick. You only need one stroke for the test, but knowing two makes it safe.</small></h2>
+
+<section class="skill" id="free">
+<h3>Freestyle <span class="tag">Stroke</span></h3>
+<h4>Body position</h4>
+<ul class="kp">
+<li>Lie flat with your head, hips and feet near the surface, like a torpedo.</li>
+<li>Look at the bottom, slightly forward. Press your head and chest down a little to lift your hips.</li>
+<li>Rotate your whole body side to side from the shoulders instead of bending at the waist.</li>
+</ul>
+<h4>Kick</h4>
+<ul class="kp">
+<li>Keep it small and relaxed. Loose ankles, heels just under the surface.</li>
+<li>A bigger kick adds drag, not speed. For a beginner, the kick mostly keeps your legs up.</li>
+</ul>
+<h4>Arms</h4>
+<ul class="kp">
+<li>Reach forward, press your hand and forearm back toward your feet, then recover your elbow over the surface.</li>
+<li>One arm extends as the other pulls. Keep a bit of glide to stay balanced.</li>
+</ul>
+<h4>Beginner order of learning</h4>
+<ol class="pr">
+<li>Kick on your front with a board, face in, until you can do 2 lengths.</li>
+<li>Add one arm at a time (one-arm drill) with the other arm extended.</li>
+<li>Add side breathing (see Breathing).</li>
+<li>Put it together at an easy pace and count strokes per length.</li>
+</ol>
+</section>
+
+<section class="skill" id="breath">
+<h3>Breathing <span class="tag">Key skill</span></h3>
+<div class="callout"><b class="lab">The rule</b><p>Exhale fully underwater, then turn to breathe in. Never hold your breath and then try to exhale and inhale at the surface. That is why beginners run out of air.</p></div>
+<h4>Four-step breathing progression</h4>
+<ol class="pr">
+<li><b>Blowing bubbles.</b> Hold the wall, face in, exhale for 3 to 5 seconds, lift to inhale.</li>
+<li><b>Floating feet.</b> Same, but with your feet lifted and a light kick.</li>
+<li><b>Add one arm stroke.</b> Hold the wall, exhale, take one stroke, and turn your head to the side of that arm to inhale as the arm leaves the water by your hip. Return your face as the hand returns to the wall.</li>
+<li><b>Add a kickboard.</b> Hold the board with arms extended, kick lightly, take one stroke and turn to breathe. Try a few lengths, alternating sides.</li>
+</ol>
+<ul class="kp">
+<li>Keep the arm opposite to your breathing side extended while you turn.</li>
+<li>Keep gliding while you breathe. If you stop, you sink.</li>
+<li>Once it feels natural, breathe every 3 strokes to alternate sides. If that feels hard, breathe every 2 strokes.</li>
+<li>If you are very out of breath, breathe every stroke and slow down.</li>
+</ul>
+</section>
+
+<section class="skill" id="breast">
+<h3>Breaststroke <span class="tag">Stroke</span></h3>
+<p>The best stroke for a beginner who needs to rest while moving. Your face can stay up, and the glide gives you a break on every stroke.</p>
+<p>Think of it as three beats: <b>pull, kick, glide</b>.</p>
+<ol class="pr">
+<li><b>Streamline.</b> Start with arms extended, legs together, head neutral.</li>
+<li><b>Pull.</b> Sweep your hands out just past shoulder width, bend your elbows so the forearms face back, and pull to about nose level. Keep elbows high.</li>
+<li><b>Breathe.</b> Lift your head to breathe as your hands reach the front of your chest. Exhale underwater before.</li>
+<li><b>Kick.</b> Cue: up, out, around, together. Pull your heels up toward your hips, keep your knees no wider than your shoulders, press your feet out and around, then snap them together.</li>
+<li><b>Glide.</b> Shoot your hands forward into streamline and hold for a 2-count before the next stroke.</li>
+</ol>
+<p class="hint">Timing rule: arms pull, then legs kick as the arms shoot forward. Do not pull and kick at the same time.</p>
+</section>
+
+<section class="skill" id="side">
+<h3>Sidestroke <span class="tag">Option</span></h3>
+<p>Sidestroke lets you keep your face above water on the side. The military combat version is the same idea: a single kick and a long glide.</p>
+<ol class="pr">
+<li>Lie on your side, head up, bottom arm extended, top hand near your chest.</li>
+<li>Pull with the top arm back to your thigh while the bottom arm sweeps in a short scull.</li>
+<li>Kick once with a scissor kick as you pull, then glide in a long, streamlined position.</li>
+</ol>
+<ul class="kp">
+<li>Most common mistake: kicking constantly like freestyle. That tires you and slows every length.</li>
+<li>Another: skipping the glide. The glide is where you rest.</li>
+</ul>
+</section>
+
+<section class="skill" id="tread">
+<h3>Treading water <span class="tag">Test part 3</span></h3>
+<h4>Technique</h4>
+<ul class="kp">
+<li><b>Body:</b> stay upright, back straight, knees bent as if sitting in a chair.</li>
+<li><b>Legs (eggbeater kick):</b> bend your knees toward your chest at about 90 degrees. Rotate one foot clockwise and the other counterclockwise, moving only from the knee down. Your feet should never meet. A breaststroke-style kick also works.</li>
+<li><b>Arms (sculling):</b> hold your arms out to the sides like a T. Keep fingers together, hands gently cupped, elbows slightly bent. Sweep your hands horizontally just below the surface, pushing water out and pulling it back.</li>
+<li><b>Breathing:</b> breathe calmly through your mouth. Do not gasp.</li>
+</ul>
+<h4>How to last 5 minutes</h4>
+<ul class="kp">
+<li>Think marathon, not sprint. Relax your shoulders and keep your kick and sculling small.</li>
+<li>If your arms tire, rest them on your chest and let your legs do the work for a few seconds, then go back.</li>
+<li>Stay near the pool edge while you learn, then move to deeper water.</li>
+</ul>
+<h4>Build-up schedule</h4>
+<div class="tw"><table>
+<tr><th>Week</th><th>Treading goal (in deep water, near the wall)</th></tr>
+<tr><td class="n">1</td><td>3 × 30 seconds</td></tr>
+<tr><td class="n">2</td><td>3 × 1 minute</td></tr>
+<tr><td class="n">3</td><td>2 × 1:30</td></tr>
+<tr><td class="n">4</td><td>2 × 2 minutes</td></tr>
+<tr><td class="n">5</td><td>2 × 3 minutes</td></tr>
+<tr><td class="n">6</td><td>1 × 4 minutes</td></tr>
+<tr><td class="n">7</td><td>1 × 5 minutes</td></tr>
+<tr><td class="n">8</td><td>1 × 5 minutes in the mock test, then 1 × 5 minutes more if you want extra margin</td></tr>
+</table></div>
+</section>
+
+<section class="skill" id="jump">
+<h3>The jump <span class="tag">Test part 1</span></h3>
+<p>The test starts with a jump from a six-foot platform. Practice the same entry, even from a lower height.</p>
+<ol class="pr">
+<li>Look straight ahead at the horizon, not down at the water.</li>
+<li>Take a breath, then step or jump out. Keep your feet together and your legs straight.</li>
+<li>Cross your arms over your chest (or cover your nose with one hand and hold your wrist with the other).</li>
+<li>When you surface, start kicking and head for the wall or swim lane.</li>
+</ol>
+<ul class="kp">
+<li>Practice stepping into deep water from the deck, then from a low board if the pool has one and a lifeguard approves.</li>
+<li>Surface calmly, take a breath and start swimming. Your first strokes after the jump are where beginners panic.</li>
+</ul>
+<p class="hint">These steps are general good practice and are not from the Helmsman booklet. Ask your lifeguard or instructor to check your jump.</p>
+</section>
+
+<h2 class="part" id="planh">The plan<small>Three sessions a week with a rest day in between. Take as much rest as you need between sets. In the tables, "length" means one trip across the pool.</small></h2>
+
+<section class="skill" id="plan">
+<h3>8-week training plan <span class="tag">Weeks 1 to 8</span></h3>
+<div class="callout"><b class="lab">Every session has the same shape</b><p>Warm-up (5 minutes of easy swimming, kicking or treading) → skill work → main set → treading → cool-down (easy swimming or floating). Total 30 to 45 minutes.</p></div>
+
+<h4>Week 1: comfort</h4>
+<div class="tw"><table>
+<tr><th>Session</th><th>Plan</th></tr>
+<tr><td class="n">A</td><td>Bubbles 10 × 5 sec. Front float 6 times. Push and glide 6 times. Tread 3 × 30 sec in shallow water.</td></tr>
+<tr><td class="n">B</td><td>Floating feet with bubbles 8 times. Kick with a board for half a length, 4 times. Tread 3 × 30 sec.</td></tr>
+<tr><td class="n">C</td><td>Repeat A and B. Try 1 length of kick with a board without stopping.</td></tr>
+</table></div>
+
+<h4>Week 2: kick and basic freestyle</h4>
+<div class="tw"><table>
+<tr><th>Session</th><th>Plan</th></tr>
+<tr><td class="n">A</td><td>Kick with a board: 4 × 1 length. Breathing drill 3 (one stroke + turn) at the wall, 6 each side. Tread 3 × 1 min.</td></tr>
+<tr><td class="n">B</td><td>Kick with a board and side breathing: 4 × 1 length. One-arm drill: 4 × half length. Tread 3 × 1 min.</td></tr>
+<tr><td class="n">C</td><td>Freestyle with rests: 6 × half length. Kick: 2 × 1 length. Tread 3 × 1 min.</td></tr>
+</table></div>
+
+<h4>Week 3: breathing and breaststroke</h4>
+<div class="tw"><table>
+<tr><th>Session</th><th>Plan</th></tr>
+<tr><td class="n">A</td><td>Freestyle: 4 × 1 length, 30 sec rest. Breathing every 3 strokes. Tread 2 × 1:30.</td></tr>
+<tr><td class="n">B</td><td>Breaststroke kick on the wall and with a board: 4 × 1 length. Breaststroke: 4 × half length, 2-count glide. Tread 2 × 1:30.</td></tr>
+<tr><td class="n">C</td><td>Choose your best stroke: 6 × 1 length, 30 sec rest. Try 1 length without stopping. Tread 2 × 1:30.</td></tr>
+</table></div>
+
+<h4>Week 4: endurance</h4>
+<div class="tw"><table>
+<tr><th>Session</th><th>Plan</th></tr>
+<tr><td class="n">A</td><td>4 × 2 lengths, 45 sec rest. Tread 2 × 2 min.</td></tr>
+<tr><td class="n">B</td><td>Freestyle 4 × 1 length, then breaststroke 4 × 1 length, 20 sec rest. Tread 2 × 2 min.</td></tr>
+<tr><td class="n">C</td><td>Swim 2 lengths without stopping, 3 times, rest 1 min. Tread 2 × 2 min.</td></tr>
+</table></div>
+
+<h4>Week 5: distance</h4>
+<div class="tw"><table>
+<tr><th>Session</th><th>Plan</th></tr>
+<tr><td class="n">A</td><td>3 × 3 lengths, 45 sec rest. Tread 2 × 3 min.</td></tr>
+<tr><td class="n">B</td><td>Ladder: 1, 2, 3, 2, 1 lengths, 20 sec rest between. Tread 2 × 3 min.</td></tr>
+<tr><td class="n">C</td><td>Swim 3 lengths nonstop, then rest 1 min, then 2 more lengths. Tread 2 × 3 min.</td></tr>
+</table></div>
+
+<h4>Week 6: first full 100 meters</h4>
+<div class="tw"><table>
+<tr><th>Session</th><th>Plan</th></tr>
+<tr><td class="n">A</td><td>3 × 4 lengths, 1 min rest. Tread 1 × 4 min.</td></tr>
+<tr><td class="n">B</td><td>5 × 2 lengths at an easy pace, 15 sec rest. Tread 1 × 4 min.</td></tr>
+<tr><td class="n">C</td><td><b>Benchmark:</b> swim 100 m (4 lengths of a 25 m pool or 5 of a 25 yd pool) without stopping. Write down your time. Tread 1 × 4 min.</td></tr>
+</table></div>
+
+<h4>Week 7: test simulation</h4>
+<div class="tw"><table>
+<tr><th>Session</th><th>Plan</th></tr>
+<tr><td class="n">A</td><td>Swim 100 m nonstop, rest 2 min, swim 100 m nonstop. Tread 1 × 5 min.</td></tr>
+<tr><td class="n">B</td><td>Skill: jumps from the deck (3). Then 2 × 50 m at goal pace, 20 sec rest, then 1 × 100 m easy. Tread 1 × 5 min.</td></tr>
+<tr><td class="n">C</td><td>Swim 150 m nonstop (6 lengths of a 25 m pool). Tread 1 × 5 min, with no wall touches.</td></tr>
+</table></div>
+
+<h4>Week 8: sharpen and mock test</h4>
+<div class="tw"><table>
+<tr><th>Session</th><th>Plan</th></tr>
+<tr><td class="n">A</td><td>Easy technique day: 6 × 50 m easy with 20 sec rest. Tread 1 × 3 min. Practice jumps.</td></tr>
+<tr><td class="n">B</td><td>Easy: 4 × 50 m, plus 1 × 100 m at goal pace. Tread 1 × 2 min. Rest tomorrow.</td></tr>
+<tr><td class="n">C</td><td><b>Mock test:</b> jump from the deck or a platform, swim 100 m nonstop with no backstroke, get out and rest briefly, then tread 5 minutes. Do the swim in the same conditions as test day.</td></tr>
+</table></div>
+<p class="hint">If you cannot finish a week's targets, repeat that week before moving on. It is better to take 10 weeks than to rush.</p>
+</section>
+
+<section class="skill" id="drills">
+<h3>Drill library <span class="tag">Technique</span></h3>
+<div class="tw"><table>
+<tr><th>Drill</th><th>How</th><th>Fixes</th></tr>
+<tr><td><b>Bubbles</b></td><td>Face in, exhale 3 to 5 seconds, lift, breathe in.</td><td>Holding your breath</td></tr>
+<tr><td><b>Front float</b></td><td>Face down, stretched out, count to 10.</td><td>Sinking legs, tension</td></tr>
+<tr><td><b>Push and glide</b></td><td>Push off the wall in streamline and glide to a stop.</td><td>Poor body position</td></tr>
+<tr><td><b>Kick with a board</b></td><td>Hold the board, small relaxed kick, face in, breathe forward.</td><td>Legs sinking, kicking from the knees</td></tr>
+<tr><td><b>One-arm freestyle</b></td><td>One arm extended, the other strokes; breathe to the stroking side.</td><td>Timing, rotation</td></tr>
+<tr><td><b>Side kick</b></td><td>Kick on your side, one arm extended, ear on shoulder.</td><td>Body rotation</td></tr>
+<tr><td><b>Pull buoy</b></td><td>Float your hips with a buoy and swim with only your arms.</td><td>Arm pull, endurance</td></tr>
+<tr><td><b>Catch-up freestyle</b></td><td>One hand waits until the other touches it, then goes.</td><td>Rushing, glide</td></tr>
+<tr><td><b>Breaststroke glide</b></td><td>Hold streamline for a 2-count after each kick.</td><td>No glide, bad timing</td></tr>
+<tr><td><b>Sculling</b></td><td>Float on the surface and move your hands only, in small sweeps.</td><td>Treading, feel for water</td></tr>
+</table></div>
+</section>
+
+<section class="skill" id="pace">
+<h3>Pace and lap times <span class="tag">Improve</span></h3>
+<p>The test is not scored by time, but the same work that makes you faster also makes the swim feel easier. Use these tools to measure it.</p>
+<h4>Count your strokes</h4>
+<p>Count the strokes per length. Fewer strokes at the same effort means a longer, more efficient stroke. Aim to bring your count down over the 8 weeks.</p>
+<h4>Time one length and one 100</h4>
+<ul class="kp">
+<li>Use the pool's pace clock, a waterproof watch or a phone timer on the deck.</li>
+<li>Record your 100 m benchmark in week 6 and again in week 8.</li>
+<li>A realistic beginner goal: finish 100 m in under 4:00 without stopping.</li>
+</ul>
+<h4>Training sets for endurance</h4>
+<ul class="kp">
+<li><b>Short rests:</b> start with longer rests and shorter sets, then reduce rest over time.</li>
+<li><b>50-50 swim:</b> 50 m freestyle, then 50 m of your test stroke, rest 10 to 15 seconds. Build to 10 to 15 rounds.</li>
+<li><b>Goal-pace 50s:</b> swim 50 m at the pace you want for the test, repeat 5 to 10 times, with 10 to 15 seconds of rest. A 54-second 50 m pace is about a 1:48 per 100 m.</li>
+<li><b>Pyramid:</b> 1, 2, 3, 4 lengths, then back down, with short rests.</li>
+<li><b>Interval progression:</b> once you can do 100s, set an interval pace for your swims and add one more 100 each week.</li>
+</ul>
+<div class="callout"><b class="lab">Rule of thumb</b><p>If you are gasping at the end of a set, slow down. You should be able to hold a short conversation after an easy length. The pace you can sustain is the pace you build on.</p></div>
+</section>
+
+<h2 class="part" id="day">Test day</h2>
+
+<section class="skill" id="testday">
+<h3>Test day and if you miss <span class="tag">Checklist</span></h3>
+<ul class="kp">
+<li><b>Before:</b> sleep well, eat a light meal a couple of hours earlier, and drink water.</li>
+<li><b>Warm up:</b> stretch your shoulders and legs, and get in the water if allowed.</li>
+<li><b>Jump:</b> look ahead, feet together, arms crossed. Surface and start kicking.</li>
+<li><b>Swim:</b> start slower than you think you need. Use your best stroke and breathe with a steady rhythm. If you need a rest, glide on the breaststroke. Do not stop and do not swim on your back.</li>
+<li><b>Tread:</b> use the eggbeater kick, keep your sculling small, and breathe calmly.</li>
+</ul>
+<h4>If you miss</h4>
+<ul class="kp">
+<li>You will be put in remedial swim, which starts before the normal wake-up. It is common and fixable.</li>
+<li>Listen to the instructor, and focus on relaxing in the water and keeping your face down.</li>
+</ul>
+</section>
+
+<h2 class="part" id="mistakesh">Reference</h2>
+
+<section class="skill" id="mistakes">
+<h3>Common mistakes <span class="tag">Fix these</span></h3>
+<div class="tw"><table>
+<tr><th>Problem</th><th>What it looks like</th><th>Fix</th></tr>
+<tr><td><b>Holding your breath</b></td><td>Gasping every few strokes</td><td>Exhale slowly underwater; bubbles drill</td></tr>
+<tr><td><b>Head too high</b></td><td>Legs sink, hard to move</td><td>Look down; press chest slightly into the water</td></tr>
+<tr><td><b>Kicking too hard</b></td><td>Tired after one length</td><td>Small, relaxed kick; let your arms carry you</td></tr>
+<tr><td><b>Rushing the stroke</b></td><td>Fast arms, no distance</td><td>Slow down, add glide, count strokes</td></tr>
+<tr><td><b>Starting too fast</b></td><td>Fine for 25 m, then you stop</td><td>Pace the first 50 m easy</td></tr>
+<tr><td><b>Skipping the glide</b></td><td>Breaststroke or sidestroke feels exhausting</td><td>Hold a 2-count glide each stroke</td></tr>
+<tr><td><b>Tense treading</b></td><td>Sinking, short on air</td><td>Relax your shoulders, small sculls, steady breathing</td></tr>
+<tr><td><b>Not resting</b></td><td>Sore, stuck progress</td><td>Keep a rest day between sessions</td></tr>
+</table></div>
+</section>
+
+<section class="skill" id="sources">
+<h3>Sources</h3>
+<ul class="kp">
+<li><a href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/Helmsmannew.pdf?ver=2017-05-23-160144-093" target="_blank" rel="noopener">Training Center Cape May "Helmsman" booklet (USCG)</a>: the swim test standard.</li>
+<li><a href="https://survive-cg-boot.pages.dev/swimming-in-coast-guard-boot-camp" target="_blank" rel="noopener">Swimming in Coast Guard boot camp</a>: a recruit's account of the test.</li>
+<li><a href="https://365.military.com/military-fitness/beginner-workouts-passing-military-swimming-tests" target="_blank" rel="noopener">Military.com: Beginner Workouts for Passing Military Swimming Tests</a>: work sets, treading and progression.</li>
+<li><a href="https://www.usms.org/fitness-and-training/guides/swimming-101/the-basics" target="_blank" rel="noopener">U.S. Masters Swimming: Swimming 101</a>: gear, body position and pool etiquette.</li>
+<li><a href="https://usms.org/fitness-and-training/guides/freestyle/body-position" target="_blank" rel="noopener">U.S. Masters Swimming: Freestyle body position and rotation</a>.</li>
+<li><a href="https://blog.myswimpro.com/2022/02/02/4-freestyle-breathing-drills-for-beginner-swimmers/" target="_blank" rel="noopener">MySwimPro: 4 freestyle breathing drills for beginner swimmers</a>.</li>
+<li><a href="https://blog.myswimpro.com/2021/06/28/how-to-swim-breaststroke-for-beginners-3-steps/" target="_blank" rel="noopener">MySwimPro: How to swim breaststroke for beginners</a>.</li>
+<li><a href="https://365.military.com/military-fitness/how-improve-your-combat-side-stroke-military-fitness-tests" target="_blank" rel="noopener">Military.com: Improving your combat sidestroke</a>.</li>
+<li><a href="https://www.sunsationalswimschool.com/blog/how-to-tread-water-in-3-simple-steps" target="_blank" rel="noopener">Sunsational Swim School: How to tread water</a>.</li>
+<li><a href="https://www.usms.org/fitness-and-training/articles-and-videos/articles/how-to-train-with-critical-swim-speed-intervals" target="_blank" rel="noopener">U.S. Masters Swimming: Training with critical swim speed intervals</a>.</li>
+</ul>
+<p class="hint">The 8-week schedule is built from these sources and general beginner-progression practice. It is not an official Coast Guard program. Always swim with a lifeguard on duty.</p>
+</section>
+
+</main>
+</div>
+<script>
+(function(){var K='swim-checklist-v1',bx=[].slice.call(document.querySelectorAll('#ckbox input[type=checkbox]')),c=document.getElementById('ckcount'),st={};
+try{st=JSON.parse(localStorage.getItem(K)||'{}')||{};}catch(e){st={};}
+function upd(){var n=bx.filter(function(x){return x.checked}).length;c.textContent=n+' of '+bx.length+' done';}
+bx.forEach(function(x,i){x.checked=!!st[i];x.addEventListener('change',function(){st[i]=x.checked?1:0;try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}upd();});});
+document.getElementById('ckreset').addEventListener('click',function(){bx.forEach(function(x){x.checked=false});st={};try{localStorage.removeItem(K);}catch(e){}upd();});
+upd();})();
+</script>
 </body>
 </html>
