@@ -12,6 +12,7 @@ function fmt(ms){var t=Math.floor(ms/1000),h=Math.floor(t/3600),m=Math.floor(t%3
 var css=document.createElement('style');
 css.textContent='.stimer{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));z-index:65;display:flex;align-items:center;gap:2px;height:36px;padding:0 4px 0 10px;border-radius:18px;background:color-mix(in srgb,var(--band,#26282b) 55%,transparent);color:var(--band-ink,#fff);border:1px solid rgba(128,128,128,.35);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);font:600 13px/1 var(--body,system-ui,sans-serif);opacity:.65;transition:opacity .25s}'
 +'.stimer:hover,.stimer:focus-within,.stimer.on{opacity:1}html.scrolled .stimer:not(:hover):not(:focus-within){opacity:.3}'
++'.stimer .cap{position:absolute;top:100%;left:50%;transform:translateX(-50%);white-space:nowrap;margin-top:3px;font:600 10.5px/1 var(--body,system-ui,sans-serif);letter-spacing:.1em;text-transform:uppercase;color:var(--band-ink,#fff);opacity:.85;pointer-events:none;transition:opacity .25s}.stimer.on .cap,.stimer.away .cap{opacity:0}'
 +'.stimer output{font-variant-numeric:tabular-nums;letter-spacing:.02em;min-width:2.6em;text-align:right;padding-right:4px}'
 +'.stimer button{all:unset;box-sizing:border-box;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;cursor:pointer;color:inherit}'
 +'.stimer button:hover{background:rgba(255,255,255,.18)}.stimer button:focus-visible{outline:2px solid var(--band-accent,#f2b04a);outline-offset:1px}'
@@ -22,6 +23,7 @@ css.textContent='.stimer{position:fixed;top:calc(10px + env(safe-area-inset-top,
 document.head.appendChild(css);
 var box=document.createElement('div');box.className='stimer';box.setAttribute('role','group');box.setAttribute('aria-label','Study timer');
 box.innerHTML='<output aria-label="Study time">0:00</output>'
++'<span class="cap" aria-hidden="true">Study Timer</span>'
 +'<button type="button" class="pp" aria-label="Start study timer" title="Start"><svg class="ip" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2.5v11l9-5.5z"/></svg></button>'
 +'<button type="button" class="rs" aria-label="Reset study timer" title="Reset"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2a6 6 0 1 0 5.7 4.2h-1.7A4.4 4.4 0 1 1 8 3.6c1 0 1.800.3 2.500.9L8.700 6.300H14V1l-1.800 1.800A6 6 0 0 0 8 2z"/></svg></button>';
 function mount(){document.body.appendChild(box)}
@@ -52,5 +54,7 @@ pp.addEventListener('click',function(){
   save(s);render()});
 box.querySelector('.rs').addEventListener('click',function(){mem={elapsed:0,running:false,startedAt:0,notified:0,seen:0};save(mem);render()});
 window.addEventListener('storage',function(e){if(e.key===KEY)render()});
+function away(){box.classList.toggle('away',(window.pageYOffset||document.documentElement.scrollTop)>8)}
+window.addEventListener('scroll',away,{passive:true});away();
 setInterval(tick,500);tick();
 })();

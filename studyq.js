@@ -14,13 +14,13 @@ function makeBox(id,title,sec){
   var bank=BANK[id],queue=[];
   var box=document.createElement('aside');box.className='pq';box.setAttribute('data-skill',id);box.setAttribute('aria-label','Practice questions for '+title);
   box.innerHTML='<button type="button" class="pq-plus" aria-label="Show practice questions for '+title+'" title="Show practice questions"><span aria-hidden="true">+</span><i>Practice questions</i></button>'
-   +'<div class="pq-body"><div class="pq-ask"><b class="pq-t">Need more practice questions?</b><div class="pq-btns"><button type="button" class="pq-yes">Yes</button><button type="button" class="pq-no">No</button></div><p class="pq-note">The section above blurs while a question is open. Answer correctly to unblur it.</p></div>'
+   +'<div class="pq-body"><div class="pq-ask"><b class="pq-t">Would you like to test your knowledge?</b><div class="pq-btns"><button type="button" class="pq-yes">Yes</button><button type="button" class="pq-no">No</button></div><p class="pq-note">The section above blurs while a question is open. Answer correctly to unblur it.</p></div>'
    +'<div class="pq-q" hidden></div></div>';
   var plus=box.querySelector('.pq-plus'),body=box.querySelector('.pq-body'),ask=box.querySelector('.pq-ask'),qd=box.querySelector('.pq-q'),t=box.querySelector('.pq-t');
   var cur=null,solved=true;
   function blur(on){sec.classList.toggle('pq-blur',on);if(on)sec.setAttribute('aria-hidden','true');else sec.removeAttribute('aria-hidden')}
   function minimize(){blur(false);box.classList.add('min');body.hidden=true;plus.hidden=false;plus.setAttribute('aria-expanded','false')}
-  function expand(){box.classList.remove('min','flash','ok');body.hidden=false;plus.hidden=true;t.textContent='Need more practice questions?';ask.hidden=false;qd.hidden=true;qd.innerHTML='';}
+  function expand(){box.classList.remove('min','flash','ok');body.hidden=false;plus.hidden=true;t.textContent='Would you like to test your knowledge?';ask.hidden=false;qd.hidden=true;qd.innerHTML='';}
   function nextEntry(){
     for(var k=0;k<6;k++){
       if(!queue.length)queue=shuffle(bank.map(function(_,i){return i}));
