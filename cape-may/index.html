@@ -3,20 +3,428 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}body{margin:0}</style>
 <title>Cape May Training Manual</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;1,500&display=swap">
 <style>
-:root{--bg:#f3f4f5;--ink:#26282b;--muted:#55595f;--band:#2a2c30;--accent:#f2b04a;--link:#1b4fc4;color-scheme:light}
-@media (prefers-color-scheme:dark){:root{--bg:#1b1c1f;--ink:#ececee;--muted:#b0b3b9;--band:#131416;--link:#8db4ff;color-scheme:dark}}
-body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 system-ui,sans-serif}
-header{background:var(--band);color:#fff;padding:56px max(16px,env(safe-area-inset-left,0px)) 44px}
-h1{margin:0 auto;max-width:1100px;font:700 clamp(38px,8vw,72px)/1 "Arial Narrow",Arial,sans-serif;text-transform:uppercase}
-main{max-width:1100px;margin:0 auto;padding:40px max(16px,env(safe-area-inset-left,0px)) 80px}
-.tag{color:var(--accent);font-weight:600;letter-spacing:.16em;text-transform:uppercase;font-size:13px;max-width:1100px;margin:0 auto 10px}
+/* Layout: sticky section index at left, one readable column of skill sheets at right. Navy + amber, built like a printed field manual. */
+:root{--bg:#f3f4f5;--surface:#ffffff;--ink:#26282b;--muted:#55595f;--line:#d6d8db;--accent:#9a5b00;--accent-bg:#fff0d2;--link:#1b4fc4;--hl:#e9ebed;--band:#26282b;--band-ink:#ffffff;--band-accent:#f2b04a;--good:#17653a;
+--display:'Barlow Condensed','Arial Narrow',sans-serif;--body:'IBM Plex Sans',system-ui,sans-serif;--serif:'IBM Plex Serif',Georgia,serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1c1f;--surface:#26282c;--ink:#ececee;--muted:#b0b3b9;--line:#3c3f44;--accent:#f2b04a;--accent-bg:#3a2d12;--link:#8db4ff;--hl:#303337;--band:#131416;--good:#6fd09a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1c1f;--surface:#26282c;--ink:#ececee;--muted:#b0b3b9;--line:#3c3f44;--accent:#f2b04a;--accent-bg:#3a2d12;--link:#8db4ff;--hl:#303337;--band:#131416;--good:#6fd09a;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
 a{color:var(--link)}
+a:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{background:var(--band);color:var(--band-ink);padding-block:48px 40px}
+header.top .in{max-width:1180px;margin:0 auto}
+.eyebrow{font-weight:600;font-size:13px;letter-spacing:.22em;text-transform:uppercase;color:var(--band-accent)}
+header.top h1{font-family:var(--display);font-weight:700;font-size:clamp(44px,9vw,92px);line-height:.95;margin:10px 0 14px;letter-spacing:.01em;text-wrap:balance}
+header.top p{margin:0;max-width:60ch;color:#d4d6da;font-size:18px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:230px minmax(0,1fr);gap:48px;padding-block:36px 80px}
+nav.idx{position:sticky;top:20px;align-self:start;font-size:14.5px}
+nav.idx h2{font-family:var(--display);font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+nav.idx h2:first-child{margin-top:0}
+nav.idx a{display:block;padding:3px 0 3px 10px;border-left:2px solid var(--line);color:var(--ink);text-decoration:none}
+nav.idx a:hover{border-left-color:var(--accent);color:var(--accent)}
+main{min-width:0;display:flex;flex-direction:column;gap:28px}
+h2.part{font-family:var(--display);font-weight:700;font-size:clamp(34px,5vw,50px);line-height:1;margin:44px 0 0;text-transform:uppercase;letter-spacing:.02em;padding-top:14px;border-top:4px solid var(--ink)}
+h2.part small{display:block;font-family:var(--body);font-size:16px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);margin-top:8px;line-height:1.5;max-width:62ch}
+section.skill{background:var(--surface);border:1px solid var(--line);padding:26px clamp(16px,3vw,32px) 30px;display:flex;flex-direction:column;gap:16px;scroll-margin-top:16px}
+section.skill>h3{font-family:var(--display);font-weight:700;font-size:clamp(28px,4vw,38px);line-height:1.05;margin:0;text-transform:uppercase;letter-spacing:.03em;display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px}
+.tag{font-family:var(--body);font-size:11.5px;font-weight:600;letter-spacing:.14em;background:var(--accent-bg);color:var(--accent);padding:3px 9px;text-transform:uppercase}
+h4{font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:8px 0 -4px;display:flex;align-items:center;gap:10px}
+h4::after{content:"";flex:1;height:1px;background:var(--line)}
+p{margin:0}
+ul.kp,ol.pr{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:7px}
+ul.kp li::marker{color:var(--accent)}
+ol.pr{padding-left:1.7em}
+ol.pr li{padding-left:4px}
+.ex{background:var(--hl);padding:14px 18px;display:flex;flex-direction:column;gap:6px}
+.ex b.lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.steps{display:flex;flex-direction:column;gap:2px;padding-left:2px}
+.steps div{display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px}
+.steps div::before{content:"";width:6px;height:6px;background:var(--accent);flex:none;margin-right:2px}
+.m{font-family:var(--serif);font-size:1.12em;white-space:nowrap}
+.mb{font-family:var(--serif);font-size:1.5em;padding:10px 16px;background:var(--hl);display:flex;flex-wrap:wrap;gap:6px 22px;align-items:center}
+.mb .l{font-family:var(--body);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);width:100%}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 .14em;text-align:center;line-height:1.18;font-size:1.02em}
+.fr>span:first-child{border-bottom:.07em solid currentColor;padding:0 .24em .05em}
+.fr>span:last-child{padding-top:.05em}
+.rt{border-top:.07em solid currentColor;padding:0 .08em;margin-left:.02em}
+.vids{font-size:15px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.vids b{font-weight:600;color:var(--ink)}
+.vids a{white-space:normal}
+details.ans{border:1px dashed var(--line);padding:0}
+details.ans summary{cursor:pointer;padding:9px 14px;font-weight:600;font-size:14.5px;color:var(--good);list-style:none}
+details.ans summary::before{content:"+ ";}
+details.ans[open] summary::before{content:"\2212 ";}
+details.ans .body{padding:2px 16px 14px;display:flex;flex-wrap:wrap;gap:6px 22px;font-size:16px}
+.tw{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--hl)}
+td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.card{border:1px solid var(--line);padding:14px 18px;display:flex;flex-direction:column;gap:8px}
+.card h5{margin:0;font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.fig{display:flex;flex-direction:column;gap:6px;align-items:flex-start;max-width:100%}
+.fig svg{max-width:100%;height:auto;display:block}
+.fig figcaption,figcaption{font-size:13.5px;color:var(--muted)}
+figure{margin:0}
+svg text{font-family:var(--body);fill:var(--ink)}
+.st{stroke:var(--ink);fill:none;stroke-width:2}
+.fa{fill:var(--hl);stroke:var(--ink);stroke-width:2}
+.fx{fill:var(--accent-bg);stroke:var(--accent);stroke-width:2}
+.bar{display:flex;height:36px;max-width:520px;border:2px solid var(--ink)}
+.bar span{display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;border-right:1px solid var(--ink)}
+.bar span:last-child{border-right:0}
+.on{background:var(--accent-bg);color:var(--ink)}
+.off{background:var(--hl);color:var(--ink)}
+.grid2{display:grid;gap:2px;max-width:420px;background:var(--ink);border:2px solid var(--ink)}
+.grid2 div{background:var(--surface);padding:10px 8px;text-align:center;font-family:var(--serif);font-size:1.05em}
+.grid2 .h{background:var(--hl);font-family:var(--body);font-weight:600;font-size:14px}
+.cmp{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:900px){
+.wrap{grid-template-columns:minmax(0,1fr);gap:20px}
+.cols,.cmp{grid-template-columns:minmax(0,1fr)}
+body{font-size:16.5px}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+
+svg{max-width:100%;height:auto}
+.bar{height:auto;min-height:36px}
+.bar span{padding:6px 8px;text-align:center}
+details.ans summary{min-height:44px;display:flex;align-items:center}
+.fig{overflow-x:auto}
+@media (max-width:900px){
+.wrap{padding-block:0 56px}
+main{padding-top:8px}
+}
+@media (max-width:600px){
+body{font-size:16px;line-height:1.55}
+header.top{padding-block:30px 26px}
+header.top p{font-size:16px}
+h2.part{margin-top:28px}
+section.skill{padding:18px 14px 22px;gap:14px;border-left:0;border-right:0}
+.m{white-space:normal}
+.mb{font-size:1.25em;padding:10px 12px}
+table{font-size:14.5px}
+th,td{padding:8px 9px}
+.tw table{min-width:440px}
+.vids{flex-direction:column;gap:6px}
+.vids a{display:inline-block;padding:2px 0}
+.ex{padding:12px 14px}
+.steps div{gap:3px 8px}
+ol.pr{padding-left:1.5em}
+.fig svg[width="760"],.fig svg[width="640"]{max-width:none;min-width:520px}
+.fig svg[width="560"]{max-width:none;min-width:460px}
+details.ans .body{gap:6px 16px}
+}
+
+/* Slide-out contents drawer: hidden by default so the reading column gets the full width */
+header.top{padding-top:76px}
+.wrap{display:block;max-width:1060px;padding-block:28px 80px}
+nav.idx{position:fixed;top:0;left:0;bottom:0;width:min(310px,86vw);z-index:60;background:var(--surface);border-right:1px solid var(--line);overflow-y:auto;transform:translateX(-102%);visibility:hidden;transition:transform .25s ease,visibility 0s linear .25s;padding:calc(66px + env(safe-area-inset-top,0px)) 18px 28px max(18px,env(safe-area-inset-left,0px));margin:0;display:block;font-size:15px;flex:none;gap:0}
+html.toc-open nav.idx{transform:none;visibility:visible;transition-delay:0s}
+nav.idx h2{display:block}
+nav.idx a{display:block;white-space:normal;border:0;border-left:2px solid var(--line);padding:8px 0 8px 12px;min-height:40px}
+nav.idx a:hover{border-left-color:var(--accent);color:var(--accent)}
+.tocbtn{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:70;min-height:44px;display:flex;gap:10px;align-items:center;padding:0 16px 0 13px;background:var(--band);color:var(--band-ink);border:1px solid var(--muted);font:600 14px var(--body);letter-spacing:.04em;cursor:pointer}
+.tocbtn:hover{border-color:var(--band-accent)}
+.tocbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility 0s linear .25s}
+html.toc-open .scrim{opacity:1;visibility:visible;transition-delay:0s}
+@media (prefers-reduced-motion:reduce){nav.idx,.scrim{transition:none}}
+@media (max-width:600px){.wrap{padding-block:16px 56px}header.top{padding-top:70px}}
+
+/* round 2: drawer scrolls on its own, page fills the screen, calmer button */
+html.toc-open,html.toc-open body{overflow:hidden}
+nav.idx{height:100vh;height:100dvh;overflow-x:hidden;overflow-y:scroll;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.wrap{max-width:none}
+header.top .in{max-width:none}
+header.top{padding-top:calc(80px + env(safe-area-inset-top,0px))}
+.tocbtn{transition:opacity .25s ease}
+html.scrolled:not(.toc-open) .tocbtn{opacity:.3}
+html.scrolled:not(.toc-open) .tocbtn:hover,html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:1}
+@media (max-width:600px){header.top{padding-top:calc(76px + env(safe-area-inset-top,0px))}}
+
+.tocbtn{min-width:44px;padding:0 12px;justify-content:center}
+.tocbtn .b{display:none}
+html.toc-open .tocbtn .a{display:none}
+html.toc-open .tocbtn .b{display:inline}
+html.scrolled:not(.toc-open) .tocbtn:hover,html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:.3}
+@media (hover:hover){html.scrolled:not(.toc-open) .tocbtn:hover{opacity:1}}
+html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:1}
+.pdfbtn{display:inline-flex;align-items:center;gap:10px;margin-top:18px;min-height:46px;padding:0 20px;background:var(--band-accent);color:#1b1c1f;font-weight:600;font-size:15px;text-decoration:none;border:2px solid var(--band-accent)}
+.pdfbtn:hover{background:transparent;color:var(--band-accent)}
+.pdfbtn:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.callout{background:var(--accent-bg);border-left:4px solid var(--accent);padding:12px 16px;display:flex;flex-direction:column;gap:4px}
+.callout b.lab{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hint{font-size:14.5px;color:var(--muted)}
+.ckbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-weight:600;color:var(--good)}
+.ckbar button{font:600 13px var(--body);background:transparent;color:var(--muted);border:1px solid var(--line);padding:7px 14px;cursor:pointer;min-height:36px}
+.ckbar button:hover{border-color:var(--accent);color:var(--accent)}
+ul.ck{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+ul.ck label{display:flex;gap:12px;align-items:flex-start;padding:8px 6px;cursor:pointer}
+ul.ck label:hover{background:var(--hl)}
+ul.ck input{flex:none;width:22px;height:22px;margin:1px 0 0;accent-color:var(--accent);cursor:pointer}
+ul.ck input:checked+span{color:var(--muted);text-decoration:line-through}
+.alpha{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.alpha span{background:var(--hl);padding:8px 12px}
+.alpha b{display:inline-block;width:1.4em;color:var(--accent);font-family:var(--display);font-size:1.3em}
+.stage{border-left:4px solid var(--accent);padding:4px 0 4px 16px;display:flex;flex-direction:column;gap:4px}
+.stage h5{margin:0;font-family:var(--display);font-size:22px;letter-spacing:.04em;text-transform:uppercase}
+.addr{background:var(--hl);padding:14px 18px;font-family:var(--serif);line-height:1.5}
+dl.faq{margin:0;display:grid;gap:4px 0}
+dl.faq dt{font-weight:600;margin-top:12px}
+dl.faq dd{margin:0;color:var(--muted)}
+dl.faq.gl dt{margin-top:8px;color:var(--accent)}
+.mt td,.mt th{padding-right:18px}
+
+.tocbtn .lbl,.backbtn .lbl{font:600 14px var(--body);letter-spacing:.04em;white-space:nowrap}
+html.scrolled .tocbtn .lbl,html.scrolled .backbtn .lbl{display:none}
+html.scrolled:not(.toc-open) .tocbtn,html.scrolled:not(.toc-open) .backbtn{opacity:.3}
+
+.backbtn{position:fixed;top:calc(62px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:70;min-height:44px;min-width:44px;display:flex;gap:10px;align-items:center;justify-content:center;padding:0 14px 0 12px;background:var(--band);color:var(--band-ink);border:1px solid var(--muted);text-decoration:none;transition:opacity .25s ease}
+.backbtn:hover{border-color:var(--band-accent)}
+.backbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+html.toc-open .backbtn{visibility:hidden}
+@media (hover:hover){html.scrolled:not(.toc-open) .backbtn:hover{opacity:1}}
+html.scrolled:not(.toc-open) .backbtn:focus-visible{opacity:1}
+header.top{padding-top:calc(124px + env(safe-area-inset-top,0px))}
+@media (max-width:600px){header.top{padding-top:calc(120px + env(safe-area-inset-top,0px))}}
+
+.backbtn .lbl{display:none}
+.backbtn{top:calc(10px + env(safe-area-inset-top,0px));padding:0 12px;min-width:44px}
+.tocbtn{left:calc(max(12px,env(safe-area-inset-left,0px)) + 52px)}
+header.top{padding-top:calc(80px + env(safe-area-inset-top,0px))}
+@media (max-width:600px){header.top{padding-top:calc(76px + env(safe-area-inset-top,0px))}}
+
+.tile{background:#fff;border:1px solid var(--line);padding:10px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:center}
+.tile img{display:block;max-width:100%;height:auto;max-height:150px;width:auto}
+.rk{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.rkc{display:flex;flex-direction:column;gap:4px;min-width:0}
+.rkc .tile{min-height:130px;flex:1}
+.rkc b{font-size:15px;line-height:1.25}
+.rkc span{font-size:13.5px;color:var(--muted);line-height:1.35}
+.rk.kn,.rk.flg{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
+.rk.flg .tile img,.rk.kn .tile img{max-height:120px}
+.seals{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.sealc{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
+.sealc .tile{width:100%}
+.sealc span{font-size:13px;color:var(--muted)}
+.fig{display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:0}
+.fig .tile{width:100%}
+.fig>img{background:#fff;border:1px solid var(--line);padding:8px;max-width:100%;height:auto}
+.fig.big>img{width:100%;max-width:820px}
+.cap{font-size:14px;color:var(--muted)}
+.fprows{display:flex;flex-direction:column;gap:10px}
+.fpr{display:flex;gap:16px;align-items:center;border:1px solid var(--line);padding:10px 14px}
+.fpr img{width:72px;height:auto;flex:none;background:#fff;padding:3px}
+.fpr p{margin:2px 0 0;color:var(--muted)}
+.uni{display:grid;grid-template-columns:minmax(0,230px) minmax(0,1fr);gap:20px;align-items:start}
+.uni .fig>img{width:100%}
+.ethos{display:grid;grid-template-columns:minmax(0,160px) minmax(0,1fr);gap:20px;align-items:center}
+.ethosq p{font-family:var(--serif);font-size:1.12em;line-height:1.5}
+.fi{display:inline-block;background:#fff;padding:2px;margin-bottom:4px}
+.fi img{display:block;width:40px;height:auto}
+.blank{color:var(--muted)}
+.pgref{font-size:13.5px}
+.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+@media (max-width:600px){.uni,.ethos{grid-template-columns:minmax(0,1fr)}.uni .fig{max-width:260px}.rk{grid-template-columns:repeat(2,minmax(0,1fr))}.rk.kn,.rk.flg{grid-template-columns:repeat(2,minmax(0,1fr))}.seals{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tile.two{flex-wrap:nowrap;gap:8px}.tile.two img{max-width:48%;max-height:120px;min-width:0}
 </style>
 </head>
 <body>
-<header><div class="tag">Coming soon</div><h1>Cape May Training Manual</h1></header>
-<main><p>This manual is not ready yet. Check back soon.</p><p><a href="../">Back to all manuals</a></p></main>
+
+<button class="tocbtn" id="tocbtn" type="button" aria-controls="toc" aria-expanded="false" aria-label="Open contents"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path class="a" d="M1 4h18M1 10h18M1 16h18" stroke="currentColor" stroke-width="2" fill="none"/><path class="b" d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" fill="none"/></svg><span class="lbl">Table of Contents</span></button>
+<a class="backbtn" href="../" aria-label="Back to all subjects"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M12 3L5 10l7 7M5 10h13" stroke="currentColor" stroke-width="2" fill="none"/></svg><span class="lbl">Back</span></a>
+<div class="scrim" id="scrim"></div>
+<header class="top pad"><div class="in">
+<div class="eyebrow">Training Center Cape May · Recruit Training Pocket Guide</div>
+<h1>Cape May Training Manual</h1>
+<p>A study guide built from the Recruit Training Pocket Guide (revised October 2018). It covers the required knowledge you must learn week by week, with every insignia, flag, knot and diagram from the original included.</p>
+<a class="pdfbtn" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf" target="_blank" rel="noopener">
+<svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2h8l4 4v12H5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 11h6M8 14h6" stroke="currentColor" stroke-width="2"/></svg>
+Open the original Pocket Guide PDF</a>
+</div></header>
+<div class="wrap pad">
+<nav class="idx" id="toc" aria-label="Sections">
+<a href="../" style="font-weight:600;margin-bottom:10px;border-left-color:var(--accent)">All subjects</a>
+<h2>Start here</h2>
+<a href="#key">Key points</a><a href="#checklist">Required knowledge tracker</a>
+<h2>Background</h2>
+<a href="#history">Coast Guard history</a><a href="#roles">Roles and missions</a><a href="#ethos">Coast Guard Ethos</a>
+<h2>Safety and conduct</h2>
+<a href="#suicide">Suicide prevention</a><a href="#hazing">Hazing and bullying</a><a href="#sapr">Sexual assault response</a>
+<h2>Chain of command</h2>
+<a href="#chain">Chain of command and phones</a><a href="#orders">11 General Orders</a>
+<h2>Rates and ranks</h2>
+<a href="#officers">Officer ranks</a><a href="#enlisted">Enlisted grades</a><a href="#ratings">Enlisted ratings</a>
+<h2>Standards</h2>
+<a href="#fpcon">Force protection conditions</a><a href="#followers">Followers</a><a href="#grooming">Grooming standards</a><a href="#uniforms">Uniform regulations</a><a href="#eval">Enlisted evaluation system</a>
+<h2>Seamanship</h2>
+<a href="#terms">Common nautical terms</a><a href="#flags">Flags and pennants</a><a href="#knots">Five basic knots</a><a href="#fire">Firefighting basics</a>
+<h2>Weapons and song</h2>
+<a href="#m16">M-16 nomenclature</a><a href="#sp">Semper Paratus</a>
+<h2>Source</h2>
+<a href="#sources">Sources</a>
+</nav>
+<main>
+<h2 class="part" id="key">Key points<small>What the pocket guide says you must know, and when.</small></h2>
+<section class="skill">
+<div class="callout"><b class="lab">Check the date</b><p>This page follows the Recruit Training Pocket Guide revised October 2018. Names, phone numbers and requirements can change, so confirm anything important with your recruiter or Company Commander. The up-to-date version is kept on the Cape May SharePoint site.</p></div><div class="cols"><div class="card"><h5>Learn by week</h5><p>The guide lists every topic with the week you should start learning it, the week it is required, and the probation week. Memorize as much as you can before you arrive.</p></div><div class="card"><h5>Fill in the starboard column</h5><p>On the chain of command page, you fill in the names yourself when your Company Commander tells you to.</p></div><div class="card"><h5>Report problems</h5><p>Suicide warning signs, hazing, bullying and sexual assault must be reported. The numbers are in this guide.</p></div><div class="card"><h5>Emergency: 911</h5><p>The Officer of the Day (OOD) and Regimental Duty Officer (RDO) also have duty phones listed under Chain of command.</p></div></div>
+<h4>Required knowledge by week</h4>
+<div class="tw"><table><tr><th>Topic</th><th>Start</th><th>Required</th><th>Probation</th></tr><tr><td>Chain of Command</td><td><span class="n">Wk 01</span></td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>Required Telephone Numbers</td><td><span class="n">Wk 01</span></td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>11 General Orders of the Sentry</td><td><span class="n">Wk 01</span></td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>Coast Guard Pay Grades</td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>Coast Guard Collar Devices</td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>Coast Guard Sleeve Insignia</td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>Coast Guard Shoulder Boards</td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>Coast Guard Enlisted Ratings</td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>Five types of Followers</td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td><td><span class="n">Wk 03</span></td></tr><tr><td>Coast Guard Ethos</td><td><span class="n">Wk 02</span></td><td><span class="n">Wk 03</span></td><td><span class="n">Wk 04</span></td></tr><tr><td>Force Protection Conditions</td><td><span class="n">Wk 03</span></td><td><span class="n">Wk 04</span></td><td><span class="n">Wk 04</span></td></tr><tr><td>Flags / Pennants / Knots / Parts of Line</td><td><span class="n">Wk 03</span></td><td><span class="n">Wk 04</span></td><td><span class="n">Wk 04</span></td></tr><tr><td>Firefighting Basics</td><td><span class="n">Wk 03</span></td><td><span class="n">Wk 04</span></td><td><span class="n">Wk 04</span></td></tr><tr><td>Piece Nomenclature</td><td><span class="n">Wk 03</span></td><td><span class="n">Wk 04</span></td><td><span class="n">Wk 04</span></td></tr><tr><td>Coast Guard Roles and Missions</td><td><span class="n">Wk 03</span></td><td><span class="n">Wk 04</span></td><td><span class="n">Wk 05</span></td></tr><tr><td>Grooming Standards</td><td><span class="n">Wk 04</span></td><td><span class="n">Wk 05</span></td><td><span class="n">Wk 05</span></td></tr><tr><td>Uniform Regulations</td><td><span class="n">Wk 04</span></td><td><span class="n">Wk 05</span></td><td><span class="n">Wk 05</span></td></tr><tr><td>Enlisted Evaluation System</td><td><span class="n">Wk 04</span></td><td><span class="n">Wk 05</span></td><td><span class="n">Wk 05</span></td></tr><tr><td>Semper Paratus</td><td><span class="n">Wk 06</span></td><td><span class="n">Wk 07</span></td><td><span class="n">Wk 07</span></td></tr></table></div><p class="hint">The columns are the week numbers printed in the pocket guide ("Start / Required / Probation"). The guide does not define "Probation". Ask your Company Commander what it means for you. <a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=15" target="_blank" rel="noopener">Pocket guide p. 15</a></p>
+</section>
+<h2 class="part" id="checklist">Required knowledge tracker<small>Check off each item as you learn it. Grouped by the week it is required. Your progress is saved in this browser.</small></h2>
+<section class="skill" id="ckbox">
+<div class="ckbar"><span id="ckcount" aria-live="polite">0 of 0 done</span><button type="button" id="ckreset">Clear all</button></div>
+<h4>Required by week 2</h4><ul class="ck"><li><label><input type="checkbox"><span>Chain of command (names and ranks)</span></label></li><li><label><input type="checkbox"><span>Required telephone numbers</span></label></li><li><label><input type="checkbox"><span>11 General Orders of the Sentry</span></label></li><li><label><input type="checkbox"><span>Coast Guard pay grades</span></label></li><li><label><input type="checkbox"><span>Coast Guard collar devices</span></label></li><li><label><input type="checkbox"><span>Coast Guard sleeve insignia</span></label></li><li><label><input type="checkbox"><span>Coast Guard shoulder boards</span></label></li><li><label><input type="checkbox"><span>Coast Guard enlisted ratings</span></label></li></ul><h4>Required by week 3</h4><ul class="ck"><li><label><input type="checkbox"><span>Five types of followers</span></label></li><li><label><input type="checkbox"><span>Coast Guard Ethos</span></label></li></ul><h4>Required by week 4</h4><ul class="ck"><li><label><input type="checkbox"><span>Force protection conditions</span></label></li><li><label><input type="checkbox"><span>Flags, pennants, knots and parts of line</span></label></li><li><label><input type="checkbox"><span>Firefighting basics</span></label></li><li><label><input type="checkbox"><span>Piece nomenclature (M-16)</span></label></li><li><label><input type="checkbox"><span>Coast Guard roles and missions</span></label></li></ul><h4>Required by week 5</h4><ul class="ck"><li><label><input type="checkbox"><span>Grooming standards</span></label></li><li><label><input type="checkbox"><span>Uniform regulations</span></label></li><li><label><input type="checkbox"><span>Enlisted evaluation system</span></label></li></ul><h4>Required by week 7</h4><ul class="ck"><li><label><input type="checkbox"><span>Semper Paratus</span></label></li></ul>
+</section>
+<h2 class="part" id="bg">Background</h2>
+<section class="skill" id="history">
+<h3>Coast Guard history <span class="tag">History</span></h3>
+<p>The Coast Guard is a military, maritime, multi-mission service operating within the Department of Homeland Security, dedicated to the safety and security of the American people.</p><div class="fig"><div class="tile"><img src="img/hist-dhs.webp" alt="Department of Homeland Security seal" loading="lazy"><img src="img/hist-rcs.webp" alt="Revenue Cutter Service emblem" loading="lazy"><img src="img/hist-lss.webp" alt="Life-Saving Service emblem" loading="lazy"><img src="img/hist-cg-stripe.webp" alt="Coast Guard racing stripe and emblem" loading="lazy"></div><p class="cap">Department of Homeland Security seal, Revenue Cutter Service emblem, Life-Saving Service emblem, and the Coast Guard racing stripe.</p></div><h4>Timeline</h4><div class="tw"><table><tr><th>Date</th><th>Event</th></tr><tr><td><span class="n">Aug 4, 1790</span></td><td>Alexander Hamilton (the father of the Coast Guard) establishes the U.S. Revenue Cutter Service under the Department of the Treasury. Its first laws authorized ten cutters to enforce tariff laws and prevent smuggling.</td></tr><tr><td><span class="n">1915</span></td><td>The Revenue Cutter Service merges with the U.S. Life-Saving Service. President Woodrow Wilson signs the "Act to Create the Coast Guard." This is the modern Coast Guard.</td></tr><tr><td><span class="n">1939</span></td><td>The U.S. Lighthouse Service is added.</td></tr><tr><td><span class="n">1942</span></td><td>The Bureau of Marine Inspection and Navigation is transferred to the Coast Guard.</td></tr><tr><td><span class="n">1967</span></td><td>The Coast Guard moves from the Treasury to the Department of Transportation.</td></tr><tr><td><span class="n">2003</span></td><td>The Coast Guard moves to the new Department of Homeland Security, after the September 11, 2001 attacks.</td></tr></table></div><p>The original ten cutters were: <b>Massachusetts, Scammel, Active, Eagle, Diligence, Argus, Vigilant, Virginia, South Carolina</b> and <b>General Greene</b>.</p><h4>The five armed forces</h4><p>The five uniformed services that make up the Armed Forces are defined in 10 U.S.C. 101(a)(4): the Army, Navy, Air Force, Marine Corps and Coast Guard.</p><div class="seals"><div class="sealc"><div class="tile"><img src="img/seal-army.webp" alt="Army" loading="lazy"></div><b>Army</b><span>DoD</span></div><div class="sealc"><div class="tile"><img src="img/seal-marines.webp" alt="Marine Corps" loading="lazy"></div><b>Marine Corps</b><span>DoD</span></div><div class="sealc"><div class="tile"><img src="img/seal-navy.webp" alt="Navy" loading="lazy"></div><b>Navy</b><span>DoD</span></div><div class="sealc"><div class="tile"><img src="img/seal-airforce.webp" alt="Air Force" loading="lazy"></div><b>Air Force</b><span>DoD</span></div><div class="sealc"><div class="tile"><img src="img/seal-coastguard.webp" alt="Coast Guard" loading="lazy"></div><b>Coast Guard</b><span>DHS</span></div></div><div class="callout"><b class="lab">The law</b><p>14 U.S.C. 1: the Coast Guard (established January 28, 1915) is a military service and a branch of the armed forces at all times. It is a service in the Department of Homeland Security, except when operating as a service in the Navy.</p></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=3" target="_blank" rel="noopener">Pocket guide p. 3</a></p>
+</section>
+<section class="skill" id="roles">
+<h3>Roles and missions <span class="tag">Week 4</span></h3>
+<p>The Coast Guard has a unique blend of military, humanitarian and civilian law enforcement capabilities. It has three roles.</p><div class="stage"><h5>Maritime safety</h5><p>Protecting the lives and safety of Americans through mishap prevention: standards and regulations, plan reviews and compliance inspections, and safety programs for mariners. Two primary missions:</p><ul class="kp"><li>Marine Safety</li><li>Search and Rescue</li></ul></div><div class="stage"><h5>Maritime security</h5><p>Enforcing, or assisting in enforcing, federal laws and treaties on waters under U.S. jurisdiction. The Coast Guard has civil authority to board any vessel subject to U.S. jurisdiction and, once aboard, may inquire, examine, inspect, search, seize and arrest. Four primary missions:</p><ul class="kp"><li>Illegal Drug Interdiction</li><li>Undocumented Migrant Interdiction</li><li>Defense Readiness</li><li>Ports, Waterways, and Coastal Security</li></ul></div><div class="stage"><h5>Maritime stewardship</h5><p>Protecting natural resources. America's marine waters and ecosystems are vital to the nation's health and economy, and contain one-fifth of the world's fishery resources. Five primary missions:</p><ul class="kp"><li>Living Marine Resources</li><li>Marine Environmental Protection</li><li>Fisheries</li><li>Aids to Navigation (ATON)</li><li>Ice Operations</li></ul></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=22" target="_blank" rel="noopener">Pocket guide p. 22</a></p>
+</section>
+<section class="skill" id="ethos">
+<h3>Coast Guard Ethos <span class="tag">Week 3</span></h3>
+<div class="ethos"><div class="tile"><img src="img/ethos-emblem.webp" alt="Coast Guard emblem" loading="lazy"></div><div class="ethosq"><p>I am a Coast Guardsman.</p><p>I serve the people of the United States.</p><p>I will protect them.</p><p>I will defend them.</p><p>I will save them.</p><p>I am their Shield.</p><p>For them I am Semper Paratus.</p><p>I live the Coast Guard Core Values.</p><p>I am proud to be a Coast Guardsman.</p><p><b>We are the United States Coast Guard.</b></p></div></div><p>The Core Values are <b>Honor</b>, <b>Respect</b> and <b>Devotion to Duty</b>.</p>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=34" target="_blank" rel="noopener">Pocket guide p. 34</a></p>
+</section>
+<h2 class="part" id="safety">Safety and conduct<small>Protect each other. These pages explain what to watch for and who to tell.</small></h2>
+<section class="skill" id="suicide">
+<h3>Suicide prevention <span class="tag">Safety</span></h3>
+<p>While we protect the citizens of the United States, we must also protect each other. Be aware of the warning signs, and if a shipmate is in pain, help your shipmate.</p><div class="callout"><b class="lab">Emergency</b><p>If someone is in immediate danger, call <b>911</b>.</p></div><h4>Suicide warning signs</h4><ul class="kp"><li>Appears depressed, sad, fearful, hopeless, poor appetite, poor sleep</li><li>Threatens suicide</li><li>Talks about wanting to die or sleep the pain away</li><li>Feeling anxious, agitated, frequent nightmares, or unable to sleep (or sleeping all the time)</li><li>Feeling trapped, like there is no way out</li><li>Withdrawing from family, friends, usual activities, society</li><li>Shows changes in behavior, appearance or mood</li><li>Abuses drugs or alcohol</li><li>Experienced significant loss or trauma, NJP or legal accident</li><li>Deliberately injures self</li></ul><h4>What to do: be the ACE</h4><div class="cols"><div class="card"><h5>A: Ask</h5><p>Do not be afraid to ask "Are you thinking about hurting yourself?"</p></div><div class="card"><h5>C: Care</h5><p>Show you care and listen.</p></div><div class="card"><h5>E: Escort</h5><p>Do not leave the person alone. Get them to help.</p></div></div><h4>Provide A.I.D.</h4><ul class="kp"><li><b>Ask.</b> Ask the question directly.</li><li><b>Intervene immediately.</b></li><li><b>Don't</b> keep it a secret.</li></ul><h4>Preserve L.I.F.E.</h4><ul class="kp"><li><b>Locate help:</b> Company Commander, instructor or permanent party member.</li><li><b>Inform</b> someone in your chain of command.</li><li><b>Find</b> someone to stay with the person. Do not leave the person alone.</li><li><b>Expedite:</b> get help as soon as possible. Call 911.</li></ul>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=4" target="_blank" rel="noopener">Pocket guide p. 4</a></p>
+</section>
+<section class="skill" id="hazing">
+<h3>Hazing and bullying <span class="tag">Conduct</span></h3>
+<p><b>Hazing</b> is any conduct in which one military member or employee, regardless of Service or rank, unnecessarily causes another to suffer or be exposed to an activity that is cruel, abusive, oppressive or harmful. No service member may engage in hazing or consent to being hazed. Soliciting or coercing another to conduct such activity also counts. The policy applies to all personnel at all times, on or off duty, at sea or ashore, on or off base.</p><h4>Examples of hazing</h4><ul class="kp"><li>Abusive or mean-spirited tricks meant to ridicule, humiliate or ostracize</li><li>"Tacking on crows"</li><li>Group wrestling matches targeting a particular member</li><li>Forcibly cutting or shaving hair</li><li>Handcuffing or otherwise securing a member to a fixed object or another member</li><li>Striking, slapping, branding, tattooing or painting another</li></ul><p><b>Bullying</b> is abusive conduct by a military member or members that harms a military member or any other person, physically or psychologically, without a proper military or governmental purpose and with the intent to exclude the member. It is threatening, humiliating or intimidating. It can also be work interference, undermining performance, or verbal abuse.</p><h4>Examples of bullying</h4><ul class="kp"><li>Physically striking another or threatening to</li><li>Intimidating, teasing or taunting</li><li>Oral or written berating meant to belittle or humiliate</li><li>Encouraging another to engage in illegal, harmful, demeaning or dangerous acts</li><li>Abusive or malicious tricks such as branding, handcuffing, duct taping, tattooing, shaving, greasing or painting</li><li>Forced consumption of food, alcohol, drugs or any other substance</li><li>Degrading or damaging a person, their property or their reputation</li></ul><h4>How to report</h4><p>Report actual or suspected hazing or bullying to your Company Commander(s) without fear of reprisal. If you cannot talk to them, go to any of these:</p><ul class="kp"><li>Instructor</li><li>Section Commander</li><li>Chaplain</li><li>Battalion Commander</li><li>Command Master Chief</li><li>Work Life staff</li></ul><div class="callout"><b class="lab">Zero tolerance</b><p>On or off duty, in or out of uniform, there is no place in the Coast Guard for dehumanizing treatment. Every incident is investigated and appropriate disciplinary action is taken.</p></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=5" target="_blank" rel="noopener">Pocket guide p. 5</a></p>
+</section>
+<section class="skill" id="sapr">
+<h3>Sexual assault response resources <span class="tag">Safety</span></h3>
+<p>The Coast Guard has a <b>zero tolerance</b> policy on sexual assault. There are two reporting options for all Coast Guard personnel.</p><div class="cols"><div class="card"><h5>Restricted (confidential)</h5><p>Lets a victim confidentially disclose details and receive advocacy, medical treatment and counseling <b>without</b> starting an official investigation or notifying the command. It is restricted <b>only</b> if you report to one of: the Sexual Assault Response Coordinator (SARC), the Family Advocacy Specialist (FAS) / backup SARC, a Unit Victim Advocate (VA), TRACEN Medical Clinic staff, or a Chaplain.</p></div><div class="card"><h5>Unrestricted</h5><p>For a victim who wants medical treatment, counseling and/or an official investigation. It triggers an immediate formal investigation by trained criminal investigators and the full range of protections. It is the only option that may lead to offenders being held accountable. Report through your company commander, an instructor, TRACEN Police or a civilian CG employee.</p></div></div><div class="callout"><b class="lab">Important</b><p>If you tell anyone other than a SARC, FAS, VA, medical staff or a chaplain, the report is Unrestricted. Anyone who receives a report, hears about, suspects or witnesses a sexual assault <b>shall</b> report it. No bystanders: take action.</p></div><h4>Resources</h4><div class="tw"><table><tr><th>Resource</th><th>Contact</th></tr><tr><td>SARC (work)</td><td>(609) 898-6451</td></tr><tr><td>Family Advocacy Specialist / backup SARC (work)</td><td>(609) 898-6925</td></tr><tr><td>TRACEN Medical Clinic (duty and after hours)</td><td>(609) 898-6610 / 6366</td></tr><tr><td>Chaplain</td><td>(609) 898-6239</td></tr><tr><td>Cape Regional Medical Center</td><td>(609) 463-2000</td></tr><tr><td>CG SUPRT</td><td>855-CGSUPRT (855-247-8778), www.cgsuprt.com</td></tr><tr><td>Safe Helpline (24/7)</td><td>877-995-5247, chat at www.safehelpline.org, or text your location to 55-247</td></tr><tr><td>Emergency, RDO/OOD, TRACEN Police</td><td>911</td></tr></table></div><p class="hint">Numbers are as printed in the 2018 pocket guide. Confirm current numbers with your Company Commander.</p>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=6" target="_blank" rel="noopener">Pocket guide p. 6</a></p>
+</section>
+<h2 class="part" id="cmd">Chain of command and orders</h2>
+<section class="skill" id="chain">
+<h3>Chain of command and phone numbers <span class="tag">Week 2</span></h3>
+<p>You fill in the "starboard" column with names when your Company Commander tells you to. Know each person's rank and name.</p><div class="tw"><table><tr><th>Position</th><th>Fill in</th></tr><tr><td>Commander in Chief</td><td>President</td></tr><tr><td>Secretary of Homeland Security</td><td>The Honorable</td></tr><tr><td>Commandant of the Coast Guard</td><td>Admiral</td></tr><tr><td>Deputy Commandant for Mission Support (DCMS)</td><td><span class="blank">________________</span></td></tr><tr><td>Commander, Force Readiness Command (FORCECOM)</td><td><span class="blank">________________</span></td></tr><tr><td>Commanding Officer, TRACEN Cape May (CO)</td><td><span class="blank">________________</span></td></tr><tr><td>Executive Officer (XO)</td><td><span class="blank">________________</span></td></tr><tr><td>Training Officer (TO)</td><td><span class="blank">________________</span></td></tr><tr><td>Regimental Officer (RO)</td><td><span class="blank">________________</span></td></tr><tr><td>Battalion Officer (BO)</td><td><span class="blank">________________</span></td></tr><tr><td>Battalion Commander (BC)</td><td><span class="blank">________________</span></td></tr></table></div><h4>Important phone numbers</h4><div class="tw"><table><tr><th>Contact</th><th>Number</th></tr><tr><td><b>Emergency</b></td><td><b>911</b></td></tr><tr><td>Officer of the Day (OOD)</td><td>Cell (609) 780-1346</td></tr><tr><td>Regimental Duty Officer (RDO)</td><td>Cell (609) 374-4388, ext. X6905</td></tr><tr><td>Sexton Hall</td><td>ext. X6971</td></tr></table></div><p class="hint">Also know your own chain below the Battalion Commander: Section Commander, Lead Company Commander and Company Commander. <a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=16" target="_blank" rel="noopener">Pocket guide p. 16</a></p>
+
+</section>
+<section class="skill" id="orders">
+<h3>11 General Orders of a sentry <span class="tag">Week 2</span></h3>
+<ol class="pr"><li>To take charge of this post and all government property in view.</li><li>To walk my post in a military manner, keeping always on the alert, and observing everything that takes place within sight or hearing.</li><li>To report all violations of orders I am instructed to enforce.</li><li>To repeat all calls from posts more distant from the guard house than my own.</li><li>To quit my post only when properly relieved.</li><li>To receive, obey, and pass on to the sentry who relieves me all orders from the commanding officer, field officer of the day, officer of the day, and officers and petty officers of the watch.</li><li>To talk to no one except in the line of duty.</li><li>To give the alarm in case of fire or disorder.</li><li>To call the petty officer of the watch in any case not covered by instructions.</li><li>To salute all officers and all colors and standards not cased.</li><li>To be especially watchful at night, and during the time for challenging, to challenge all persons on or near my post, and to allow no one to pass without proper authority.</li></ol>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=17" target="_blank" rel="noopener">Pocket guide p. 17</a></p>
+</section>
+<h2 class="part" id="ranks">Rates and ranks<small>Rank is the plain-language name for an officer (also called grade), for example Admiral (ADM). Rate is the plain-language name for an enlisted person, which identifies their occupation and pay grade, for example Boatswain's Mate Second Class (BM2). Each picture shows the collar device, shoulder board and sleeve insignia, from top to bottom.</small></h2>
+<section class="skill" id="officers">
+<h3>Officer ranks (commissioned officers) <span class="tag">Week 2</span></h3>
+<h4>Flag officers</h4><div class="rk"><div class="rkc"><div class="tile"><img src="img/off-rdml.webp" alt="Rear Admiral (lower half)" loading="lazy"></div><b>Rear Admiral (lower half)</b><span>RDML · O-7</span></div><div class="rkc"><div class="tile"><img src="img/off-radm.webp" alt="Rear Admiral" loading="lazy"></div><b>Rear Admiral</b><span>RADM · O-8</span></div><div class="rkc"><div class="tile"><img src="img/off-vadm.webp" alt="Vice Admiral" loading="lazy"></div><b>Vice Admiral</b><span>VADM · O-9</span></div><div class="rkc"><div class="tile"><img src="img/off-adm.webp" alt="Admiral" loading="lazy"></div><b>Admiral</b><span>ADM · O-10</span></div></div><h4>Senior officers</h4><div class="rk"><div class="rkc"><div class="tile"><img src="img/off-cdr.webp" alt="Commander" loading="lazy"></div><b>Commander</b><span>CDR · O-5</span></div><div class="rkc"><div class="tile"><img src="img/off-capt.webp" alt="Captain" loading="lazy"></div><b>Captain</b><span>CAPT · O-6</span></div></div><h4>Junior officers</h4><div class="rk"><div class="rkc"><div class="tile"><img src="img/off-ens.webp" alt="Ensign" loading="lazy"></div><b>Ensign</b><span>ENS · O-1</span></div><div class="rkc"><div class="tile"><img src="img/off-ltjg.webp" alt="Lieutenant Junior Grade" loading="lazy"></div><b>Lieutenant Junior Grade</b><span>LTJG · O-2</span></div><div class="rkc"><div class="tile"><img src="img/off-lt.webp" alt="Lieutenant" loading="lazy"></div><b>Lieutenant</b><span>LT · O-3</span></div><div class="rkc"><div class="tile"><img src="img/off-lcdr.webp" alt="Lieutenant Commander" loading="lazy"></div><b>Lieutenant Commander</b><span>LCDR · O-4</span></div></div><h4>Warrant officers</h4><div class="rk"><div class="rkc"><div class="tile"><img src="img/off-cwo2.webp" alt="Chief Warrant Officer 2" loading="lazy"></div><b>Chief Warrant Officer 2</b><span>CWO2 · W-2</span></div><div class="rkc"><div class="tile"><img src="img/off-cwo3.webp" alt="Chief Warrant Officer 3" loading="lazy"></div><b>Chief Warrant Officer 3</b><span>CWO3 · W-3</span></div><div class="rkc"><div class="tile"><img src="img/off-cwo4.webp" alt="Chief Warrant Officer 4" loading="lazy"></div><b>Chief Warrant Officer 4</b><span>CWO4 · W-4</span></div></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=18" target="_blank" rel="noopener">Pocket guide p. 18</a></p>
+</section>
+<section class="skill" id="enlisted">
+<h3>Enlisted grade structure <span class="tag">Week 2</span></h3>
+<h4>Senior enlisted command</h4><div class="rk"><div class="rkc"><div class="tile two"><img src="img/enl-cmc-collar.webp" alt="Command Master Chief Petty Officer" loading="lazy"><img src="img/enl-cmc-board.webp" alt="Command Master Chief Petty Officer" loading="lazy"></div><b>Command Master Chief Petty Officer</b><span>CMC · E-9</span></div><div class="rkc"><div class="tile two"><img src="img/enl-acmc-collar.webp" alt="Area Command Master Chief Petty Officer (or MCPOCGR, Reserve Forces)" loading="lazy"><img src="img/enl-acmc-board.webp" alt="Area Command Master Chief Petty Officer (or MCPOCGR, Reserve Forces)" loading="lazy"></div><b>Area Command Master Chief Petty Officer (or MCPOCGR, Reserve Forces)</b><span>AREA CMC · E-9</span></div><div class="rkc"><div class="tile two"><img src="img/enl-mcpocg-collar.webp" alt="Master Chief Petty Officer of the Coast Guard" loading="lazy"><img src="img/enl-mcpocg-board.webp" alt="Master Chief Petty Officer of the Coast Guard" loading="lazy"></div><b>Master Chief Petty Officer of the Coast Guard</b><span>MCPOCG · E-9</span></div></div><h4>Senior enlisted</h4><div class="rk"><div class="rkc"><div class="tile two"><img src="img/enl-cpo-collar.webp" alt="Chief Petty Officer" loading="lazy"><img src="img/enl-cpo-board.webp" alt="Chief Petty Officer" loading="lazy"></div><b>Chief Petty Officer</b><span>CPO · E-7</span></div><div class="rkc"><div class="tile two"><img src="img/enl-scpo-collar.webp" alt="Senior Chief Petty Officer" loading="lazy"><img src="img/enl-scpo-board.webp" alt="Senior Chief Petty Officer" loading="lazy"></div><b>Senior Chief Petty Officer</b><span>SCPO · E-8</span></div><div class="rkc"><div class="tile two"><img src="img/enl-mcpo-collar.webp" alt="Master Chief Petty Officer" loading="lazy"><img src="img/enl-mcpo-board.webp" alt="Master Chief Petty Officer" loading="lazy"></div><b>Master Chief Petty Officer</b><span>MCPO · E-9</span></div></div><h4>Junior enlisted</h4><div class="rk"><div class="rkc"><div class="tile two"><img src="img/enl-po3-collar.webp" alt="Petty Officer Third Class" loading="lazy"><img src="img/enl-po3-board.webp" alt="Petty Officer Third Class" loading="lazy"></div><b>Petty Officer Third Class</b><span>PO3 · E-4</span></div><div class="rkc"><div class="tile two"><img src="img/enl-po2-collar.webp" alt="Petty Officer Second Class" loading="lazy"><img src="img/enl-po2-board.webp" alt="Petty Officer Second Class" loading="lazy"></div><b>Petty Officer Second Class</b><span>PO2 · E-5</span></div><div class="rkc"><div class="tile two"><img src="img/enl-po1-collar.webp" alt="Petty Officer First Class" loading="lazy"><img src="img/enl-po1-board.webp" alt="Petty Officer First Class" loading="lazy"></div><b>Petty Officer First Class</b><span>PO1 · E-6</span></div></div><h4>Non-rate</h4><div class="rk"><div class="rkc"><div class="tile"><img src="img/enl-sr.webp" alt="Seaman Recruit" loading="lazy"></div><b>Seaman Recruit</b><span>SR · E-1</span></div><div class="rkc"><div class="tile two"><img src="img/enl-sa-1.webp" alt="Seaman Apprentice (or Fireman Apprentice)" loading="lazy"><img src="img/enl-sa-2.webp" alt="Seaman Apprentice (or Fireman Apprentice)" loading="lazy"></div><b>Seaman Apprentice (or Fireman Apprentice)</b><span>SA / FA · E-2</span></div><div class="rkc"><div class="tile two"><img src="img/enl-sn-1.webp" alt="Seaman (or Fireman)" loading="lazy"><img src="img/enl-sn-2.webp" alt="Seaman (or Fireman)" loading="lazy"></div><b>Seaman (or Fireman)</b><span>SN / FN · E-3</span></div></div><p class="hint">For the non-rate grades the two pictures show the sleeve stripes: white for deck (seaman) and red for engineering (fireman), as printed in the guide.</p>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=19" target="_blank" rel="noopener">Pocket guide p. 19</a></p>
+</section>
+<section class="skill" id="ratings">
+<h3>Coast Guard enlisted ratings <span class="tag">Week 2</span></h3>
+<p>A rating is the plain-language name for an enlisted person's occupational specialty. Only enlisted personnel have a rating.</p><div class="rk"><div class="rkc"><div class="tile"><img src="img/rating-AET.webp" alt="Avionics Electrical Technician" loading="lazy"></div><b>AET</b><span>Avionics Electrical Technician</span></div><div class="rkc"><div class="tile"><img src="img/rating-AMT.webp" alt="Aviation Maintenance Technician" loading="lazy"></div><b>AMT</b><span>Aviation Maintenance Technician</span></div><div class="rkc"><div class="tile"><img src="img/rating-AST.webp" alt="Aviation Survival Technician" loading="lazy"></div><b>AST</b><span>Aviation Survival Technician</span></div><div class="rkc"><div class="tile"><img src="img/rating-BM.webp" alt="Boatswain's Mate" loading="lazy"></div><b>BM</b><span>Boatswain's Mate</span></div><div class="rkc"><div class="tile"><img src="img/rating-CS.webp" alt="Culinary Specialist" loading="lazy"></div><b>CS</b><span>Culinary Specialist</span></div><div class="rkc"><div class="tile"><img src="img/rating-DC.webp" alt="Damage Controlman" loading="lazy"></div><b>DC</b><span>Damage Controlman</span></div><div class="rkc"><div class="tile"><img src="img/rating-DV.webp" alt="Diver" loading="lazy"></div><b>DV</b><span>Diver</span></div><div class="rkc"><div class="tile"><img src="img/rating-EM.webp" alt="Electrician's Mate" loading="lazy"></div><b>EM</b><span>Electrician's Mate</span></div><div class="rkc"><div class="tile"><img src="img/rating-ET.webp" alt="Electronics Technician" loading="lazy"></div><b>ET</b><span>Electronics Technician</span></div><div class="rkc"><div class="tile"><img src="img/rating-GM.webp" alt="Gunner's Mate" loading="lazy"></div><b>GM</b><span>Gunner's Mate</span></div><div class="rkc"><div class="tile"><img src="img/rating-HS.webp" alt="Health Services Technician" loading="lazy"></div><b>HS</b><span>Health Services Technician</span></div><div class="rkc"><div class="tile"><img src="img/rating-IS.webp" alt="Intelligence Specialist" loading="lazy"></div><b>IS</b><span>Intelligence Specialist</span></div><div class="rkc"><div class="tile"><img src="img/rating-IT.webp" alt="Information Systems Technician" loading="lazy"></div><b>IT</b><span>Information Systems Technician</span></div><div class="rkc"><div class="tile"><img src="img/rating-ME.webp" alt="Maritime Enforcement Specialist" loading="lazy"></div><b>ME</b><span>Maritime Enforcement Specialist</span></div><div class="rkc"><div class="tile"><img src="img/rating-MK.webp" alt="Machinery Technician" loading="lazy"></div><b>MK</b><span>Machinery Technician</span></div><div class="rkc"><div class="tile"><img src="img/rating-MST.webp" alt="Marine Science Technician" loading="lazy"></div><b>MST</b><span>Marine Science Technician</span></div><div class="rkc"><div class="tile"><img src="img/rating-MU.webp" alt="Musician" loading="lazy"></div><b>MU</b><span>Musician</span></div><div class="rkc"><div class="tile"><img src="img/rating-OS.webp" alt="Operations Specialist" loading="lazy"></div><b>OS</b><span>Operations Specialist</span></div><div class="rkc"><div class="tile"><img src="img/rating-PA.webp" alt="Public Affairs Specialist" loading="lazy"></div><b>PA</b><span>Public Affairs Specialist</span></div><div class="rkc"><div class="tile"><img src="img/rating-SK.webp" alt="Storekeeper" loading="lazy"></div><b>SK</b><span>Storekeeper</span></div><div class="rkc"><div class="tile"><img src="img/rating-YN.webp" alt="Yeoman" loading="lazy"></div><b>YN</b><span>Yeoman</span></div><div class="rkc"><div class="tile"><img src="img/rating-IV.webp" alt="Investigator (Reserve only)" loading="lazy"></div><b>IV</b><span>Investigator (Reserve only)</span></div></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=20" target="_blank" rel="noopener">Pocket guide p. 20</a></p>
+</section>
+<h2 class="part" id="std">Standards</h2>
+<section class="skill" id="fpcon">
+<h3>Force protection conditions <span class="tag">Week 4</span></h3>
+<p>Force Protection Condition (FPCON) is a terrorism threat system that identifies what security measures should be taken in response to various terrorism threats. Higher FPCON levels add restrictions, such as limiting who may enter the installation, and more Random Anti-terrorism Measures (RAM).</p><div class="fprows"><div class="fpr"><img src="img/fpcon-normal.webp" alt="FPCON NORMAL sign" loading="lazy"><div><b>FPCON NORMAL</b><p>Routine security posture</p></div></div><div class="fpr"><img src="img/fpcon-alfa.webp" alt="FPCON ALFA sign" loading="lazy"><div><b>FPCON ALFA</b><p>Possible terrorist activity</p></div></div><div class="fpr"><img src="img/fpcon-bravo.webp" alt="FPCON BRAVO sign" loading="lazy"><div><b>FPCON BRAVO</b><p>Predictable terrorist threat activity exists</p></div></div><div class="fpr"><img src="img/fpcon-charlie.webp" alt="FPCON CHARLIE sign" loading="lazy"><div><b>FPCON CHARLIE</b><p>Terrorist targeting against personnel and facilities is imminent</p></div></div><div class="fpr"><img src="img/fpcon-delta.webp" alt="FPCON DELTA sign" loading="lazy"><div><b>FPCON DELTA</b><p>Terrorist action against a specific location imminent</p></div></div></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=21" target="_blank" rel="noopener">Pocket guide p. 21</a></p>
+</section>
+<section class="skill" id="followers">
+<h3>Followers <span class="tag">Week 3</span></h3>
+<p>Followers fall into five types, based on how actively and how independently they think.</p><div class="tw"><table><tr><th>Type</th><th>Description</th></tr><tr><td><b>Sheep</b></td><td>The least desirable type of follower. Passive and dependent.</td></tr><tr><td><b>Yes People</b></td><td>More active and able to think critically and independently, but choose not to.</td></tr><tr><td><b>Alienated</b></td><td>Can think critically and are independent but, like sheep and yes people, are also passive.</td></tr><tr><td><b>Survivors</b></td><td>Watchers. If it works for others, they will try it.</td></tr><tr><td><b>Effective</b></td><td>Proactive and respectful of their leader's authority.</td></tr></table></div><div class="fig big"><img src="img/followers-chart.webp" alt="Followers chart with axes passive and active, independent and critical thinking, dependent and uncritical thinking" loading="lazy"><p class="cap">Followers chart: vertical axis runs from dependent/uncritical to independent/critical thinking; horizontal axis from passive to active. Effective sits in the active, independent quadrant, with survivors in the middle.</p></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=23" target="_blank" rel="noopener">Pocket guide p. 23</a></p>
+</section>
+<section class="skill" id="grooming">
+<h3>Grooming standards <span class="tag">Week 5</span></h3>
+<p>Grooming standards are based on neatness, cleanliness, safety, military image and appearance. Hair overall must be clean, well-groomed and neat. Hair coloring, if used, must look natural. Hair must not touch the eyebrows when groomed, or extend below the front of properly worn headgear.</p><h4>Men</h4><p>Hair above the ear and around the neck is tapered. Hair on the back of the neck must not touch the collar. The bulk of hair must not be more than 1½ inches from the scalp. Sideburns shall not extend below a point level with the bottom of the ear opening.</p><div class="fig big"><img src="img/groom-men.webp" alt="Men grooming standards diagram" loading="lazy"></div><h4>Women</h4><p>Haircuts and styles present a balanced appearance. The hair may touch but not fall below the bottom edge of the back of the collar. All ponytails and long hair, including braids, must be neatly and inconspicuously fastened, pinned or secured to the head. Bun bulk is no more than 3 inches.</p><div class="fig big"><img src="img/groom-women.webp" alt="Women grooming standards diagram" loading="lazy"></div><p>Hairpins, small barrettes, small interlocking butterfly clips, elastic bands, scrunchies and small combs in black, dark blue, brown, silver, metallic gold or a color similar to the individual's hair are authorized.</p>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=24" target="_blank" rel="noopener">Pocket guide p. 24</a></p>
+</section>
+<section class="skill" id="uniforms">
+<h3>Uniform regulations <span class="tag">Week 5</span></h3>
+<h4>Operational Dress Uniform (ODU)</h4><p>A general-purpose, everyday uniform for any situation that does not require a dress uniform. It is authorized for commuting in a private vehicle between work and home, including brief non-social stops such as for gas.</p><div class="uni"><div class="fig"><img src="img/uniform-odu.webp" alt="Operational Dress Uniform" loading="lazy"></div><div><ul class="kp"><li><b>ODU shirt:</b> sleeves rolled accordion style with only the cuff showing, or down as prescribed</li><li><b>ODU trousers:</b> bloused on the safety boot between the second and third eyelet</li><li><b>Blue T-shirt:</b> crew neck</li><li><b>Footwear:</b> 8 to 10 inch safety boot with black socks</li><li><b>Belt:</b> black riggers belt, bitter end behind but not past the first belt loop on the left</li><li><b>Headgear:</b> ball cover, watch cap or cold weather cap as prescribed</li><li><b>Jacket:</b> Foul Weather Parka (FWP), FWP liner</li></ul></div></div><p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=25" target="_blank" rel="noopener">Pocket guide p. 25</a></p><h4>Tropical Blue</h4><p>Worn to compensate for climate variations. It is not acceptable at any event where a coat and tie would be required.</p><div class="uni"><div class="fig"><img src="img/uniform-tropical-blue.webp" alt="Tropical Blue uniform" loading="lazy"></div><div><ul class="kp"><li><b>Short sleeve dress shirt:</b> the female version must be worn with female trousers</li><li><b>Dress pant:</b> wash and wear or standard dress pant</li><li><b>Belt:</b> 1¼ inch black web belt with brass belt buckle</li><li><b>Footwear:</b> black oxfords; females may wear pumps</li><li><b>Headgear:</b> combination cover or garrison cap as prescribed</li><li><b>Ribbons:</b> all, top three, or any nine ribbons, worn on the left side, ¼ inch above the pocket</li><li><b>Name tag:</b> worn on the right side, ¼ inch above the pocket</li><li><b>Collar devices:</b> E-4 and up</li><li><b>Jacket:</b> trench coat, windbreaker, FWP</li></ul></div></div><p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=26" target="_blank" rel="noopener">Pocket guide p. 26</a></p><h4>Service Dress Blue "Bravo"</h4><p>Suitable on all occasions when wearing a uniform is prescribed or appropriate.</p><div class="uni"><div class="fig"><img src="img/uniform-service-dress-blue.webp" alt="Service Dress Blue uniform" loading="lazy"></div><div><ul class="kp"><li><b>Long sleeve dress shirt</b></li><li><b>Dress pant:</b> wash and wear is not authorized</li><li><b>Belt:</b> 1¼ inch black web belt with brass belt buckle</li><li><b>Tie:</b> men wear a blue neck tie; women wear an overlapping blue tie tab</li><li><b>Footwear:</b> black oxfords; females may wear pumps</li><li><b>Headgear:</b> combination cover and garrison cap</li><li><b>Ribbons:</b> all, top three, or any nine ribbons, worn on the left side, ¼ inch above the pocket</li><li><b>Name tag:</b> worn on the right side, ¼ inch above the pocket</li><li><b>Collar devices:</b> E-4 and up, worn on the dress shirt</li><li><b>Sleeve insignia:</b> E-4 and up, on the left sleeve</li><li><b>Jacket:</b> trench coat</li></ul></div></div><p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=27" target="_blank" rel="noopener">Pocket guide p. 27</a></p>
+
+</section>
+<section class="skill" id="eval">
+<h3>Enlisted evaluation system <span class="tag">Week 5</span></h3>
+<p>The non-rate Enlisted Evaluation Report (EER) for E-2 and E-3 is broken into 4 factors with 9 competencies that evaluate your performance during the marking period. Each is scored from 1 (lowest) to 7 (highest).</p><div class="tw"><table><tr><th>Factor</th><th>Competencies</th></tr><tr><td>Military</td><td>Military bearing; customs, courtesies and traditions</td></tr><tr><td>Performance</td><td>Quality of work; commitment</td></tr><tr><td>Professional qualities</td><td>Decision making and problem solving; military readiness; self-awareness and learning</td></tr><tr><td>Leadership</td><td>Respect for others; followership</td></tr></table></div><p><b>Conduct:</b> the degree to which the member adhered to military and civilian regulations.</p><h4>Recommendation for advancement</h4><div class="tw"><table><tr><th>Mark</th><th>Meaning</th></tr><tr><td><b>Ready</b></td><td>Deemed ready to advance to the next pay grade.</td></tr><tr><td><b>Not Ready</b></td><td>Performing in the current pay grade but not ready for the responsibilities of the next.</td></tr><tr><td><b>Not Recommended</b></td><td>Negative conduct or poor performance; should not be allowed to advance.</td></tr></table></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=28" target="_blank" rel="noopener">Pocket guide p. 28</a></p>
+</section>
+<h2 class="part" id="sea">Seamanship</h2>
+<section class="skill" id="terms">
+<h3>Common nautical terms <span class="tag">Learn</span></h3>
+<div class="tw"><table><tr><th>Term</th><th>Meaning</th></tr><tr><td><b>Aft</b></td><td>Towards the rear</td></tr><tr><td><b>Aloft</b></td><td>Above the ship's uppermost solid structure, overhead or high above</td></tr><tr><td><b>Alongside</b></td><td>By the side of the pier or ship</td></tr><tr><td><b>Awash</b></td><td>Sitting so low in the water that water is constantly washing across the top surface</td></tr><tr><td><b>Beam</b></td><td>Greatest athwartships width of a vessel</td></tr><tr><td><b>Billet</b></td><td>A crew member's assigned duties within the ship's organization</td></tr><tr><td><b>BMOW</b></td><td>Boatswain's Mate of the Watch: ensures all watches are properly manned and in order</td></tr><tr><td><b>Bow</b></td><td>The front of the ship</td></tr><tr><td><b>Brow</b></td><td>A moveable ladder or ramp used to board a vessel from a dock or pier</td></tr><tr><td><b>Centerline</b></td><td>Imaginary line running from the ship's bow to stern</td></tr><tr><td><b>Check</b></td><td>To slack off slowly, to ease off a line a little</td></tr><tr><td><b>Davit</b></td><td>Shipboard crane that can be swung out over the side</td></tr><tr><td><b>EOW</b></td><td>An officer in charge of the engineering department while on watch</td></tr><tr><td><b>Fast</b></td><td>Snugly secured</td></tr><tr><td><b>Fathom</b></td><td>A six foot unit of length</td></tr><tr><td><b>Fender</b></td><td>Equipment such as an inflated ball that goes between the vessel and another object to absorb shock and prevent damage</td></tr><tr><td><b>Fore</b></td><td>Towards the bow of the ship</td></tr><tr><td><b>Forecastle</b></td><td>Upper deck in the forward part of the ship, pronounced "FOKE-sul"</td></tr><tr><td><b>Gunwale</b></td><td>Upper edge or rail of a ship or boat's side, pronounced "GUN'nle"</td></tr><tr><td><b>Hawser</b></td><td>Large line</td></tr><tr><td><b>Inboard</b></td><td>Toward the center of the ship</td></tr><tr><td><b>Keel</b></td><td>Center of the hull. Lowest in the water, where weight is most carried</td></tr><tr><td><b>Lee</b></td><td>Side of the vessel sheltered from wind</td></tr><tr><td><b>Mast</b></td><td>Vertical pole that may have a sail or rigging, or antennas for powerboats</td></tr><tr><td><b>Outboard</b></td><td>Away from the center of the ship</td></tr><tr><td><b>Part</b></td><td>To break, as of a line</td></tr><tr><td><b>Port</b></td><td>Left side of the ship from the perspective of looking forward</td></tr><tr><td><b>Scullery</b></td><td>Compartment for washing and sterilizing eating utensils</td></tr><tr><td><b>Starboard</b></td><td>Right side of the ship from the perspective of looking forward</td></tr><tr><td><b>Stern</b></td><td>Back of the vessel</td></tr><tr><td><b>Strike</b></td><td>Lower or bring down</td></tr><tr><td><b>Turn to</b></td><td>An order to begin work</td></tr><tr><td><b>Void</b></td><td>An empty compartment below decks</td></tr><tr><td><b>Wake</b></td><td>The track left in the water behind a ship</td></tr><tr><td><b>Windward</b></td><td>Side of the vessel the wind is coming from</td></tr></table></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=29" target="_blank" rel="noopener">Pocket guide p. 29</a></p>
+</section>
+<section class="skill" id="flags">
+<h3>Flags and pennants <span class="tag">Week 4</span></h3>
+<div class="rk flg"><div class="rkc"><div class="tile"><img src="img/flag-bravo.webp" alt="Bravo flag" loading="lazy"></div><b>Bravo flag</b><span>Transfer of hazardous cargo</span></div><div class="rkc"><div class="tile"><img src="img/flag-oscar.webp" alt="Oscar flag" loading="lazy"></div><b>Oscar flag</b><span>Man overboard</span></div><div class="rkc"><div class="tile"><img src="img/flag-papa.webp" alt="Papa flag" loading="lazy"></div><b>Papa flag</b><span>Personnel recall</span></div><div class="rkc"><div class="tile"><img src="img/pennant-sopa.webp" alt="SOPA pennant" loading="lazy"></div><b>SOPA pennant</b><span>Most senior officer as commanding officer</span></div><div class="rkc"><div class="tile"><img src="img/pennant-prep.webp" alt="Prep pennant" loading="lazy"></div><b>Prep pennant</b><span>Five minutes before colors</span></div><div class="rkc"><div class="tile"><img src="img/pennant-third.webp" alt="Third substitute" loading="lazy"></div><b>Third substitute</b><span>Commanding Officer not on board</span></div></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=30" target="_blank" rel="noopener">Pocket guide p. 30</a></p>
+</section>
+<section class="skill" id="knots">
+<h3>Five basic knots and parts of a line <span class="tag">Week 4</span></h3>
+<div class="rk kn"><div class="rkc"><div class="tile"><img src="img/knot-square.webp" alt="Square knot" loading="lazy"></div><b>Square knot</b><span>Used to join two lines of equal size and material together.</span></div><div class="rkc"><div class="tile"><img src="img/knot-bowline.webp" alt="Bowline" loading="lazy"></div><b>Bowline</b><span>Used to put a temporary eye in a line.</span></div><div class="rkc"><div class="tile"><img src="img/knot-clove.webp" alt="Clove hitch" loading="lazy"></div><b>Clove hitch</b><span>Used to make fast (tie) a single line to a piling or railing.</span></div><div class="rkc"><div class="tile"><img src="img/knot-slip-clove.webp" alt="Slip clove hitch" loading="lazy"></div><b>Slip clove hitch</b><span>Used to make fast (tie) a single line to a piling or railing, with a quick release.</span></div><div class="rkc"><div class="tile"><img src="img/knot-double-becket.webp" alt="Double becket bend" loading="lazy"></div><b>Double becket bend</b><span>Used to join two lines of unequal size.</span></div></div><h4>Parts of a line</h4><div class="rk kn"><div class="rkc"><div class="tile"><img src="img/line-bitter-end.webp" alt="Bitter end" loading="lazy"></div><b>Bitter end</b></div><div class="rkc"><div class="tile"><img src="img/line-bight.webp" alt="Bight" loading="lazy"></div><b>Bight</b></div><div class="rkc"><div class="tile"><img src="img/line-turn.webp" alt="Turn" loading="lazy"></div><b>Turn</b></div><div class="rkc"><div class="tile"><img src="img/line-round-turn.webp" alt="Round turn" loading="lazy"></div><b>Round turn</b></div><div class="rkc"><div class="tile"><img src="img/line-standing-part.webp" alt="Standing part" loading="lazy"></div><b>Standing part</b></div></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=30" target="_blank" rel="noopener">Pocket guide p. 30</a></p>
+</section>
+<section class="skill" id="fire">
+<h3>Firefighting basics <span class="tag">Week 4</span></h3>
+<h4>Classes of fire</h4><div class="tw"><table><tr><th>Class</th><th>Fuel</th><th>Characteristics</th></tr><tr><td><div class="fi"><img src="img/fire-a.webp" alt="Class A symbol" loading="lazy"></div><b>A (Alpha)</b></td><td>Ordinary combustible materials such as wood, paper, plastics</td><td>White or grey smoke.<br><b>Extinguish with:</b> water, AFFF</td></tr><tr><td><div class="fi"><img src="img/fire-b.webp" alt="Class B symbol" loading="lazy"></div><b>B (Bravo)</b></td><td>Combustible liquids such as gasoline, diesel, paints, fuels, solvents, grease</td><td>Black or brown smoke.<br><b>Extinguish with:</b> Halon, PKP extinguisher, AFFF</td></tr><tr><td><div class="fi"><img src="img/fire-c.webp" alt="Class C symbol" loading="lazy"></div><b>C (Charlie)</b></td><td>Energized electrical equipment</td><td>Blue or white smoke.<br><b>Extinguish with:</b> CO2 extinguisher; safely secure the source of the electricity</td></tr><tr><td><div class="fi"><img src="img/fire-d.webp" alt="Class D symbol" loading="lazy"></div><b>D (Delta)</b></td><td>Combustible metals such as magnesium or titanium</td><td>Smoke color varies with the metal burned.<br><b>Option:</b> jettison (push overboard); advanced training needed</td></tr></table></div><h4>Fire tetrahedron</h4><p>The fire tetrahedron is a four-sided figure showing the four elements of flaming combustion: heat, oxygen, fuel and the chemical chain reaction. If any side is removed, flaming combustion stops and the fire goes out.</p><div class="fig big"><img src="img/fire-tetra.webp" alt="Fire tetrahedron: heat, oxygen, fuel and chemical chain reaction" loading="lazy"></div><div class="callout"><b class="lab">Uninhibited chemical chain reaction</b><p>The combining process of fuel, heat and oxygen in the proper amounts to sustain flaming combustion or a fire.</p></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=31" target="_blank" rel="noopener">Pocket guide p. 31</a></p>
+</section>
+<h2 class="part" id="wp">Weapons and song</h2>
+<section class="skill" id="m16">
+<h3>M-16 nomenclature <span class="tag">Week 4</span></h3>
+<p>Recite the piece nomenclature in order, starting with "My piece nomenclature is..." and ending with "My piece nomenclature is complete."</p><div class="fig big"><img src="img/m16-top.webp" alt="M-16 rifle with labeled parts: heel of the butt, stock, charging handle, rear sight, carrying handle, ejection port, slip ring, handguard, front sight, barrel, compensator and flash suppressor, bayonet lug, magazine well, magazine release, forward assist, pistol grip, toe of the butt, butt cap" loading="lazy"></div><div class="fig big"><img src="img/m16-lower.webp" alt="Close-up of the M-16 receiver with labeled parts including the selector lever (safe, semi, burst)" loading="lazy"></div><h4>Piece nomenclature, in order</h4><ol class="pr"><li>Flash suppressor</li><li>Barrel</li><li>Front sight</li><li>Hand guard</li><li>Slip ring</li><li>Carrying handle</li><li>Rear sight</li><li>Charging handle</li><li>Ejection port dust cover</li><li>Magazine release</li><li>Forward assist</li><li>Stock</li><li>Heel of the butt</li><li>Buttcap</li><li>Toe of the butt</li><li>Pistol grip</li><li>Selector lever</li><li>Trigger</li><li>Trigger guard</li><li>Magazine well</li><li>Magazine catch</li><li>Bolt catch / bolt release</li><li>Bayonet lug</li></ol><div class="callout"><b class="lab">Firearms safety rules</b><p><ol class="pr" style="margin-top:6px"><li>Treat all firearms as if they are loaded.</li><li>Always maintain proper muzzle control.</li><li>Keep finger off the trigger until on target and ready to shoot.</li><li>Know your target and what is beyond it.</li></ol></p></div>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=33" target="_blank" rel="noopener">Pocket guide p. 33</a></p>
+</section>
+<section class="skill" id="sp">
+<h3>Semper Paratus <span class="tag">Week 7</span></h3>
+<p>"Semper Paratus" is the Coast Guard's official march and is required knowledge by week 7 (you start learning it in week 6). The pocket guide prints all three verses and the chorus. The words are not copied here, so open the pocket guide to learn them.</p><p><a href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=32" target="_blank" rel="noopener">Open page 32 of the pocket guide</a></p>
+<p class="hint"><a class="pgref" href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf#page=32" target="_blank" rel="noopener">Pocket guide p. 32</a></p>
+</section>
+<h2 class="part" id="srcs">Source</h2>
+<section class="skill" id="sources"><h3>Sources</h3><ul class="kp"><li><a href="https://www.forcecom.uscg.mil/Portals/3/Documents/TCCM/Documents/RTPocket.pdf" target="_blank" rel="noopener">Recruit Training Pocket Guide, Training Center Cape May (USCG), revised October 2018</a>: all content and images on this page.</li><li>Also see the <a href="../helmsman/">Coast Guard Helmsman guide</a> for the arrival and pre-bootcamp checklist.</li></ul><p class="hint">Pictures are taken from the pocket guide, a U.S. Coast Guard publication. The blank "Notes" pages and the Semper Paratus lyrics are not reproduced. The latest version of the pocket guide and other Cape May materials are kept on the TRACEN Cape May SharePoint site (Recruit Training, General folder).</p></section>
+
+</main>
+</div>
+<script>
+(function(){var h=document.documentElement,b=document.getElementById('tocbtn'),s=document.getElementById('scrim'),n=document.getElementById('toc');
+function set(o){h.classList.toggle('toc-open',o);b.setAttribute('aria-expanded',o?'true':'false');b.setAttribute('aria-label',o?'Close contents':'Open contents');if(!o)b.blur();}
+b.addEventListener('click',function(){set(!h.classList.contains('toc-open'));});
+s.addEventListener('click',function(){set(false);});
+n.addEventListener('click',function(e){if(e.target.closest('a'))set(false);});
+function sc(e){var y=window.pageYOffset||h.scrollTop||document.body.scrollTop||0;if(e&&e.target&&e.target.scrollTop)y=Math.max(y,e.target.scrollTop);h.classList.toggle('scrolled',y>100);}
+window.addEventListener('scroll',sc,{passive:true,capture:true});document.addEventListener('touchmove',sc,{passive:true});sc();
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);}});
+})();
+</script>
+
+<script>
+(function(){var K='cape-checklist-v1',bx=[].slice.call(document.querySelectorAll('#ckbox input[type=checkbox]')),c=document.getElementById('ckcount'),st={};
+try{st=JSON.parse(localStorage.getItem(K)||'{}')||{};}catch(e){st={};}
+function upd(){var n=bx.filter(function(x){return x.checked}).length;c.textContent=n+' of '+bx.length+' done';}
+bx.forEach(function(x,i){x.checked=!!st[i];x.addEventListener('change',function(){st[i]=x.checked?1:0;try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}upd();});});
+document.getElementById('ckreset').addEventListener('click',function(){bx.forEach(function(x){x.checked=false});st={};try{localStorage.removeItem(K);}catch(e){}upd();});
+upd();})();
+</script>
 </body>
 </html>
