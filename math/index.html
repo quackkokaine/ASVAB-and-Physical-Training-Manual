@@ -176,6 +176,46 @@ header.top{padding-top:calc(124px + env(safe-area-inset-top,0px))}
 .tocbtn{left:calc(max(12px,env(safe-area-inset-left,0px)) + 52px)}
 header.top{padding-top:calc(80px + env(safe-area-inset-top,0px))}
 @media (max-width:600px){header.top{padding-top:calc(76px + env(safe-area-inset-top,0px))}}
+.pq{margin:14px 0 26px;border:1px solid var(--line);border-left:4px solid var(--accent);background:var(--surface);border-radius:8px;transition:background-color .3s}
+.pq-body{padding:16px 18px}
+.pq-t,.pq-after b{display:block;font-size:16px;font-weight:700;color:var(--ink)}
+.pq-btns{display:flex;gap:10px;margin-top:12px}
+.pq button{font:inherit;cursor:pointer}
+.pq-yes,.pq-yes2,.pq-no,.pq-no2{min-width:88px;min-height:42px;padding:8px 20px;border-radius:6px;font-weight:700;font-size:15px;border:2px solid var(--accent)}
+.pq-yes,.pq-yes2{background:var(--accent);color:var(--bg)}
+.pq-no,.pq-no2{background:transparent;color:var(--accent)}
+.pq-lab{margin:0 0 8px;font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.pq-qt{margin:0 0 12px;font-size:17px;line-height:1.5;color:var(--ink)}
+.pq-vis{margin:0 0 12px;display:flex;justify-content:center}
+.pqsvg{width:100%;max-width:300px;height:auto;overflow:visible}
+.pqsvg .l{fill:var(--accent-bg);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.pqsvg .l.d{fill:none;stroke-dasharray:5 4}
+.pqsvg .s{fill:var(--accent);stroke:var(--ink);stroke-width:2}
+.pqsvg path.l,.pqsvg line.l{fill:none}
+.pqsvg line.l{stroke:var(--ink)}
+.pqsvg .g{stroke:var(--line);stroke-width:1}
+.pqsvg .p{fill:var(--accent);stroke:var(--ink);stroke-width:1}
+.pqsvg text{fill:var(--ink);font:600 13px system-ui,sans-serif}
+.pqsvg rect.l[width="12"]{fill:none}
+.pq-ch{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pq-c{display:flex;gap:10px;align-items:center;text-align:left;min-height:48px;padding:10px 12px;border:2px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);font-size:16px}
+.pq-c:hover:not(:disabled){border-color:var(--accent)}
+.pq-c:disabled{cursor:default}
+.pq-k{flex:none;width:26px;height:26px;border-radius:50%;background:var(--hl);display:grid;place-items:center;font-size:13px;font-weight:700}
+.pq-c.wrong{border-color:#c0392b;background:rgba(192,57,43,.14);opacity:.8}
+.pq-c.right{border-color:var(--good);background:rgba(23,160,90,.18)}
+.pq-fb{margin:12px 0 0;font-size:15px;line-height:1.5;color:var(--muted);min-height:1.2em}
+.pq-fb b{color:var(--good)}
+.pq-after{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line)}
+.pq.flash{animation:pqflash 1.8s ease-in-out 1}
+@keyframes pqflash{0%,100%{background:var(--surface)}12%,45%,78%{background:rgba(35,190,100,.55)}28%,62%{background:var(--surface)}}
+.pq.ok{border-left-color:var(--good)}
+.pq-plus{display:flex;align-items:center;gap:10px;width:100%;padding:8px 14px;background:transparent;border:0;color:var(--accent);text-align:left}
+.pq-plus span{width:30px;height:30px;border-radius:50%;border:2px solid var(--accent);display:grid;place-items:center;font-size:22px;line-height:1;font-weight:700}
+.pq-plus i{font-style:normal;font-size:14px;font-weight:600;color:var(--muted)}
+.pq.min{border-left-width:1px;border-style:dashed}
+@media(max-width:520px){.pq-ch{grid-template-columns:1fr}.pq-body{padding:14px}}
+@media(prefers-reduced-motion:reduce){.pq.flash{animation:none;background:rgba(35,190,100,.4)}}
 </style>
 </head>
 <body>
@@ -942,5 +982,428 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'){set(false);
 })();
 </script>
 
+<script>
+(function(){
+var ri=function(a,b){return Math.floor(Math.random()*(b-a+1))+a};
+var pick=function(a){return a[ri(0,a.length-1)]};
+var shuffle=function(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=ri(0,i),t=a[i];a[i]=a[j];a[j]=t}return a};
+var gcd=function(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t}return a};
+var lcm=function(a,b){return a/gcd(a,b)*b};
+var MINUS='−';
+var fmt=function(n){if(typeof n==='string')return n;n=Math.round(n*1000)/1000;var s=String(n);return s.replace('-',MINUS)};
+var num=function(n){var s=fmt(n);var p=s.split('.');p[0]=p[0].replace(/\B(?=(\d{3})+(?!\d))/g,',');return p.join('.')};
+var fr=function(n,d){return d===1?fmt(n):'<span class="fr"><span>'+fmt(n)+'</span><span>'+fmt(d)+'</span></span>'};
+var frs=function(n,d){var g=gcd(n,d)||1;if(d<0){n=-n;d=-d}return fr(n/g,d/g)};
+var sup=function(b,e){return b+'<sup>'+fmt(e)+'</sup>'};
+var rad=function(s,m){return (s===1?'':fmt(s))+'√<span class="rt">'+m+'</span>'};
+function build(q,correct,wrongs,expl,vis){
+  var seen={};seen[correct]=1;var w=[];
+  wrongs.forEach(function(x){if(x!==undefined&&x!==null&&!seen[x]){seen[x]=1;w.push(x)}});
+  if(w.length<3)return null;
+  var opts=shuffle([correct].concat(shuffle(w).slice(0,3)));
+  return {q:q,vis:vis||'',choices:opts,answer:opts.indexOf(correct),expl:expl||''};
+}
+function numWrongs(v,list){return list.map(function(x){return fmt(x)})}
+
+/* ---------- SVG helpers ---------- */
+function svg(w,h,body,label){return '<svg class="pqsvg" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+body+'</svg>'}
+function pie(n,d){
+  var cx=60,cy=60,r=50,out='';
+  for(var i=0;i<d;i++){
+    var a0=(-90+i*360/d)*Math.PI/180,a1=(-90+(i+1)*360/d)*Math.PI/180;
+    var x0=cx+r*Math.cos(a0),y0=cy+r*Math.sin(a0),x1=cx+r*Math.cos(a1),y1=cy+r*Math.sin(a1);
+    var large=(360/d)>180?1:0;
+    out+='<path class="'+(i<n?'s':'l')+'" d="M'+cx+' '+cy+' L'+x0.toFixed(1)+' '+y0.toFixed(1)+' A'+r+' '+r+' 0 '+large+' 1 '+x1.toFixed(1)+' '+y1.toFixed(1)+' Z"/>';
+  }
+  return svg(120,120,out,n+' of '+d+' equal parts of a circle are shaded');
+}
+function bar(n,d){
+  var w=200,h=36,out='';
+  for(var i=0;i<d;i++)out+='<rect class="'+(i<n?'s':'l')+'" x="'+(10+i*w/d)+'" y="10" width="'+(w/d)+'" height="'+h+'"/>';
+  return svg(220,56,out,n+' of '+d+' equal parts of a bar are shaded');
+}
+function rectSvg(w,h,lw,lh){
+  var W=Math.min(200,Math.max(70,w*12)),H=Math.min(120,Math.max(40,h*12));
+  return svg(260,170,'<rect class="l" x="30" y="20" width="'+W+'" height="'+H+'"/><text x="'+(30+W/2)+'" y="'+(20+H+18)+'" text-anchor="middle">'+lw+'</text><text x="'+(30+W+8)+'" y="'+(20+H/2+5)+'">'+lh+'</text>','Rectangle with sides '+lw+' and '+lh);
+}
+function triSvg(base,hgt){
+  return svg(260,170,'<polygon class="l" points="30,140 230,140 150,30"/><line class="l d" x1="150" y1="30" x2="150" y2="140"/><rect class="l" x="150" y="128" width="12" height="12" transform="translate(-12 0)"/><text x="130" y="160" text-anchor="middle">base '+base+'</text><text x="144" y="92" text-anchor="end">h = '+hgt+'</text>','Triangle with base '+base+' and height '+hgt);
+}
+function rightTri(a,b,c,la,lb,lc){
+  return svg(260,180,'<polygon class="l" points="30,150 200,150 30,40"/><rect class="l" x="30" y="138" width="12" height="12"/><text x="115" y="170" text-anchor="middle">'+la+'</text><text x="8" y="100" text-anchor="middle" transform="rotate(-90 14 100)">'+lb+'</text><text x="128" y="88">'+lc+'</text>','Right triangle with legs '+la+' and '+lb+' and hypotenuse '+lc);
+}
+function circleSvg(r,label){
+  return svg(220,160,'<circle class="l" cx="110" cy="80" r="60"/><line class="l" x1="110" y1="80" x2="170" y2="80"/><circle class="p" cx="110" cy="80" r="3"/><text x="140" y="72" text-anchor="middle">'+label+'</text>','Circle with radius '+label);
+}
+function boxSvg(l,w,h){
+  return svg(260,190,'<polygon class="l" points="40,70 170,70 170,160 40,160"/><polygon class="l" points="40,70 80,40 210,40 170,70"/><polygon class="l" points="170,70 210,40 210,130 170,160"/><text x="105" y="178" text-anchor="middle">'+l+'</text><text x="200" y="165">'+w+'</text><text x="22" y="120" text-anchor="middle">'+h+'</text>','Rectangular box with length '+l+', width '+w+' and height '+h);
+}
+function cylSvg(r,h){
+  return svg(220,190,'<ellipse class="l" cx="110" cy="45" rx="60" ry="16"/><line class="l" x1="50" y1="45" x2="50" y2="145"/><line class="l" x1="170" y1="45" x2="170" y2="145"/><path class="l" d="M50 145 A60 16 0 0 0 170 145"/><path class="l d" d="M50 145 A60 16 0 0 1 170 145"/><line class="l d" x1="110" y1="45" x2="170" y2="45"/><text x="140" y="38" text-anchor="middle">r = '+r+'</text><text x="180" y="100">h = '+h+'</text>','Cylinder with radius '+r+' and height '+h);
+}
+function lshape(W,H,cw,ch){
+  var s=12;var x0=30,y0=20,w=W*s,h=H*s,a=cw*s,b=ch*s;
+  var pts=[[x0,y0],[x0+w-a,y0],[x0+w-a,y0+b],[x0+w,y0+b],[x0+w,y0+h],[x0,y0+h]].map(function(p){return p.join(',')}).join(' ');
+  return svg(260,180,'<polygon class="l" points="'+pts+'"/><text x="'+(x0+w/2)+'" y="'+(y0+h+18)+'" text-anchor="middle">'+W+'</text><text x="'+(x0+w+8)+'" y="'+(y0+b+(h-b)/2+5)+'">'+(H-ch)+'</text><text x="'+(x0-6)+'" y="'+(y0+h/2)+'" text-anchor="end">'+H+'</text><text x="'+(x0+w-a/2)+'" y="'+(y0-6)+'" text-anchor="middle">'+(W-cw)+'</text>','L-shaped figure');
+}
+function trapSvg(b1,b2,h){
+  return svg(260,170,'<polygon class="l" points="70,40 190,40 230,140 30,140"/><line class="l d" x1="190" y1="40" x2="190" y2="140"/><text x="130" y="32" text-anchor="middle">'+b1+'</text><text x="130" y="160" text-anchor="middle">'+b2+'</text><text x="196" y="95">h = '+h+'</text>','Trapezoid with bases '+b1+' and '+b2+' and height '+h);
+}
+function lineAngle(a){
+  return svg(260,130,'<line class="l" x1="20" y1="100" x2="240" y2="100"/><line class="l" x1="110" y1="100" x2="190" y2="30"/><path class="l" d="M140 100 A30 30 0 0 0 130 79"/><text x="148" y="92">'+a+'°</text><text x="70" y="85" text-anchor="middle">x</text>','Straight line with a ray making a '+a+' degree angle and an unknown angle x');
+}
+function triAngles(a,b){
+  return svg(260,170,'<polygon class="l" points="30,140 230,140 150,30"/><text x="52" y="132">'+a+'°</text><text x="190" y="132">'+b+'°</text><text x="136" y="64">x</text>','Triangle with angles '+a+' degrees, '+b+' degrees and x');
+}
+function parallel(given,ask,val){
+  var ux=110,uy=40,lx=60,ly=110;
+  var vx={NE:[14,-8],NW:[-30,-8],SW:[-30,18],SE:[14,18]};
+  var g=vx[given],a=vx[ask];
+  return svg(260,150,'<line class="l" x1="10" y1="40" x2="250" y2="40"/><line class="l" x1="10" y1="110" x2="250" y2="110"/><line class="l" x1="'+(lx-20)+'" y1="140" x2="'+(ux+30)+'" y2="12"/>'
+   +'<text x="'+(ux+g[0])+'" y="'+(uy+g[1])+'">'+val+'°</text><text x="'+(lx+a[0])+'" y="'+(ly+a[1])+'">x</text><text x="256" y="36" text-anchor="end" style="font-size:11px">m</text><text x="256" y="106" text-anchor="end" style="font-size:11px">n</text>','Two parallel lines m and n cut by a transversal');
+}
+function grid(pts,extra){
+  var s=22,o=110,out='';
+  for(var i=-5;i<=5;i++){out+='<line class="g" x1="'+(o+i*s)+'" y1="'+(o-5*s)+'" x2="'+(o+i*s)+'" y2="'+(o+5*s)+'"/><line class="g" x1="'+(o-5*s)+'" y1="'+(o+i*s)+'" x2="'+(o+5*s)+'" y2="'+(o+i*s)+'"/>'}
+  out+='<line class="l" x1="'+(o-5*s)+'" y1="'+o+'" x2="'+(o+5*s)+'" y2="'+o+'"/><line class="l" x1="'+o+'" y1="'+(o-5*s)+'" x2="'+o+'" y2="'+(o+5*s)+'"/>';
+  out+='<text x="'+(o+5*s+4)+'" y="'+(o+4)+'">x</text><text x="'+(o-4)+'" y="'+(o-5*s-4)+'" text-anchor="end">y</text>';
+  if(pts.length>1)out+='<line class="l" style="stroke:var(--accent)" x1="'+(o+pts[0][0]*s)+'" y1="'+(o-pts[0][1]*s)+'" x2="'+(o+pts[1][0]*s)+'" y2="'+(o-pts[1][1]*s)+'"/>';
+  pts.forEach(function(p,i){out+='<circle class="p" cx="'+(o+p[0]*s)+'" cy="'+(o-p[1]*s)+'" r="4.5"/><text x="'+(o+p[0]*s+7)+'" y="'+(o-p[1]*s-7)+'">('+fmt(p[0])+', '+fmt(p[1])+')</text>'});
+  return svg(240,230,out,'Coordinate grid with plotted points');
+}
+function sideTri(a,b,c){
+  return svg(260,170,'<polygon class="l" points="30,140 230,140 120,35"/><text x="130" y="160" text-anchor="middle">'+c+'</text><text x="60" y="80" text-anchor="end">'+a+'</text><text x="190" y="80">'+b+'</text>','Triangle with sides '+a+', '+b+' and '+c);
+}
+function isoTri(label,which){
+  return svg(260,170,'<polygon class="l" points="40,140 220,140 130,30"/><line class="l" x1="52" y1="100" x2="62" y2="108"/><line class="l" x1="208" y1="100" x2="198" y2="108"/><text x="130" y="62" text-anchor="middle">'+(which==='v'?label:'?')+'</text><text x="66" y="132">'+(which==='b'?label:'?')+'</text><text x="170" y="132">'+(which==='b'?label:'?')+'</text>','Isosceles triangle');
+}
+function extTri(a,b){
+  return svg(280,170,'<polygon class="l" points="30,140 190,140 120,35"/><line class="l d" x1="190" y1="140" x2="262" y2="140"/><text x="52" y="132">'+a+'°</text><text x="118" y="64" text-anchor="middle">'+b+'°</text><text x="206" y="130">x</text>','Triangle with two angles and an exterior angle x');
+}
+
+/* ---------- generators ---------- */
+var G={};
+
+G.mm1=function(){
+  var t=ri(0,4),q,c,w,e;
+  if(t===0){var n=ri(2,15)*20,p=15;c=n*0.15;q='Without a calculator: what is 15% of '+num(n)+'?';w=[n*0.1,n*0.5,n*0.25,c+10,c-5,c+5];e='10% of '+num(n)+' is '+fmt(n*0.1)+', and 5% is half of that: '+fmt(n*0.05)+'. Add them: '+fmt(c)+'.';}
+  else if(t===1){var m=ri(3,24)*4;c=m*25;q='What is '+m+' × 25?';w=[c+25,c-25,c+100,c-50,m*20,c+50];e='Divide '+m+' by 4 to get '+(m/4)+', then multiply by 100: '+num(c)+'.';}
+  else if(t===2){var m2=ri(12,89);while(m2%10+Math.floor(m2/10)>9)m2=ri(12,89);c=m2*11;q='What is '+m2+' × 11?';var d1=Math.floor(m2/10),d2=m2%10;w=[m2*10+d1+d2*0+1,c+10,c-11,c+1,d1*100+(d1+d2)*10+d2+100,c-10];e='Put the sum of the digits ('+d1+' + '+d2+' = '+(d1+d2)+') between the digits: '+d1+(d1+d2)+d2+'.';}
+  else if(t===3){var b=pick([15,25,35,45,55,65,75,85,95]);c=b*b;q='What is '+b+'²?';var f=Math.floor(b/10);w=[c+10,c-25,c+50,(f*(f+1))*100+25+100,c-50,c+25];e='For a number ending in 5, multiply the tens digit by the next number up ('+f+' × '+(f+1)+' = '+(f*(f+1))+') and attach 25: '+num(c)+'.';}
+  else{var k=ri(12,60);c=k*99;q='What is '+k+' × 99?';w=[k*100,c+k,c-k,c+99,c-100,k*98];e='Use '+k+' × 100 − '+k+' = '+num(k*100)+' '+MINUS+' '+k+' = '+num(c)+'.';}
+  return build(q,num(c),w.map(num),e);
+};
+G.mm2=function(){
+  var t=ri(0,2),q,c,w,e;
+  if(t===0){var a=ri(121,987),b=ri(12,89);c=a*b;q='Multiply: '+a+' × '+b;var rev=Number(String(b).split('').reverse().join(''));w=[c+10,c-100,c+a,c-a,a*rev,c+1000,c-10];e='Break it up: '+a+' × '+Math.floor(b/10)*10+' = '+num(a*Math.floor(b/10)*10)+' and '+a+' × '+(b%10)+' = '+num(a*(b%10))+'. Add them: '+num(c)+'.';}
+  else if(t===1){var d=pick([12,14,15,16,18,24,25]),qq=ri(110,480);var N=d*qq;c=qq;q='Divide: '+num(N)+' ÷ '+d;w=[qq+10,qq-10,qq+1,qq-1,qq+100,qq+2];e=d+' × '+qq+' = '+num(N)+', so the quotient is '+qq+'.';}
+  else{var x=ri(21,89)/10,y=ri(2,9)/10;x=Math.round(x*10)/10;c=Math.round(x*y*100)/100;q='Multiply: '+fmt(x)+' × '+fmt(y);w=[c*10,c/10,c+0.1,c-0.1,Math.round(c*10)/10+1];e='Ignore the decimals: '+Math.round(x*10)+' × '+Math.round(y*10)+' = '+Math.round(x*10)*Math.round(y*10)+'. Count 2 decimal places: '+fmt(c)+'.';}
+  return build(q,num(c),w.map(num),e);
+};
+
+G.fractions=function(){
+  var t=ri(0,5),dens=[2,3,4,5,6,8,10,12],q,c,w,e,vis='';
+  if(t===0){
+    var b=pick(dens),d=pick(dens);if(b===d)d=b===2?3:2;
+    var a=ri(1,b-1),cc=ri(1,d-1);var n=a*d+cc*b,den=b*d;
+    q='Add: '+fr(a,b)+' + '+fr(cc,d);c=frs(n,den);
+    w=[frs(a+cc,b+d),frs(n+1,den),frs(a*cc,b*d),frs(n-1,den),frs(n,den+b)];
+    e='Use the common denominator '+den+': '+fr(a*d,den)+' + '+fr(cc*b,den)+' = '+fr(n,den)+(gcd(n,den)>1?', which simplifies to '+c:'')+'.';
+  }else if(t===1){
+    var b2=pick(dens),d2=pick(dens);var a2=ri(1,b2-1),c2=ri(1,d2-1);
+    q='Multiply: '+fr(a2,b2)+' × '+fr(c2,d2);c=frs(a2*c2,b2*d2);
+    w=[frs(a2+c2,b2+d2),frs(a2*d2,b2*c2),frs(a2*c2,b2+d2),frs(a2*c2+1,b2*d2),frs(a2+c2,b2*d2)];
+    e='Multiply the tops and the bottoms: '+fr(a2*c2,b2*d2)+(gcd(a2*c2,b2*d2)>1?', which simplifies to '+c:'')+'.';
+  }else if(t===2){
+    var d3=pick([4,5,6,8,10]),n3=ri(1,d3-1);var tot=d3*ri(2,12);var ans=n3*tot/d3;
+    var who=pick(['students','marbles','cookies','books']);
+    q=fr(n3,d3)+' of the '+tot+' '+who+' are in the first group. How many are in the first group?';c=fmt(ans);
+    w=[ans+d3,tot-ans,ans-1,ans+2,tot/d3];
+    e='Divide '+tot+' by '+d3+' to get '+(tot/d3)+', then multiply by '+n3+': '+fmt(ans)+'.';
+  }else if(t===3){
+    var d4=ri(3,8),n4=ri(1,d4-1);
+    vis=Math.random()<0.5?pie(n4,d4):bar(n4,d4);
+    q='What fraction of the figure is shaded?';c=frs(n4,d4);
+    w=[frs(d4-n4,d4),frs(n4,d4+1),frs(n4+1,d4),frs(d4,n4),frs(n4,d4-1>0?d4-1:d4+2)];
+    e=n4+' of the '+d4+' equal parts are shaded, so the fraction is '+fr(n4,d4)+(gcd(n4,d4)>1?' = '+c:'')+'.';
+  }else if(t===4){
+    var b5=pick(dens),d5=pick(dens);var a5=ri(1,b5-1),c5=ri(1,d5-1);
+    q='Divide: '+fr(a5,b5)+' ÷ '+fr(c5,d5);c=frs(a5*d5,b5*c5);
+    w=[frs(a5*c5,b5*d5),frs(b5*c5,a5*d5),frs(a5*d5,b5*c5+1),frs(a5+d5,b5+c5),frs(a5*d5+1,b5*c5)];
+    e='Flip the second fraction and multiply: '+fr(a5,b5)+' × '+fr(d5,c5)+' = '+fr(a5*d5,b5*c5)+(gcd(a5*d5,b5*c5)>1?' = '+c:'')+'.';
+  }else{
+    var b6=pick([3,4,5,6,8]),w6=ri(1,4),n6=ri(1,b6-1);var d6=pick([2,3,4,5,6,8].filter(function(x){return x!==b6}));var n7=ri(1,d6-1);
+    var A=frs(n6,b6),Bv=frs(n7,d6);var v1=n6/b6,v2=n7/d6;
+    if(Math.abs(v1-v2)<1e-9)return G.fractions();
+    q='Which fraction is larger: '+fr(n6,b6)+' or '+fr(n7,d6)+'?';
+    c=v1>v2?fr(n6,b6):fr(n7,d6);var oth=v1>v2?fr(n7,d6):fr(n6,b6);
+    w=[oth,'They are equal','Cannot be determined'];
+    e='Compare as decimals: '+fmt(Math.round(v1*1000)/1000)+' and '+fmt(Math.round(v2*1000)/1000)+'.';
+    var r=build(q,c,w,e,'');return r;
+  }
+  return build(q,c,w,e,vis);
+};
+
+G.percent=function(){
+  var t=ri(0,3),q,c,w,e;
+  if(t===0){var p=pick([5,10,20,25,30,40,50,60,75]),n=ri(2,30)*20;var a=p*n/100;q='What is '+p+'% of '+n+'?';c=fmt(a);w=[a+10,a-p/5,a*2,n-a,a+5,p+n/10].map(fmt);e=p+'% means '+p+'/100. So '+fmt(p/100)+' × '+n+' = '+fmt(a)+'.';}
+  else if(t===1){var o=ri(2,15)*20,pc=pick([10,20,25,30,40,50]);var nw=o*(100+pc)/100;var dir=Math.random()<0.5;if(!dir){pc=pick([10,20,25,30,40,50]);nw=o*(100-pc)/100;}
+    q='A price changes from $'+o+' to $'+fmt(nw)+'. What is the percent '+(dir?'increase':'decrease')+'?';c=pc+'%';w=[(pc+5)+'%',(pc-5)+'%',(pc+10)+'%',Math.round(Math.abs(nw-o)/nw*100)+'%'].map(function(x){return x});
+    e='Change ÷ original: '+fmt(Math.abs(nw-o))+' ÷ '+o+' = '+fmt(pc/100)+', or '+pc+'%.';}
+  else if(t===2){var b=pick([20,25,40,50,80,200]);var pcs=[];for(var k=5;k<=95;k+=5){if(b*k%100===0)pcs.push(k)}var pc2=pick(pcs);var a2=b*pc2/100;q=a2+' is what percent of '+b+'?';c=pc2+'%';w=[(pc2+5)+'%',(pc2-5)+'%',(100-pc2)+'%',Math.round(b/a2*100)+'%'];e='Part ÷ whole: '+a2+' ÷ '+b+' = '+fmt(pc2/100)+', or '+pc2+'%.';}
+  else{var pr=ri(2,15)*20,d=pick([10,20,25,30,40,50]);var fin=pr*(100-d)/100;var item=pick(['jacket','backpack','pair of boots','toolbox']);q='A '+item+' costs $'+pr+'. It is on sale for '+d+'% off. What is the sale price?';c='$'+fmt(fin);w=['$'+fmt(pr*d/100),'$'+fmt(pr-d),'$'+fmt(pr+pr*d/100),'$'+fmt(fin+10)];e='The discount is '+d+'% of $'+pr+' = $'+fmt(pr*d/100)+'. Subtract: $'+pr+' '+MINUS+' $'+fmt(pr*d/100)+' = $'+fmt(fin)+'.';}
+  return build(q,c,w,e);
+};
+
+G.ratios=function(){
+  var t=ri(0,3),q,c,w,e;
+  if(t===0){var a=ri(1,7),b=ri(2,9);if(a===b)b++;var k=ri(2,12);var N=(a+b)*k;var big=Math.max(a,b)*k;var who=pick(['marbles','dollars','soldiers','cookies']);q='A group of '+N+' '+who+' is split in the ratio '+a+' : '+b+'. How many are in the larger part?';c=fmt(big);w=[Math.min(a,b)*k,N/Math.max(a,b),big+k,N/2+k,N-k].map(fmt);e='There are '+a+' + '+b+' = '+(a+b)+' parts. Each part is '+N+' ÷ '+(a+b)+' = '+k+'. The larger part is '+Math.max(a,b)+' × '+k+' = '+big+'.';}
+  else if(t===1){var a1=ri(2,9),b1=ri(2,9);if(a1===b1)b1++;var m=ri(2,9);q='Solve for x: '+fr(a1,b1)+' = '+fr(a1*m,'x');c=fmt(b1*m);w=[a1*m,b1+m,b1*m+b1,b1*m-1,a1+b1].map(fmt);e='Cross-multiply: '+a1+'x = '+b1+' × '+(a1*m)+', so x = '+fmt(b1*m)+'.';}
+  else if(t===2){var cups=ri(1,5),sv=ri(2,6),kk=ri(2,6);var item=pick(['flour','rice','water','sugar']);q='A recipe uses '+cups+' cups of '+item+' for '+sv+' servings. How many cups are needed for '+sv*kk+' servings?';c=fmt(cups*kk);w=[cups+kk,cups*kk+1,cups*kk-1,sv*kk,cups*kk+cups].map(fmt);e='The servings are multiplied by '+kk+', so the cups are too: '+cups+' × '+kk+' = '+cups*kk+'.';}
+  else{var mi=ri(2,25),inch=ri(2,9);q='On a map, 1 inch represents '+mi+' miles. Two towns are '+inch+' inches apart on the map. What is the actual distance?';c=fmt(mi*inch)+' miles';w=[fmt(mi+inch)+' miles',fmt(mi*inch+mi)+' miles',fmt(mi*inch-inch)+' miles',fmt(mi/inch)+' miles'];e='Multiply: '+inch+' × '+mi+' = '+mi*inch+' miles.';}
+  return build(q,c,w,e);
+};
+
+G.rates=function(){
+  var t=ri(0,4),q,c,w,e;
+  if(t===0){var s=ri(8,14)*5,h=ri(2,6);q='A truck travels at '+s+' miles per hour for '+h+' hours. How far does it go?';c=fmt(s*h)+' miles';w=[fmt(s+h)+' miles',fmt(s*h+s)+' miles',fmt(s*h-s)+' miles',fmt(s*(h+1))+' miles'];e='distance = rate × time = '+s+' × '+h+' = '+s*h+' miles.';}
+  else if(t===1){var s1=ri(8,14)*5,h1=ri(2,6);var d=s1*h1;q='A car goes '+d+' miles at '+s1+' miles per hour. How many hours does the trip take?';c=fmt(h1)+' hours';w=[(h1+1)+' hours',(h1-1)+' hours',(h1*2)+' hours',fmt(d/(s1+5))+' hours'];e='time = distance ÷ rate = '+d+' ÷ '+s1+' = '+h1+' hours.';}
+  else if(t===2){var d1=ri(2,6)*30,t1=ri(2,4),d2=ri(2,6)*30,t2=ri(2,4);var avg=(d1+d2)/(t1+t2);q='A convoy drives '+d1+' miles in '+t1+' hours, then '+d2+' miles in '+t2+' hours. What is its average speed for the whole trip?';c=fmt(avg)+' mph';var m2=(d1/t1+d2/t2)/2;w=[fmt(m2)+' mph',fmt(avg+5)+' mph',fmt(avg-5)+' mph',fmt(d1/t1+d2/t2)+' mph'];e='Total distance ÷ total time = '+(d1+d2)+' ÷ '+(t1+t2)+' = '+fmt(avg)+' mph. Do not just average the two speeds.';}
+  else if(t===3){var s2=ri(3,8)*5,s3=ri(3,8)*5,tt=ri(2,5);var D=(s2+s3)*tt;q='Two boats start '+D+' miles apart and sail toward each other at '+s2+' mph and '+s3+' mph. How many hours until they meet?';c=fmt(tt)+' hours';w=[(tt+1)+' hours',(tt-1)+' hours',fmt(D/Math.max(s2,s3))+' hours',fmt(D/Math.min(s2,s3))+' hours'];e='They close the gap at '+(s2+s3)+' mph, so time = '+D+' ÷ '+(s2+s3)+' = '+tt+' hours.';}
+  else{var p=pick([[6,3,2],[12,4,3],[10,15,6],[20,5,4],[12,6,4],[30,20,12],[15,10,6],[8,8,4],[24,8,6]]);q='One pump fills a tank in '+p[0]+' hours. A second pump fills it in '+p[1]+' hours. Working together, how many hours do they need?';c=fmt(p[2])+' hours';w=[fmt((p[0]+p[1])/2)+' hours',fmt(p[0]+p[1])+' hours',fmt(p[2]+1)+' hours',fmt(Math.abs(p[0]-p[1]))+' hours'];e='Add their rates: 1/'+p[0]+' + 1/'+p[1]+' = 1/'+p[2]+' of the tank per hour, so they need '+p[2]+' hours.';}
+  return build(q,c,w,e);
+};
+
+G.interest=function(){
+  var t=ri(0,3),q,c,w,e;
+  var P=ri(2,30)*100,r=ri(2,9),y=ri(1,6);var I=P*r*y/100;
+  if(t===0){q='What is the simple interest on $'+num(P)+' at '+r+'% per year for '+y+' years?';c='$'+num(I);w=['$'+num(I+P/100*r),'$'+num(P*r/100),'$'+num(I*2),'$'+num(P+I)];e='I = P × r × t = '+num(P)+' × '+fmt(r/100)+' × '+y+' = $'+num(I)+'.';}
+  else if(t===1){q='$'+num(P)+' is invested at '+r+'% simple interest for '+y+' years. What is the total amount at the end?';c='$'+num(P+I);w=['$'+num(I),'$'+num(P+I+P/100),'$'+num(P+P*r/100),'$'+num(P+I*2)];e='Interest = $'+num(I)+'. Total = $'+num(P)+' + $'+num(I)+' = $'+num(P+I)+'.';}
+  else if(t===2){q='A loan of $'+num(P)+' earns $'+num(I)+' in simple interest over '+y+' years. What is the annual interest rate?';c=r+'%';w=[(r+1)+'%',(r-1)+'%',(r*2)+'%',(r+2)+'%'];e='r = I ÷ (P × t) = '+num(I)+' ÷ ('+num(P)+' × '+y+') = '+fmt(r/100)+', or '+r+'%.';}
+  else{q='How many years will it take $'+num(P)+' to earn $'+num(I)+' at '+r+'% simple interest per year?';c=y+' years';w=[(y+1)+' years',(y-1<1?y+2:y-1)+' years',(y*2)+' years',(y+2)+' years'];e='t = I ÷ (P × r) = '+num(I)+' ÷ ('+num(P)+' × '+fmt(r/100)+') = '+y+' years.';}
+  return build(q,c,w,e);
+};
+
+G.averages=function(){
+  var t=ri(0,3),q,c,w,e;
+  if(t===0){var n=pick([4,5,6]),m=ri(60,90);var arr=[];var s=0;for(var i=0;i<n-1;i++){var v=m+ri(-10,10);arr.push(v);s+=v}var last=m*n-s;arr.push(last);arr=shuffle(arr);
+    q='What is the mean of these scores? '+arr.join(', ');c=fmt(m);var sorted=arr.slice().sort(function(a,b){return a-b});w=[m+1,m-1,sorted[Math.floor(n/2)],m+2,Math.max.apply(null,arr)].map(fmt);e='Add them: '+arr.join(' + ')+' = '+m*n+'. Divide by '+n+': '+m+'.';}
+  else if(t===1){var n2=pick([4,5,6]),A=ri(78,92);var sc=[],s2=0;for(var j=0;j<n2-1;j++){var v2=A+ri(-8,8);sc.push(v2);s2+=v2}var need=A*n2-s2;if(need<0||need>100)return G.averages();
+    q='A recruit scored '+sc.join(', ')+' on the first '+(n2-1)+' tests. What score does she need on test '+n2+' to average exactly '+A+'?';c=fmt(need);w=[need+5,need-5,A,need+10,need-10].map(fmt);e='She needs a total of '+A+' × '+n2+' = '+A*n2+'. She has '+s2+', so she needs '+need+'.';}
+  else if(t===2){var cnt=pick([5,7]);var a=[];for(var k=0;k<cnt;k++)a.push(ri(2,40));a=shuffle(a);var srt=a.slice().sort(function(x,y){return x-y});var med=srt[(cnt-1)/2];q='What is the median of: '+a.join(', ')+'?';c=fmt(med);var mean=Math.round(a.reduce(function(x,y){return x+y},0)/cnt);w=[mean,a[Math.floor(cnt/2)],srt[0],srt[cnt-1],med+1,med-1].map(fmt);e='Put them in order: '+srt.join(', ')+'. The middle number is '+med+'.';}
+  else{var n3=ri(3,6),m3=ri(10,40);var arr3=[];var s3=0;for(var z=0;z<n3-1;z++){var vv=m3+ri(-6,6);arr3.push(vv);s3+=vv}arr3.push(m3*n3-s3);var mx=Math.max.apply(null,arr3),mn=Math.min.apply(null,arr3);q='The range of these numbers is '+(mx-mn)+'. What is the range of: '+shuffle(arr3).join(', ')+'? (Pick the value that is the range.)';
+    q='What is the range of these numbers? '+shuffle(arr3).join(', ');c=fmt(mx-mn);w=[m3,mx,mn,mx-mn+1,mx-mn-1].map(fmt);e='Range = largest − smallest = '+mx+' '+MINUS+' '+mn+' = '+(mx-mn)+'.';}
+  return build(q,c,w,e);
+};
+
+G.prob=function(){
+  var t=ri(0,4),q,c,w,e;
+  if(t===0){var r=ri(1,8),b=ri(1,8),g=ri(1,8),T=r+b+g;var col=pick(['red','blue','green']);var k=col==='red'?r:col==='blue'?b:g;q='A bag holds '+r+' red, '+b+' blue and '+g+' green marbles. One marble is picked at random. What is the probability it is '+col+'?';c=frs(k,T);w=[frs(T-k,T),frs(k,T-k),frs(k,T+1),frs(1,3),frs(T-k,k)].filter(function(x){return x!==c});e='favorable ÷ total = '+fr(k,T)+(gcd(k,T)>1?' = '+c:'')+'.';}
+  else if(t===1){q='Two fair coins are flipped. What is the probability that both land heads?';c=fr(1,4);w=[fr(1,2),fr(1,3),fr(3,4),fr(2,3)];e='Multiply: '+fr(1,2)+' × '+fr(1,2)+' = '+fr(1,4)+'.';}
+  else if(t===2){var s=ri(2,12);var ways={2:1,3:2,4:3,5:4,6:5,7:6,8:5,9:4,10:3,11:2,12:1}[s];q='Two fair six-sided dice are rolled. What is the probability that the sum is '+s+'?';c=frs(ways,36);w=[frs(ways+1,36),frs(ways,12),frs(1,s),frs(ways,6),frs(ways+2,36)];e='There are 36 equally likely outcomes and '+ways+' of them sum to '+s+': '+fr(ways,36)+(gcd(ways,36)>1?' = '+c:'')+'.';}
+  else if(t===3){var rr=ri(2,6),bb=ri(2,6),TT=rr+bb;q='A drawer holds '+rr+' red socks and '+bb+' blue socks. Two socks are drawn without replacement. What is the probability that both are red?';c=frs(rr*(rr-1),TT*(TT-1));w=[frs(rr*rr,TT*TT),frs(rr,TT),frs(rr*(rr-1),TT*TT),frs(2*rr,TT*(TT-1)),frs(rr*bb,TT*(TT-1))];e='First red: '+fr(rr,TT)+'. Second red: '+fr(rr-1,TT-1)+'. Multiply: '+c+'.';}
+  else{var n=ri(3,9),d=ri(n+2,12);q='The probability of rain tomorrow is '+fr(n,d)+'. What is the probability it does not rain?';c=frs(d-n,d);w=[frs(n,d),frs(d-n,n),frs(d-n,d+1),frs(n+1,d)];e='The probabilities add to 1: 1 '+MINUS+' '+fr(n,d)+' = '+c+'.';}
+  return build(q,c,w,e);
+};
+
+G.units=function(){
+  var t=ri(0,4),q,c,w,e;
+  var F=[['feet','inches',12,'ft','in'],['yards','feet',3,'yd','ft'],['pounds','ounces',16,'lb','oz'],['gallons','quarts',4,'gal','qt'],['hours','minutes',60,'hr','min'],['minutes','seconds',60,'min','s'],['meters','centimeters',100,'m','cm'],['kilometers','meters',1000,'km','m'],['days','hours',24,'days','hr'],['tons','pounds',2000,'tons','lb']];
+  if(t<3){var f=pick(F),x=ri(2,12);q='How many '+f[1]+' are in '+x+' '+f[0]+'?';c=num(x*f[2]);w=[x/f[2],x+f[2],x*f[2]*2,x*f[2]/2,x*f[2]+f[2]].map(num);e='1 '+f[0].replace(/s$/,'')+' = '+f[2]+' '+f[1]+', so multiply: '+x+' × '+f[2]+' = '+num(x*f[2])+'.';}
+  else if(t===3){var mph=pick([15,30,45,60]),fps=mph*22/15;q='Convert '+mph+' miles per hour to feet per second. (1 mile = 5,280 feet)';c=fmt(fps)+' ft/s';w=[fmt(fps+6)+' ft/s',fmt(mph*5280)+' ft/s',fmt(fps*2)+' ft/s',fmt(mph*1.5)+' ft/s'];e=mph+' × 5,280 ÷ 3,600 = '+fmt(fps)+' ft/s. (A quick rule: multiply mph by 22/15.)';}
+  else{var m=ri(2,8)*30;q='A drill lasts '+m+' minutes. How many hours is that?';c=fmt(m/60)+' hours';w=[fmt(m/100)+' hours',fmt(m*60)+' hours',fmt(m/60+0.5)+' hours',fmt(m/30)+' hours'];e=m+' ÷ 60 = '+fmt(m/60)+' hours.';}
+  return build(q,c,w,e);
+};
+
+G.pemdas=function(){
+  var t=ri(0,4),q,c,w,e,a,b,cc,d;
+  if(t===0){a=ri(2,15);b=ri(2,9);cc=ri(2,9);c=a+b*cc;q='Evaluate: '+a+' + '+b+' × '+cc;w=[(a+b)*cc,a*b+cc,c+b,c-cc];e='Multiply first: '+b+' × '+cc+' = '+b*cc+'. Then add '+a+': '+c+'.';}
+  else if(t===1){a=ri(2,9);b=ri(2,9);cc=ri(2,9);d=ri(1,20);c=(a+b)*cc-d;q='Evaluate: ('+a+' + '+b+') × '+cc+' '+MINUS+' '+d;w=[a+b*cc-d,(a+b)*(cc-d),(a+b)*cc+d,c+cc];e='Parentheses first: '+(a+b)+'. Multiply: '+(a+b)*cc+'. Subtract: '+c+'.';}
+  else if(t===2){b=ri(2,9);cc=pick([2,3,4,6,9].filter(function(x){return (b*b)%x===0}));if(!cc)cc=b;a=ri(2,20);c=a+b*b/cc;q='Evaluate: '+a+' + '+b+'² ÷ '+cc;w=[(a+b)*(a+b)/cc,(a+b*b)/cc,c+1,a+b*b/cc*cc,a+b*2/cc];e='Exponent first: '+b+'² = '+b*b+'. Divide: '+b*b/cc+'. Add '+a+': '+c+'.';}
+  else if(t===3){a=ri(20,50);b=ri(2,6);cc=ri(1,5);d=ri(2,5);c=a-(b+cc)*d;q='Evaluate: '+a+' '+MINUS+' ('+b+' + '+cc+') × '+d;w=[(a-b-cc)*d,a-b+cc*d,a-(b+cc)+d,c+d,c-d];e='Parentheses: '+(b+cc)+'. Multiply: '+(b+cc)*d+'. Subtract from '+a+': '+c+'.';}
+  else{a=ri(10,30);b=ri(2,9);cc=ri(2,9);c=a-b+cc;q='Evaluate: '+a+' '+MINUS+' '+b+' + '+cc;w=[a-(b+cc),c+2*cc,c-2*b,a-b-cc,a+b+cc];e='Addition and subtraction have equal rank, so work left to right: '+(a-b)+' + '+cc+' = '+c+'.';}
+  return build(q,fmt(c),w.map(fmt),e);
+};
+
+G.numprop=function(){
+  var t=ri(0,4),q,c,w,e;
+  if(t===0){var primes=[11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97];var comps=[51,57,63,69,77,87,91,93,111,119,121,133,143,169];var p=pick(primes);var cs=shuffle(comps).slice(0,3);q='Which of the following is a prime number?';c=String(p);w=cs.map(String);e=p+' has no divisors other than 1 and itself. '+cs.map(function(x){var d=[3,7,11,13].filter(function(y){return x%y===0})[0];return x+' = '+d+' × '+(x/d)}).join(', ')+'.';}
+  else if(t===1){var g=ri(2,9),a=pick([2,3,4,5,7]),b=pick([2,3,5,7,8,9].filter(function(x){return x!==a&&gcd(x,a)===1}));var x=g*a,y=g*b;q='What is the greatest common factor of '+x+' and '+y+'?';c=String(g);w=[String(x*y/g),String(a*b),String(g*2),String(Math.min(x,y)),String(1)].filter(function(z){return z!==c});if(g===1)return G.numprop();e='Both numbers are multiples of '+g+' ('+x+' = '+g+' × '+a+', '+y+' = '+g+' × '+b+'), and '+a+' and '+b+' share no more factors.';}
+  else if(t===2){var m=pick([4,6,8,9,10,12,15]),n=pick([4,6,8,9,10,12,15].filter(function(z){return z!==m}));var L=lcm(m,n);q='What is the least common multiple of '+m+' and '+n+'?';c=String(L);w=[String(m*n),String(gcd(m,n)),String(L+m),String(L*2),String(m+n)].filter(function(z){return z!==c});e='List multiples of '+Math.max(m,n)+' until one is divisible by '+Math.min(m,n)+'. The first match is '+L+'.';}
+  else if(t===3){var N=pick([12,18,20,24,28,30,36,40,45,48,60]);var cnt=0;for(var i=1;i<=N;i++)if(N%i===0)cnt++;q='How many positive factors does '+N+' have?';c=String(cnt);w=[cnt+1,cnt-1,cnt+2,cnt-2,Math.floor(N/2)].map(String).filter(function(z){return z!==c&&Number(z)>1});e='Pair the factors: '+(function(){var s=[];for(var i=1;i<=N;i++)if(N%i===0)s.push(i);return s.join(', ')})()+'. That is '+cnt+' factors.';}
+  else{var o1=pick([3,5,7,9,11,13]),o2=pick([15,17,19,21,23]);var ev=ri(0,1);var stmt=[['the sum of two odd numbers','even'],['the product of two odd numbers','odd'],['the sum of an even and an odd number','odd'],['the product of an even and an odd number','even']][ri(0,3)];q='Which describes '+stmt[0]+'?';c=stmt[1][0].toUpperCase()+stmt[1].slice(1);w=[c==='Even'?'Odd':'Even','Always prime','Always zero','Always negative'];e='Test it with small numbers: '+(stmt[0].indexOf('sum of two odd')>-1?'3 + 5 = 8':stmt[0].indexOf('product of two odd')>-1?'3 × 5 = 15':stmt[0].indexOf('sum of an even')>-1?'2 + 3 = 5':'2 × 3 = 6')+', which is '+stmt[1]+'.';}
+  return build(q,c,w,e);
+};
+
+G.equations=function(){
+  var t=ri(0,4),q,c,w,e;
+  var nz=function(lo,hi){var v=0;while(v===0)v=ri(lo,hi);return v};
+  var lin=function(a,b){return (a===1?'':a)+'x'+(b>0?' + '+b:b<0?' '+MINUS+' '+(-b):'')};
+  if(t===0){var x=nz(-8,12),a=ri(2,9),b=nz(-15,15),cc=a*x+b;q='Solve for x: '+lin(a,b)+' = '+fmt(cc);c=fmt(x);w=[x+1,x-1,(cc+b)/a,-x,(cc-b)/(a+1)].map(fmt);e='Subtract '+fmt(b)+' from both sides: '+a+'x = '+fmt(cc-b)+'. Divide by '+a+': x = '+fmt(x)+'.';}
+  else if(t===1){var x2=nz(-6,10),a2=ri(3,9),c2=ri(1,a2-1),b2=nz(-9,9),d2=(a2-c2)*x2+b2;q='Solve for x: '+lin(a2,b2)+' = '+lin(c2,d2);c=fmt(x2);w=[x2+1,x2-1,-x2,(d2+b2)/(a2+c2),x2+2].map(fmt);e='Move the x terms left and numbers right: '+(a2-c2)+'x = '+fmt(d2-b2)+', so x = '+fmt(x2)+'.';}
+  else if(t===2){var x3=nz(-5,9),a3=ri(2,6),b3=nz(-6,6),c3=a3*(x3+b3);q='Solve for x: '+a3+'(x '+(b3>0?'+ '+b3:MINUS+' '+(-b3))+') = '+fmt(c3);c=fmt(x3);w=[x3+1,x3-1,c3/a3,c3/a3+b3,-x3].map(fmt);e='Divide both sides by '+a3+': x '+(b3>0?'+ '+b3:MINUS+' '+(-b3))+' = '+fmt(c3/a3)+', so x = '+fmt(x3)+'.';}
+  else if(t===3){var a4=ri(2,8),b4=ri(1,9),c4=ri(2,9);var x4=a4*c4;var tot=c4+b4;q='Solve for x: '+fr('x',a4)+' + '+b4+' = '+tot;c=fmt(x4);w=[x4+a4,c4,tot*a4,x4-a4,tot-b4+a4].map(fmt);e='Subtract '+b4+': '+fr('x',a4)+' = '+c4+'. Multiply by '+a4+': x = '+x4+'.';}
+  else{var x5=ri(2,12),a5=ri(2,5),b5=ri(1,9),c5=a5*x5+b5;q=b5+' more than '+(a5===2?'twice':a5+' times')+' a number is '+c5+'. What is the number?';c=fmt(x5);w=[x5+1,x5-1,c5-b5,(c5+b5)/a5,x5+2].map(fmt);e='Write '+a5+'x + '+b5+' = '+c5+'. Subtract '+b5+': '+a5+'x = '+(c5-b5)+'. So x = '+x5+'.';}
+  return build(q,c,w,e);
+};
+
+G.exponents=function(){
+  var t=ri(0,5),q,c,w,e,a,b;
+  var v=pick(['x','y','a','n']);
+  if(t===0){a=ri(2,8);b=ri(2,8);q='Simplify: '+sup(v,a)+' × '+sup(v,b);c=sup(v,a+b);w=[sup(v,a*b),sup(v+'²',a+b),sup(v,Math.abs(a-b)),sup(v,a+b+1),sup(v,a+b-1)];e='Same base, so add the exponents: '+a+' + '+b+' = '+(a+b)+'.';}
+  else if(t===1){a=ri(2,6);b=ri(2,5);q='Simplify: ('+sup(v,a)+')<sup>'+b+'</sup>';c=sup(v,a*b);w=[sup(v,a+b),sup(v,a*b+1),sup(v,a*b-1),sup(v,Math.pow(a,b)),sup(v,a)+'×'+b];e='A power raised to a power: multiply the exponents. '+a+' × '+b+' = '+a*b+'.';}
+  else if(t===2){b=ri(2,5);a=b+ri(2,6);q='Simplify: '+fr(sup(v,a),sup(v,b));c=sup(v,a-b);w=[sup(v,a+b),sup(v,a*b),sup(v,a-b+1),fr(1,sup(v,a-b)),sup(v,a-b-1)];e='Same base in a quotient: subtract the exponents. '+a+' '+MINUS+' '+b+' = '+(a-b)+'.';}
+  else if(t===3){var base=pick([2,3,5]),m=ri(1,3),n2=ri(1,3);q='What is the value of '+sup(base,m)+' × '+sup(base,n2)+'?';c=num(Math.pow(base,m+n2));w=[Math.pow(base,m*n2),Math.pow(base*base,m+n2),Math.pow(base,m+n2)+base,base*(m+n2),Math.pow(base,m+n2)-1].map(num);e='Add exponents: '+base+'<sup>'+(m+n2)+'</sup> = '+num(Math.pow(base,m+n2))+'.';}
+  else if(t===4){var kind=ri(0,2);if(kind===0){var bb=ri(2,9);q='What is '+bb+'<sup>0</sup>?';c='1';w=['0',String(bb),'Undefined',String(-1)].map(function(x){return x.replace('-',MINUS)});e='Any nonzero number raised to the power 0 equals 1.';}
+    else{var b3=pick([2,3,4,5,10]),p=ri(1,3);q='What is '+b3+'<sup>'+MINUS+p+'</sup>?';c=fr(1,Math.pow(b3,p));w=[fmt(-Math.pow(b3,p)),fmt(-b3*p),fr(1,b3*p),fmt(Math.pow(b3,p))];e='A negative exponent means reciprocal: 1 ÷ '+b3+'<sup>'+p+'</sup> = '+c+'.';}}
+  else{var co=ri(2,4),a6=ri(2,4),b6=ri(2,3);q='Simplify: ('+co+v+(a6>1?'<sup>'+a6+'</sup>':'')+')<sup>'+b6+'</sup>';c=num(Math.pow(co,b6))+sup(v,a6*b6);w=[num(co*b6)+sup(v,a6*b6),num(Math.pow(co,b6))+sup(v,a6+b6),num(co)+sup(v,a6*b6),num(Math.pow(co,b6))+sup(v,a6*b6+1)];e='Raise both the number and the variable to the power: '+co+'<sup>'+b6+'</sup> = '+Math.pow(co,b6)+' and '+v+'<sup>'+a6*b6+'</sup>.';}
+  return build(q,c,w,e);
+};
+
+G.radicals=function(){
+  var t=ri(0,4),q,c,w,e;
+  if(t===0){var s=ri(2,7),m=pick([2,3,5,6,7,10]);var n=s*s*m;q='Simplify: √<span class="rt">'+n+'</span>';c=rad(s,m);w=[rad(m,s),rad(s,m+1),rad(s+1,m),rad(s*m,1),rad(1,n/2)];e=n+' = '+s*s+' × '+m+', and √'+s*s+' = '+s+', so the answer is '+rad(s,m)+'.';}
+  else if(t===1){var mm=pick([2,3,5,6]),k=ri(2,5);q='Multiply: √<span class="rt">'+mm+'</span> × √<span class="rt">'+mm*k*k+'</span>';c=String(mm*k);w=[rad(1,mm*mm*k*k),rad(k,mm),String(mm+k),String(mm*k*k),rad(mm,k)];e='√'+mm+' × √'+mm*k*k+' = √'+mm*mm*k*k+' = '+mm*k+'.';}
+  else if(t===2){var m3=pick([2,3,5,7]),a=ri(2,8),b=ri(2,8);q='Simplify: '+rad(a,m3)+' + '+rad(b,m3);c=rad(a+b,m3);w=[rad(1,(a+b)*m3),rad(a*b,m3),rad(a+b,2*m3),rad(a+b,m3+m3*m3),String((a+b)*m3)];e='They are like radicals, so add the coefficients: ('+a+' + '+b+')√'+m3+' = '+rad(a+b,m3)+'.';}
+  else if(t===3){var lo=ri(3,11),n3=ri(lo*lo+1,(lo+1)*(lo+1)-1);q='√<span class="rt">'+n3+'</span> is between which two integers?';c=lo+' and '+(lo+1);w=[(lo-1)+' and '+lo,(lo+1)+' and '+(lo+2),(lo-2)+' and '+(lo-1),Math.floor(n3/2)+' and '+(Math.floor(n3/2)+1)];e=lo+'² = '+lo*lo+' and '+(lo+1)+'² = '+(lo+1)*(lo+1)+', and '+n3+' is in between.';}
+  else{var s4=ri(2,6),m4=pick([2,3,5]);var n4=s4*s4*m4;var d=ri(2,4);q='Simplify: '+d+'√<span class="rt">'+n4+'</span>';c=rad(d*s4,m4);w=[rad(s4,m4*d),rad(d+s4,m4),rad(d*s4,m4+1),rad(d*s4*m4,1)];e='√'+n4+' = '+rad(s4,m4)+'. Multiply by '+d+': '+rad(d*s4,m4)+'.';}
+  return build(q,c,w,e);
+};
+
+G.factoring=function(){
+  var t=ri(0,4),q,c,w,e;
+  var term=function(k,lead){return k===0?'':(lead?(k<0?MINUS:''):(k<0?' '+MINUS+' ':' + '))+(Math.abs(k)===1&&lead===undefined?'':'')};
+  var poly=function(a,b,cc){var s=(a===1?'':a)+'x²';if(b!==0)s+=(b<0?' '+MINUS+' ':' + ')+(Math.abs(b)===1?'':Math.abs(b))+'x';if(cc!==0)s+=(cc<0?' '+MINUS+' ':' + ')+Math.abs(cc);return s};
+  var bin=function(a,k){return '(x '+(k<0?MINUS:'+')+' '+Math.abs(k)+')'};
+  var nz=function(lo,hi){var v=0;while(v===0)v=ri(lo,hi);return v};
+  if(t===0){var p=nz(-7,7),r=nz(-7,7);q='Expand (FOIL): (x '+(p<0?MINUS:'+')+' '+Math.abs(p)+')(x '+(r<0?MINUS:'+')+' '+Math.abs(r)+')';c=poly(1,p+r,p*r);w=[poly(1,p+r,p+r),poly(1,p*r,p+r),poly(1,-(p+r),p*r),poly(1,p+r,-p*r),poly(1,p-r,p*r)];e='First: x². Outer + Inner: '+fmt(p+r)+'x. Last: '+fmt(p*r)+'. Result: '+c+'.';}
+  else if(t===1){var p2=nz(-8,8),r2=nz(-8,8);var b=p2+r2,cc=p2*r2;q='Factor: '+poly(1,b,cc);var ans=bin('',p2)+bin('',r2);c=ans;w=[bin('',-p2)+bin('',-r2),bin('',p2)+bin('',-r2),bin('',-p2)+bin('',r2),bin('',b)+bin('',cc>0?1:-1)];e='Find two numbers that multiply to '+fmt(cc)+' and add to '+fmt(b)+': '+fmt(p2)+' and '+fmt(r2)+'.';}
+  else if(t===2){var k=ri(2,9);var a=pick([1,1,2,3,4]);var kk=k;var lead=a===1?'x²':a+'x²';q='Factor: '+(a===1?'x²':(a*a)+'x²')+' '+MINUS+' '+(kk*kk);var ax=a===1?'x':a+'x';c='('+ax+' + '+kk+')('+ax+' '+MINUS+' '+kk+')';w=['('+ax+' '+MINUS+' '+kk+')²','('+ax+' + '+kk+')²','('+ax+' + '+kk*kk+')('+ax+' '+MINUS+' 1)','('+ax+' + '+kk+')('+ax+' + '+kk+')'];if(a!==1){q='Factor: '+(a*a)+'x² '+MINUS+' '+(kk*kk);}else q='Factor: x² '+MINUS+' '+(kk*kk);e='This is a difference of squares: A² '+MINUS+' B² = (A + B)(A '+MINUS+' B).';}
+  else if(t===3){var g=ri(2,7),a3=ri(1,6),b3=ri(1,6);if(a3===b3)b3++;if(gcd(a3,b3)>1)return G.factoring();q='Factor out the greatest common factor: '+(g*a3)+'x + '+(g*b3);c=g+'('+(a3===1?'':a3)+'x + '+b3+')';w=[(a3===1?'':a3)+'('+g+'x + '+g*b3/a3+')',g+'('+(a3===1?'':a3)+'x '+MINUS+' '+b3+')',(g*a3)+'('+'x + '+b3+')',(g+a3)+'(x + '+b3+')'];e='Both terms divide by '+g+': '+g+'('+(a3===1?'':a3)+'x + '+b3+').';w[0]=g+'('+a3+'x + '+(b3+1)+')';}
+  else{var p4=ri(2,8),r4=ri(2,8);if(p4===r4)r4++;q='Factor: x² '+MINUS+' '+(p4+r4)+'x + '+p4*r4;c='(x '+MINUS+' '+p4+')(x '+MINUS+' '+r4+')';w=['(x + '+p4+')(x + '+r4+')','(x '+MINUS+' '+p4+')(x + '+r4+')','(x + '+p4+')(x '+MINUS+' '+r4+')','(x '+MINUS+' '+(p4+r4)+')(x '+MINUS+' 1)'];e='Both numbers must multiply to '+p4*r4+' and add to '+MINUS+(p4+r4)+', so they are '+MINUS+p4+' and '+MINUS+r4+'.';}
+  return build(q,c,w,e);
+};
+
+G.quad=function(){
+  var t=ri(0,3),q,c,w,e;
+  var nz=function(lo,hi){var v=0;while(v===0)v=ri(lo,hi);return v};
+  var poly=function(b,cc){return 'x²'+(b===0?'':(b<0?' '+MINUS+' ':' + ')+(Math.abs(b)===1?'':Math.abs(b))+'x')+(cc===0?'':(cc<0?' '+MINUS+' ':' + ')+Math.abs(cc))};
+  var rt=function(a,b){var s=[a,b].sort(function(x,y){return x-y});return 'x = '+fmt(s[0])+' or x = '+fmt(s[1])};
+  if(t===0){var r1=nz(-8,8),r2=nz(-8,8);if(r1===r2)r2=r1+1===0?r1+2:r1+1;q='Solve: '+poly(-(r1+r2),r1*r2)+' = 0';c=rt(r1,r2);w=[rt(-r1,-r2),rt(r1,-r2),rt(-r1,r2),rt(r1+1,r2)];e='Factor: (x '+(r1<0?'+ '+(-r1):MINUS+' '+r1)+')(x '+(r2<0?'+ '+(-r2):MINUS+' '+r2)+') = 0. Set each factor to 0: '+c+'.';}
+  else if(t===1){var r3=nz(-6,9),r4=nz(-6,9);var s=r3+r4,p=r3*r4;q='What is the sum of the solutions of '+poly(-s,p)+' = 0?';c=fmt(s);w=[-s,p,-p,s+1,s-1].map(fmt);e='For x² + bx + c = 0 the sum of the solutions is '+MINUS+'b. Here b = '+fmt(-s)+', so the sum is '+fmt(s)+'.';}
+  else if(t===2){var b=ri(-5,5)*2;if(b===0)b=4;var cc=ri(-8,10);q='What is the x-coordinate of the vertex of y = '+poly(b,cc)+'?';c=fmt(-b/2);w=[b/2,-b,b,(-b/2)+1,cc].map(fmt);e='The vertex is at x = '+MINUS+'b/(2a) = '+MINUS+'('+fmt(b)+')/2 = '+fmt(-b/2)+'.';}
+  else{var tp=ri(0,2);var bb,cc2;if(tp===0){bb=ri(-6,6);cc2=ri(bb*bb/4+1,bb*bb/4+8);cc2=Math.ceil(cc2)}else if(tp===1){bb=2*ri(1,4);cc2=bb*bb/4}else{bb=ri(-6,6);cc2=ri(-9,Math.floor(bb*bb/4)-1);}
+    var D=bb*bb-4*cc2;q='How many real solutions does '+poly(bb,cc2)+' = 0 have?';c=D<0?'None':D===0?'Exactly one':'Two';w=['None','Exactly one','Two','Infinitely many'];e='The discriminant is b² '+MINUS+' 4ac = '+bb*bb+' '+MINUS+' '+fmt(4*cc2)+' = '+fmt(D)+(D<0?', which is negative, so there are no real solutions.':D===0?', which is zero, so there is exactly one solution.':', which is positive, so there are two solutions.');}
+  return build(q,c,w,e);
+};
+
+G.area=function(){
+  var t=ri(0,6),q,c,w,e,vis='';
+  if(t===0){var a=ri(3,14),b=ri(2,12);var ask=ri(0,1);vis=rectSvg(a,b,a+' ft',b+' ft');q=ask?'What is the perimeter of the rectangle?':'What is the area of the rectangle?';c=ask?fmt(2*(a+b))+' ft':fmt(a*b)+' sq ft';w=ask?[fmt(a*b)+' ft',fmt(a+b)+' ft',fmt(2*a+b)+' ft',fmt(2*(a+b)+2)+' ft']:[fmt(2*(a+b))+' sq ft',fmt(a+b)+' sq ft',fmt(a*b+a)+' sq ft',fmt(a*b-b)+' sq ft'];e=ask?'Perimeter = 2(l + w) = 2('+a+' + '+b+') = '+2*(a+b)+' ft.':'Area = l × w = '+a+' × '+b+' = '+a*b+' sq ft.';}
+  else if(t===1){var bs=ri(3,12)*2,h=ri(3,12);vis=triSvg(bs+' m',h+' m');q='What is the area of the triangle?';c=fmt(bs*h/2)+' sq m';w=[fmt(bs*h)+' sq m',fmt(bs+h)+' sq m',fmt(bs*h/2+h)+' sq m',fmt(bs*h/4)+' sq m'];e='Area = ½ × base × height = ½ × '+bs+' × '+h+' = '+bs*h/2+' sq m.';}
+  else if(t===2){var r=ri(2,12);var ask2=ri(0,1);vis=circleSvg(r,'r = '+r);q=ask2?'What is the circumference of the circle? (Leave your answer in terms of π.)':'What is the area of the circle? (Leave your answer in terms of π.)';c=ask2?(2*r)+'π':(r*r)+'π';w=ask2?[(r*r)+'π',r+'π',(4*r)+'π',(2*r*r)+'π']:[(2*r)+'π',(r*r*2)+'π',r+'π',(r*r+r)+'π'];e=ask2?'C = 2πr = 2π('+r+') = '+2*r+'π.':'A = πr² = π('+r+')² = '+r*r+'π.';}
+  else if(t===3){var l=ri(3,12),wd=ri(2,9),hh=ri(2,9);vis=boxSvg(l+' in',wd+' in',hh+' in');q='What is the volume of the box?';c=fmt(l*wd*hh)+' cubic in';w=[fmt(2*(l*wd+l*hh+wd*hh))+' cubic in',fmt(l+wd+hh)+' cubic in',fmt(l*wd*hh+l)+' cubic in',fmt(l*wd)+' cubic in'];e='Volume = l × w × h = '+l+' × '+wd+' × '+hh+' = '+l*wd*hh+' cubic in.';}
+  else if(t===4){var W=ri(8,14),H=ri(8,12),cw=ri(2,5),ch=ri(2,5);vis=lshape(W,H,cw,ch);q='The figure is a '+W+' by '+H+' rectangle with a '+cw+' by '+ch+' corner removed. What is its area?';c=fmt(W*H-cw*ch)+' sq units';w=[fmt(W*H)+' sq units',fmt(W*H+cw*ch)+' sq units',fmt(W*H-cw-ch)+' sq units',fmt(2*(W+H))+' sq units'];e='Big rectangle: '+W+' × '+H+' = '+W*H+'. Subtract the corner: '+cw+' × '+ch+' = '+cw*ch+'. Area = '+(W*H-cw*ch)+'.';}
+  else if(t===5){var b1=ri(3,9),b2=b1+ri(1,5)*2,hh2=ri(2,8);if((b1+b2)%2)b2++;vis=trapSvg(b1,b2,hh2);q='What is the area of the trapezoid?';c=fmt((b1+b2)/2*hh2)+' sq units';w=[fmt(b1*b2*hh2/2)+' sq units',fmt((b1+b2)*hh2)+' sq units',fmt((b1+b2)/2*hh2+hh2)+' sq units',fmt(b1*hh2)+' sq units'];e='Area = ½(b₁ + b₂)h = ½('+b1+' + '+b2+') × '+hh2+' = '+(b1+b2)/2*hh2+'.';}
+  else{var r5=ri(2,6),h5=ri(3,10);vis=cylSvg(r5,h5);q='What is the volume of the cylinder? (Leave your answer in terms of π.)';c=(r5*r5*h5)+'π';w=[(2*r5*h5)+'π',(r5*h5)+'π',(r5*r5*h5*2)+'π',(r5*r5+h5)+'π'];e='V = πr²h = π('+r5+')²('+h5+') = '+r5*r5*h5+'π.';}
+  return build(q,c,w,e,vis);
+};
+
+G.angles=function(){
+  var t=ri(0,4),q,c,w,e,vis='';
+  if(t===0){var a=ri(20,160);vis=lineAngle(a);q='The angles on a straight line add to 180°. What is angle x?';c=(180-a)+'°';w=[(90-a>0?90-a:a+10)+'°',(360-a)+'°',a+'°',(180-a+10)+'°'];e='x = 180° '+MINUS+' '+a+'° = '+(180-a)+'°.';}
+  else if(t===1){var b=ri(10,80);q='Two angles are complementary. One measures '+b+'°. What does the other measure?';c=(90-b)+'°';w=[(180-b)+'°',b+'°',(90+b)+'°',(360-b)+'°'];e='Complementary angles add to 90°: 90° '+MINUS+' '+b+'° = '+(90-b)+'°.';}
+  else if(t===2){var a1=ri(30,80),b1=ri(30,80);vis=triAngles(a1,b1);q='What is angle x in the triangle?';c=(180-a1-b1)+'°';w=[(a1+b1)+'°',(360-a1-b1)+'°',(90-a1)+'°',(180-a1-b1+10)+'°'];e='The angles of a triangle add to 180°: 180° '+MINUS+' '+a1+'° '+MINUS+' '+b1+'° = '+(180-a1-b1)+'°.';}
+  else if(t===3||t===4){var th=pick([40,50,55,60,65,70,75,110,115,120,125,130]);var theta=th>90?180-th:th;var regs=['NE','NW','SW','SE'];var given=pick(regs),ask=pick(regs);var isAcute=function(r){return r==='NE'||r==='SW'};var val=function(r){return isAcute(r)?theta:180-theta};var gv=val(given);var av=val(ask);vis=parallel(given,ask,gv);q='Lines m and n are parallel. What is the measure of angle x?';c=av+'°';var other=180-av;w=[other+'°',(av===gv?other:gv)+'°',(av+10)+'°',(90-Math.min(av,89))+'°'];e=(av===gv?'The two angles are equal (corresponding, alternate, or vertical angles), so x = '+av+'°.':'The two angles are supplementary (they add to 180°), so x = 180° '+MINUS+' '+gv+'° = '+av+'°.');}
+  return build(q,c,w,e,vis);
+};
+
+G.right=function(){
+  var t=ri(0,4),q,c,w,e,vis='';
+  var trip=pick([[3,4,5],[5,12,13],[8,15,17],[7,24,25]]);var k=trip[0]===3?ri(1,4):trip[0]===5?ri(1,2):1;var a=trip[0]*k,b=trip[1]*k,cc=trip[2]*k;
+  if(t===0){vis=rightTri(a,b,cc,a,b,'?');q='What is the length of the hypotenuse?';c=String(cc);w=[a+b,cc+1,cc-1,b-a+cc,cc+2].map(String);e='a² + b² = c²: '+a*a+' + '+b*b+' = '+cc*cc+', so c = '+cc+'.';}
+  else if(t===1){vis=rightTri(a,b,cc,a,'?',cc);q='What is the length of the missing leg?';c=String(b);w=[cc-a,b+1,b-1,cc+a,a+b].map(String);e='b² = c² '+MINUS+' a² = '+cc*cc+' '+MINUS+' '+a*a+' = '+b*b+', so b = '+b+'.';}
+  else if(t===2){var p=pick([[1,1,'√2'],[2,2,'2√2'],[3,3,'3√2'],[1,2,'√5'],[2,4,'2√5'],[3,6,'3√5'],[2,3,'√13'],[1,3,'√10'],[4,4,'4√2']]);vis=rightTri(p[0],p[1],0,p[0],p[1],'?');q='A right triangle has legs '+p[0]+' and '+p[1]+'. What is the hypotenuse?';var rs=function(x){return x.replace('√','√<span class="rt">')+(x.indexOf('√')>-1?'</span>':'')};var f=function(s){var m=s.match(/^(\d*)√(\d+)$/);return rad(m[1]===''?1:Number(m[1]),m[2])};c=f(p[2]);var sq=p[0]*p[0]+p[1]*p[1];w=[String(p[0]+p[1]),rad(1,p[0]+p[1]),rad(1,sq+1),String(sq),rad(2,sq)];e='c² = '+p[0]+'² + '+p[1]+'² = '+sq+', so c = '+c+'.';}
+  else if(t===3){var s=ri(2,9);q='A 30-60-90 triangle has a shorter leg of '+s+'. What is the hypotenuse?';c=String(2*s);w=[String(s),rad(s,3),String(s*3),rad(s,2),String(2*s+1)];e='In a 30-60-90 triangle the hypotenuse is twice the shorter leg: 2 × '+s+' = '+2*s+'.';}
+  else{var s2=ri(2,9);q='A 45-45-90 triangle has legs of '+s2+'. What is the hypotenuse?';c=rad(s2,2);w=[String(2*s2),rad(s2,3),String(s2),rad(2*s2,2),rad(s2,5)];e='In a 45-45-90 triangle the hypotenuse is the leg times √2: '+rad(s2,2)+'.';}
+  return build(q,c,w,e,vis);
+};
+
+G.tri=function(){
+  var t=ri(0,4),q,c,w,e,vis='';
+  if(t===0){var kind=pick(['Equilateral','Isosceles','Scalene']);var a,b,cc;if(kind==='Equilateral'){a=b=cc=ri(3,12)}else if(kind==='Isosceles'){a=b=ri(4,12);cc=ri(2,a*2-1);if(cc===a)cc=a-1}else{do{a=ri(3,9);b=ri(a+1,12);cc=ri(b+1,15);}while(a+b<=cc||a*a+b*b===cc*cc||(a===b)||(b===cc))}
+    vis=sideTri(a,b,cc);q='A triangle has side lengths '+a+', '+b+' and '+cc+'. What type of triangle is it?';c=kind;w=['Equilateral','Isosceles','Scalene','Right'].filter(function(x){return x!==kind});w.unshift(kind==='Scalene'?'Right':'Scalene');e=kind==='Equilateral'?'All three sides are equal.':kind==='Isosceles'?'Exactly two sides are equal.':'All three sides are different and the sides do not satisfy a² + b² = c².';}
+  else if(t===1){var V=ri(10,80)*2;var base=(180-V)/2;vis=isoTri(V+'°','v');q='In an isosceles triangle the vertex angle is '+V+'°. What is each base angle?';c=base+'°';w=[(180-V)+'°',(V/2)+'°',(base+10)+'°',(90-V)+'°'];e='The base angles are equal: (180° '+MINUS+' '+V+'°) ÷ 2 = '+base+'°.';}
+  else if(t===2){var bb=ri(35,80);vis=isoTri(bb+'°','b');q='In an isosceles triangle each base angle is '+bb+'°. What is the vertex angle?';c=(180-2*bb)+'°';w=[(180-bb)+'°',(2*bb)+'°',(90-bb)+'°',(180-bb*2+10)+'°'];e='180° '+MINUS+' '+bb+'° '+MINUS+' '+bb+'° = '+(180-2*bb)+'°.';}
+  else if(t===3){var x=ri(3,9),y=ri(x,11),z=ri(y-x+1,x+y-1);var good=[x,y,z].sort(function(p,q2){return p-q2}).join(', ');var bads=[];var m=ri(2,5);bads.push([m,m+ri(2,4),m+ri(8,12)]);bads.push([x,x+y+ri(0,2),y]);bads.push([ri(1,3),ri(1,3),ri(8,12)]);bads=bads.map(function(s){return s.slice().sort(function(a,b){return a-b})}).filter(function(s){return s[0]+s[1]<=s[2]}).map(function(s){return s.join(', ')});q='Which set of side lengths can form a triangle?';c=good;w=bads;if(w.length<3)return G.tri();var ss=[x,y,z].sort(function(a,b){return a-b});e='The two shorter sides must add to more than the longest: '+ss[0]+' + '+ss[1]+' = '+(ss[0]+ss[1])+' > '+ss[2]+'.';}
+  else{var a2=ri(30,80),b2=ri(30,80);vis=extTri(a2,b2);q='What is the exterior angle x?';c=(a2+b2)+'°';w=[(180-a2-b2)+'°',(180-a2)+'°',(a2+b2+10)+'°',(360-a2-b2)+'°'];e='An exterior angle equals the sum of the two remote interior angles: '+a2+'° + '+b2+'° = '+(a2+b2)+'°.';}
+  return build(q,c,w,e,vis);
+};
+
+G.coord=function(){
+  var t=ri(0,3),q,c,w,e,vis='';
+  var slopeStr=function(dy,dx){var g=gcd(dy,dx);var n=dy/g,d=dx/g;if(d<0){n=-n;d=-d}if(d===1)return fmt(n);return (n<0?MINUS:'')+fr(Math.abs(n),d)};
+  if(t===0){var x1=ri(-4,3),y1=ri(-4,4),dx=ri(1,4),dy=ri(-4,4);if(dy===0)dy=2;var x2=x1+dx,y2=y1+dy;if(y2>5||y2<-5)return G.coord();vis=grid([[x1,y1],[x2,y2]]);q='What is the slope of the line through the two points?';c=slopeStr(dy,dx);w=[slopeStr(dx,dy),slopeStr(-dy,dx),slopeStr(dx,-dy),slopeStr(dy+1,dx)];e='slope = (y₂ '+MINUS+' y₁) ÷ (x₂ '+MINUS+' x₁) = ('+fmt(y2)+' '+MINUS+' '+(y1<0?'('+fmt(y1)+')':y1)+') ÷ ('+fmt(x2)+' '+MINUS+' '+(x1<0?'('+fmt(x1)+')':x1)+') = '+fmt(dy)+'/'+dx+'.';}
+  else if(t===1){var tr=pick([[3,4,5],[6,8,10],[5,12,13],[0,6,6],[8,6,10],[4,3,5]]);var sx=pick([1,-1]),sy=pick([1,-1]);var X1=ri(-2,2),Y1=ri(-2,2);var X2=X1+sx*tr[0],Y2=Y1+sy*tr[1];if(Math.abs(X2)>5||Math.abs(Y2)>5)return G.coord();vis=grid([[X1,Y1],[X2,Y2]]);q='What is the distance between the two points?';c=String(tr[2]);var dd=tr[0]+tr[1];w=[String(dd),String(tr[2]+1),String(tr[2]-1),String(Math.abs(tr[0]-tr[1]))];e='d = √((x₂ '+MINUS+' x₁)² + (y₂ '+MINUS+' y₁)²) = √('+tr[0]*tr[0]+' + '+tr[1]*tr[1]+') = √'+tr[2]*tr[2]+' = '+tr[2]+'.';}
+  else if(t===2){var xa=ri(-4,4),ya=ri(-4,4),mx=ri(-3,3),my=ri(-3,3);var xb=2*mx-xa,yb=2*my-ya;if(Math.abs(xb)>5||Math.abs(yb)>5||(xa===xb&&ya===yb))return G.coord();vis=grid([[xa,ya],[xb,yb]]);q='What is the midpoint of the segment joining the two points?';c='('+fmt(mx)+', '+fmt(my)+')';w=['('+fmt(xa+xb)+', '+fmt(ya+yb)+')','('+fmt(my)+', '+fmt(mx)+')','('+fmt(mx+1)+', '+fmt(my)+')','('+fmt(Math.abs(xb-xa)/2)+', '+fmt(Math.abs(yb-ya)/2)+')'];e='Average the coordinates: (('+fmt(xa)+' + '+fmt(xb)+') ÷ 2, ('+fmt(ya)+' + '+fmt(yb)+') ÷ 2) = '+c+'.';}
+  else{var m1=ri(-5,5),b1=ri(-8,8);if(m1===0)m1=2;var form=ri(0,1);if(form===0){q='What is the slope of the line y = '+(m1===1?'':m1===-1?MINUS:fmt(m1))+'x'+(b1>0?' + '+b1:b1<0?' '+MINUS+' '+(-b1):'')+'?';c=fmt(m1);w=[b1,-m1,fr(1,m1===0?1:Math.abs(m1)),m1+1].map(function(x){return typeof x==='string'?x:fmt(x)});e='In y = mx + b, the slope is m = '+fmt(m1)+'.';}
+    else{q='What is the y-intercept of the line y = '+(m1===1?'':m1===-1?MINUS:fmt(m1))+'x'+(b1>0?' + '+b1:b1<0?' '+MINUS+' '+(-b1):' + 0')+'?';if(b1===0)b1=3;q='What is the y-intercept of the line y = '+(m1===1?'':m1===-1?MINUS:fmt(m1))+'x'+(b1>0?' + '+b1:' '+MINUS+' '+(-b1))+'?';c=fmt(b1);w=[m1,-b1,b1+1,b1-1].map(fmt);e='In y = mx + b, the y-intercept is b = '+fmt(b1)+'.';}}
+  return build(q,c,w,e,vis);
+};
+
+var order=['mm1','mm2','fractions','percent','ratios','rates','interest','averages','prob','units','pemdas','numprop','equations','exponents','radicals','factoring','quad','area','angles','right','tri','coord'];
+function gen(id){for(var i=0;i<40;i++){var r;try{r=G[id]()}catch(err){r=null}if(r&&r.choices&&r.choices.length===4&&r.answer>=0)return r}return null}
+if(typeof document==='undefined'){globalThis.__PQ={G:G,gen:gen,order:order};return}
+
+/* ---------- UI ---------- */
+var sectionIds=order;
+function makeBox(id,title){
+  var box=document.createElement('aside');box.className='pq';box.setAttribute('data-skill',id);box.setAttribute('aria-label','Practice questions for '+title);
+  box.innerHTML='<button type="button" class="pq-plus" aria-label="Show practice questions for '+title+'" title="Show practice questions"><span aria-hidden="true">+</span><i>Practice questions</i></button>'
+   +'<div class="pq-body"><div class="pq-ask"><b class="pq-t">Need more practice questions?</b><div class="pq-btns"><button type="button" class="pq-yes">Yes</button><button type="button" class="pq-no">No</button></div></div>'
+   +'<div class="pq-q" hidden></div></div>';
+  var plus=box.querySelector('.pq-plus'),body=box.querySelector('.pq-body'),ask=box.querySelector('.pq-ask'),qd=box.querySelector('.pq-q'),t=box.querySelector('.pq-t');
+  var cur=null,solved=false;
+  function minimize(){box.classList.add('min');body.hidden=true;plus.hidden=false;plus.setAttribute('aria-expanded','false')}
+  function expand(){box.classList.remove('min');body.hidden=false;plus.hidden=true;showAsk('Need more practice questions?');qd.hidden=true;qd.innerHTML='';}
+  function showAsk(txt){t.textContent=txt;ask.hidden=false}
+  function next(){
+    var r=gen(id);if(!r){t.textContent='Sorry, a question could not be made. Try again.';return}
+    cur=r;solved=false;ask.hidden=true;qd.hidden=false;box.classList.remove('flash','ok');
+    var h='<p class="pq-lab">Practice question</p>'+(r.vis?'<div class="pq-vis">'+r.vis+'</div>':'')+'<p class="pq-qt">'+r.q+'</p><div class="pq-ch" role="group" aria-label="Answer choices">';
+    r.choices.forEach(function(c,i){h+='<button type="button" class="pq-c" data-i="'+i+'"><span class="pq-k">'+'ABCD'[i]+'</span><span class="pq-v">'+c+'</span></button>'});
+    h+='</div><p class="pq-fb" role="status" aria-live="polite"></p><div class="pq-after" hidden><b>Want another question?</b><div class="pq-btns"><button type="button" class="pq-yes2">Yes</button><button type="button" class="pq-no2">No</button></div></div>';
+    qd.innerHTML=h;
+  }
+  box.addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b||!box.contains(b))return;
+    if(b===plus){expand();return}
+    if(b.classList.contains('pq-yes')||b.classList.contains('pq-yes2')){next();return}
+    if(b.classList.contains('pq-no')||b.classList.contains('pq-no2')){minimize();return}
+    if(b.classList.contains('pq-c')&&cur&&!solved){
+      var i=Number(b.getAttribute('data-i'));var fb=qd.querySelector('.pq-fb');
+      if(i===cur.answer){
+        solved=true;b.classList.add('right');qd.querySelectorAll('.pq-c').forEach(function(x){x.disabled=true});
+        fb.innerHTML='<b>Correct!</b> '+cur.expl;qd.querySelector('.pq-after').hidden=false;
+        box.classList.remove('flash');void box.offsetWidth;box.classList.add('flash','ok');
+      }else{
+        b.classList.add('wrong');b.disabled=true;fb.textContent='Not quite. Try another answer.';
+      }
+    }
+  });
+  plus.hidden=true;
+  return box;
+}
+function init(){
+  sectionIds.forEach(function(id){
+    var sec=document.getElementById(id);if(!sec||sec.tagName!=='SECTION')return;
+    var h=sec.querySelector('h3');var title=h?h.textContent.replace(/\s+/g,' ').trim():id;
+    sec.parentNode.insertBefore(makeBox(id,title),sec.nextSibling);
+  });
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+
+</script>
 </body>
 </html>
