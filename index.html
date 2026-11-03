@@ -47,10 +47,12 @@ footer{padding-block:0 40px;text-align:center;font-size:13.5px;color:var(--muted
 @media (min-width:761px) and (max-width:1000px){.tips{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (prefers-reduced-motion:reduce){a.tile{transition:none}}
 svg text{font-family:var(--serif)}
+.notice{margin:6px auto 26px!important;max-width:60ch!important;text-align:center;font-size:13px!important;line-height:1.45;color:#d4d6da!important;opacity:.9}
 </style>
 </head>
 <body>
 <header class="top pad"><div class="in">
+<p class="notice" role="note">Please refresh the pages periodically to ensure your study guides are up to date. The website is still under construction, and you may encounter some errors.</p>
 <div class="eyebrow" id="today">ASVAB Study Hub</div>
 <h1>Welcome to your ASVAB and Coast Guard training manual.</h1>
 <p class="greet" id="greet">Welcome back</p>
@@ -156,5 +158,6 @@ document.getElementById('greet').textContent=g;
 try{document.getElementById('today').textContent=d.toLocaleDateString(undefined,{weekday:'long',month:'long',day:'numeric'});}catch(e){}
 document.title='ASVAB Study Hub';})();
 </script>
+<script src="timer.js" defer></script>
 </body>
 </html>
