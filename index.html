@@ -49,6 +49,19 @@ footer{padding-block:0 40px;text-align:center;font-size:13.5px;color:var(--muted
 svg text{font-family:var(--serif)}
 header.top{padding-top:56px}.notice{margin:0 auto 26px!important;max-width:60ch!important;text-align:center;font-size:13px!important;line-height:1.45;color:#d4d6da!important;opacity:.9}
 @media(min-width:760px){header.top{padding-top:16px}.notice{margin:0 auto 30px!important;max-width:84ch!important}}
+dialog#asvabdlg{border:3px solid var(--band);background:var(--surface);color:var(--ink);padding:0;width:min(440px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;border-radius:0}
+dialog#asvabdlg::backdrop{background:rgba(10,11,13,.65)}
+.dlgin{padding:20px 22px 22px}
+.dlghead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.dlghead h2{margin:0}
+.dlgx{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:30px;line-height:1;color:var(--ink);border:1px solid var(--line)}
+.dlgx:hover{border-color:var(--accent)}.dlgx:focus-visible,.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.dlgsub{margin:4px 0 16px;color:var(--muted);font-size:15px}
+a.opt{display:flex;flex-direction:column;gap:3px;padding:14px 16px;border:2px solid var(--line);border-left:6px solid var(--accent);background:var(--bg);color:var(--ink);text-decoration:none}
+a.opt:hover{border-color:var(--accent)}
+a.opt b{font-family:var(--display);font-size:24px;letter-spacing:.04em;text-transform:uppercase;line-height:1.1}
+a.opt span{font-size:14.5px;color:var(--muted)}
+.dlgsoon{margin:14px 0 0;font-size:13.5px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -79,22 +92,24 @@ header.top{padding-top:56px}.notice{margin:0 auto 26px!important;max-width:60ch!
 <p class="lead">Pick a manual to open.</p>
 <div class="grid">
 <div class="item">
-<a class="tile" href="math/" aria-label="Math study guide">
+<a class="tile" href="math/" id="asvabtile" role="button" aria-haspopup="dialog" aria-label="ASVAB study sections">
 <svg viewBox="0 0 300 300" aria-hidden="true">
 <g stroke="rgba(255,255,255,.12)" stroke-width="1"><path d="M0 60h300M0 120h300M0 180h300M0 240h300M60 0v300M120 0v300M180 0v300M240 0v300"/></g>
-<text x="24" y="98" font-size="84" fill="#f2b04a" font-style="italic">π</text>
-<path d="M170 66l10 16 16-48h86" stroke="#ffffff" stroke-width="4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>
-<text x="214" y="76" font-size="30" fill="#ffffff" font-style="italic">x</text>
-<g fill="none" stroke="#ffffff" stroke-width="4" stroke-linejoin="round"><path d="M34 224V136l84 88z"/><path d="M52 224v-16H34"/></g>
-<text x="170" y="170" font-size="34" fill="#ffffff" text-anchor="middle">3</text>
-<path d="M152 180h36" stroke="#ffffff" stroke-width="4"/>
-<text x="170" y="216" font-size="34" fill="#ffffff" text-anchor="middle">4</text>
-<text x="212" y="176" font-size="40" fill="#ffffff" font-style="italic">x²</text>
-<text x="226" y="222" font-size="38" fill="#f2b04a">%</text>
+<g stroke-linejoin="round" stroke-linecap="round">
+<path d="M64 34h118l34 34v158H64z" fill="#ffffff" stroke="#ffffff" stroke-width="6"/>
+<path d="M182 34v34h34" fill="#d9dbe0" stroke="#d9dbe0" stroke-width="6"/>
+<path d="M86 94h86M86 120h108M86 146h108M86 172h64" stroke="#8a8f98" stroke-width="5" fill="none"/>
+<g transform="rotate(38 200 168)">
+<path d="M190 74h22v118h-22z" fill="#f2b04a" stroke="#14151a" stroke-width="4"/>
+<path d="M190 74h22v16h-22z" fill="#e8602c" stroke="#14151a" stroke-width="4"/>
+<path d="M190 192h22l-11 34z" fill="#f4dcb4" stroke="#14151a" stroke-width="4"/>
+<path d="M196.500 213h9l-4.500 13z" fill="#14151a"/>
+</g>
+</g>
 </svg>
-<div class="lab"><b>Math</b><span>ASVAB &middot; Open</span></div>
+<div class="lab"><b>ASVAB</b><span>Choose a section</span></div>
 </a>
-<p class="cap">Arithmetic Reasoning and Mathematics Knowledge</p>
+<p class="cap">Study sections for the ASVAB</p>
 </div>
 <div class="item">
 <a class="tile" href="helmsman/" aria-label="Coast Guard Helmsman">
@@ -152,6 +167,22 @@ header.top{padding-top:56px}.notice{margin:0 auto 26px!important;max-width:60ch!
 </section>
 
 </div></main>
+<dialog id="asvabdlg" aria-labelledby="asvabh">
+<div class="dlgin">
+<div class="dlghead"><h2 id="asvabh">ASVAB</h2><button type="button" class="dlgx" aria-label="Close">&times;</button></div>
+<p class="dlgsub">Choose a section to study.</p>
+<a class="opt" href="math/"><b>Math</b><span>Arithmetic Reasoning and Mathematics Knowledge</span></a>
+<p class="dlgsoon">More sections are coming soon.</p>
+</div>
+</dialog>
+<script>
+(function(){var t=document.getElementById('asvabtile'),d=document.getElementById('asvabdlg');
+if(!t||!d||typeof d.showModal!=='function')return;
+t.addEventListener('click',function(e){e.preventDefault();d.showModal()});
+d.querySelector('.dlgx').addEventListener('click',function(){d.close()});
+d.addEventListener('click',function(e){if(e.target===d)d.close()});
+d.addEventListener('close',function(){t.focus()});})();
+</script>
 <footer class="pad">ASVAB and Coast Guard training manual</footer>
 <script>
 (function(){var d=new Date(),h=d.getHours(),g=h<12?'Good morning':(h<18?'Good afternoon':'Good evening');
