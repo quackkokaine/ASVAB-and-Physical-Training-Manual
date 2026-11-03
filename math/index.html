@@ -157,11 +157,25 @@ html.toc-open .tocbtn .b{display:inline}
 html.scrolled:not(.toc-open) .tocbtn:hover,html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:.3}
 @media (hover:hover){html.scrolled:not(.toc-open) .tocbtn:hover{opacity:1}}
 html.scrolled:not(.toc-open) .tocbtn:focus-visible{opacity:1}
+
+.tocbtn .lbl,.backbtn .lbl{font:600 14px var(--body);letter-spacing:.04em;white-space:nowrap}
+html.scrolled .tocbtn .lbl,html.scrolled .backbtn .lbl{display:none}
+html.scrolled:not(.toc-open) .tocbtn,html.scrolled:not(.toc-open) .backbtn{opacity:.3}
+
+.backbtn{position:fixed;top:calc(62px + env(safe-area-inset-top,0px));left:max(12px,env(safe-area-inset-left,0px));z-index:70;min-height:44px;min-width:44px;display:flex;gap:10px;align-items:center;justify-content:center;padding:0 14px 0 12px;background:var(--band);color:var(--band-ink);border:1px solid var(--muted);text-decoration:none;transition:opacity .25s ease}
+.backbtn:hover{border-color:var(--band-accent)}
+.backbtn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+html.toc-open .backbtn{visibility:hidden}
+@media (hover:hover){html.scrolled:not(.toc-open) .backbtn:hover{opacity:1}}
+html.scrolled:not(.toc-open) .backbtn:focus-visible{opacity:1}
+header.top{padding-top:calc(124px + env(safe-area-inset-top,0px))}
+@media (max-width:600px){header.top{padding-top:calc(120px + env(safe-area-inset-top,0px))}}
 </style>
 </head>
 <body>
 
-<button class="tocbtn" id="tocbtn" type="button" aria-controls="toc" aria-expanded="false" aria-label="Open contents"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path class="a" d="M1 4h18M1 10h18M1 16h18" stroke="currentColor" stroke-width="2" fill="none"/><path class="b" d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" fill="none"/></svg></button>
+<button class="tocbtn" id="tocbtn" type="button" aria-controls="toc" aria-expanded="false" aria-label="Open contents"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path class="a" d="M1 4h18M1 10h18M1 16h18" stroke="currentColor" stroke-width="2" fill="none"/><path class="b" d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" fill="none"/></svg><span class="lbl">Table of Contents</span></button>
+<a class="backbtn" href="../" aria-label="Back to all subjects"><svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M12 3L5 10l7 7M5 10h13" stroke="currentColor" stroke-width="2" fill="none"/></svg><span class="lbl">Back</span></a>
 <div class="scrim" id="scrim"></div>
 <header class="top pad"><div class="in">
 <div class="eyebrow">Arithmetic Reasoning · Mathematics Knowledge</div>
