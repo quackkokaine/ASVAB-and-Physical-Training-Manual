@@ -34,25 +34,38 @@ function render(){var s=state(),t=total(s);out.textContent=fmt(t);
   box.classList.toggle('on',!!s.running);box.classList.toggle('paused',!s.running&&t>0);
   ip.firstChild.setAttribute('d',s.running?PAUSE:PLAY);
   var lab=s.running?'Pause study timer':(t>0?'Resume study timer':'Start study timer');pp.setAttribute('aria-label',lab);pp.title=lab.replace(' study timer','')}
-function toast(mins){
+var BIG="You're crushing it! However, a break is highly recommended. Get up and drink some water. Go for a walk, or do some sit-ups and push-ups to stimulate your body physically.";
+function toast(title,body,ms){
   var old=document.querySelector('.stoast');if(old)old.remove();
   var d=document.createElement('div');d.className='stoast';d.setAttribute('role','alert');
-  d.innerHTML='<div><b>Time to move</b>You have studied for '+mins+' minutes. Stand up, stretch and drink some water.</div><button type="button">OK</button>';
-  d.querySelector('button').onclick=function(){d.remove()};document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.remove()},20000)}
-function notify(mins){
-  toast(mins);
-  try{if('Notification' in window&&Notification.permission==='granted'){new Notification('Time to stand, stretch and rehydrate',{body:'You have studied for '+mins+' minutes. Take a short break to avoid fatigue.',tag:'study-break'})}}catch(e){}
+  d.innerHTML='<div><b></b><span></span></div><button type="button">OK</button>';
+  d.querySelector('b').textContent=title;d.querySelector('span').textContent=body;
+  d.querySelector('button').onclick=function(){d.remove()};document.body.appendChild(d);setTimeout(function(){if(d.parentNode)d.remove()},ms||20000)}
+function notify(title,body,ms){
+  toast(title,body,ms);
+  try{if('Notification' in window&&Notification.permission==='granted'){new Notification(title,{body:body,tag:'study-break'})}}catch(e){}
 }
+// Reminders: every 30 min, at 45 min (then every 90 min after that), and a bigger "take a real break" message every 90 min.
+function milestone(m){
+  if(m%90===0)return {title:'Study break',body:BIG,ms:30000};
+  if(m%30===0)return {title:'Time to move',body:'You have studied for '+m+' minutes. Stand up, stretch and drink some water.'};
+  if(m%90===45)return {title:'Time to move',body:'You have studied for 45 minutes. Stand up, stretch and rehydrate to avoid fatigue.'};
+  return null}
 function tick(){var s=state(),t=total(s);
-  if(s.running){s.seen=Date.now();var due=Math.floor(t/INTERVAL);if(due>(s.notified||0)){s.notified=due;notify(due*30)}save(s)}
+  if(s.running){s.seen=Date.now();
+    var from=typeof s.checked==='number'?s.checked:Math.floor((s.notified||0)*INTERVAL),to=Math.floor(t/60000),last=null;
+    for(var m=Math.floor(from/60000)+1;m<=to;m++){var h=milestone(m);if(h){if(!last||h.title!=='Time to move')last={h:h,m:m}}}
+    s.checked=t;
+    if(last)notify(last.h.title,last.h.body,last.h.ms);
+    save(s)}
   render()}
 pp.addEventListener('click',function(){
   var s=state();
   if(s.running){s.elapsed+=Math.max(0,Date.now()-s.startedAt);s.running=false;s.startedAt=0}
-  else{s.running=true;s.startedAt=Date.now();s.seen=Date.now();s.notified=Math.floor(s.elapsed/INTERVAL);
+  else{s.running=true;s.startedAt=Date.now();s.seen=Date.now();s.checked=s.elapsed;
     try{if('Notification' in window&&Notification.permission==='default')Notification.requestPermission()}catch(e){}}
   save(s);render()});
-box.querySelector('.rs').addEventListener('click',function(){mem={elapsed:0,running:false,startedAt:0,notified:0,seen:0};save(mem);render()});
+box.querySelector('.rs').addEventListener('click',function(){mem={elapsed:0,running:false,startedAt:0,checked:0,seen:0};save(mem);render()});
 window.addEventListener('storage',function(e){if(e.key===KEY)render()});
 function away(){box.classList.toggle('away',(window.pageYOffset||document.documentElement.scrollTop)>8)}
 window.addEventListener('scroll',away,{passive:true});away();
