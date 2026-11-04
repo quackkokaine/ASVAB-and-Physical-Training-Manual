@@ -57,7 +57,7 @@ dialog#asvabdlg::backdrop{background:rgba(10,11,13,.65)}
 .dlgx{all:unset;cursor:pointer;width:40px;height:40px;display:grid;place-items:center;font-size:30px;line-height:1;color:var(--ink);border:1px solid var(--line)}
 .dlgx:hover{border-color:var(--accent)}.dlgx:focus-visible,.opt:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .dlgsub{margin:4px 0 16px;color:var(--muted);font-size:15px}
-a.opt{display:flex;flex-direction:column;gap:3px;padding:14px 16px;border:2px solid var(--line);border-left:6px solid var(--accent);background:var(--bg);color:var(--ink);text-decoration:none}
+a.opt+a.opt{margin-top:10px}a.opt{display:flex;flex-direction:column;gap:3px;padding:14px 16px;border:2px solid var(--line);border-left:6px solid var(--accent);background:var(--bg);color:var(--ink);text-decoration:none}
 a.opt:hover{border-color:var(--accent)}
 a.opt b{font-family:var(--display);font-size:24px;letter-spacing:.04em;text-transform:uppercase;line-height:1.1}
 a.opt span{font-size:14.5px;color:var(--muted)}
@@ -172,6 +172,7 @@ a.opt span{font-size:14.5px;color:var(--muted)}
 <div class="dlghead"><h2 id="asvabh">ASVAB</h2><button type="button" class="dlgx" aria-label="Close">&times;</button></div>
 <p class="dlgsub">Choose a section to study.</p>
 <a class="opt" href="math/"><b>Math</b><span>Arithmetic Reasoning and Mathematics Knowledge</span></a>
+<a class="opt" href="english/"><b>English</b><span>Word Knowledge and Paragraph Comprehension</span></a>
 <p class="dlgsoon">More sections are coming soon.</p>
 </div>
 </dialog>
